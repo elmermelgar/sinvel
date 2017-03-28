@@ -10,7 +10,7 @@ Getting Started
 
 - Crear un entorno virtual de Python.
 
-    python3 -m venv env
+    python -m venv env
 
 - Actualiza los paquetes de las utilidades.
 
