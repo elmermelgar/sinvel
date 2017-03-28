@@ -14,20 +14,20 @@ Getting Started
 
 - Upgrade packaging tools.
 
-    env/bin/pip install --upgrade pip setuptools
+    ./env/Scripts/pip install --upgrade pip setuptools
 
 - Install the project in editable mode with its testing requirements.
 
-    env/bin/pip install -e ".[testing]"
+    ./env/Scripts/pip install -e ".[testing]"
 
 - Configure the database.
 
-    env/bin/initialize_sinvel_db development.ini
+    ./env/Scripts/initialize_sinvel_db development.ini
 
 - Run your project's tests.
 
-    env/bin/pytest
+    ./env/Scripts/pytest
 
 - Run your project.
 
-    env/bin/pserve development.ini
+    ./env/Scripts/pserve development.ini
