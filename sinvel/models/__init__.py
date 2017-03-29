@@ -24,6 +24,8 @@ from .models import TipoRemolque
 from .models import UbicacionBodega
 from .models import Vehiculo
 from .models import Venta
+from .models import Empleado
+from .models import User,Group,GroupsPermission,UsersGroup,Resource,UsersPermission,UsersResourcesPermission
 
 # run configure_mappers after defining all of the models to ensure
 # all relationships can be setup
@@ -33,6 +35,8 @@ configure_mappers()
 def get_engine(settings, prefix='sqlalchemy.'):
     return engine_from_config(settings, prefix)
 
+def get_session_callable(request):
+    return request.dbsession
 
 def get_session_factory(engine):
     factory = sessionmaker()
