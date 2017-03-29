@@ -15,6 +15,24 @@ class AlembicZigguratFoundationsVersion(Base):
     version_num = Column(String(32), primary_key=True)
 
 
+class Empleado(Base):
+    __tablename__ = 'empleado'
+
+    ID_EMPLEADO = Column(Integer, primary_key=True)
+    NOMBRE = Column(String(100), nullable=False)
+    APELLIDO = Column(String(100), nullable=False)
+    GENERO = Column(String(20), nullable=False)
+    FECHA_NACIMIENTO = Column(Date, nullable=False)
+    DUI = Column(String(9), nullable=False)
+    NIT = Column(String(50), nullable=False)
+    AFP = Column(String(50), nullable=False)
+    ISSS = Column(String(50), nullable=False)
+    ID_BODEGA = Column(ForeignKey('bodega.ID_BODEGA'), nullable=False, index=True)
+    ID_USER = Column(ForeignKey('users.id', ondelete='SET NULL'), index=True)
+
+    bodega = relationship('Bodega', primaryjoin='Empleado.ID_BODEGA == Bodega.ID_BODEGA', backref='empleadoes')
+    user = relationship('User', primaryjoin='Empleado.ID_USER == User.id', backref='empleadoes')
+
 class Bodega(Base):
     __tablename__ = 'bodega'
 
@@ -153,6 +171,7 @@ class Importador(Base):
     NOMBRE = Column(String(50))
     APELLIDO = Column(String(50))
     GENERO = Column(String(20))
+    ID_USER = Column(ForeignKey('users.id', ondelete='SET NULL'), index=True)
     FECHA_NACIMIENTO = Column(Date)
     TELEFONO_CASA = Column(String(9))
     TELEFONO_CELULAR = Column(String(9))
@@ -161,6 +180,8 @@ class Importador(Base):
     NIT = Column(String(18))
     DUI = Column(String(10))
     APELLIDO_CASADA = Column(String(40))
+
+    user = relationship('User', primaryjoin='Importador.ID_USER == User.id', backref='importadors')
 
 
 class Inventario(Base):
