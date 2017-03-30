@@ -35,5 +35,5 @@ def bad_auth(request):
 
 @view_config(context=ZigguratSignOut, permission=NO_PERMISSION_REQUIRED)
 def sign_out(request):
-    return HTTPFound(location=request.route_url('/login'),
+    return HTTPFound(location=request.route_url('login'),
                      headers=request.context.headers)
