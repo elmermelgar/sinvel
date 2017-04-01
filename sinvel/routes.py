@@ -5,6 +5,7 @@ def includeme(config):
 
 
     config.add_route('prueba', '/prueba')
+    config.add_route('inicio', '/inicio')
 
 
     ############Seguridad################
