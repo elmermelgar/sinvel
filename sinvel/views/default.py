@@ -1,19 +1,35 @@
 from pyramid.response import Response
 from pyramid.view import view_config
-
+from pyramid.security import NO_PERMISSION_REQUIRED,Authenticated
+from ziggurat_foundations.ext.pyramid.sign_in import ZigguratSignInSuccess
 from sqlalchemy.exc import DBAPIError
-
+from ..models.models import Empleado
 from ..models import MyModel
+from ..models import get_session_callable
+from ..models import ResourceFactory
 
 
-@view_config(route_name='home', renderer='../templates/mytemplate.jinja2')
-def my_view(request):
-    try:
-        query = request.dbsession.query(MyModel)
-        one = query.filter(MyModel.name == 'one').first()
-    except DBAPIError:
-        return Response(db_err_msg, content_type='text/plain', status=500)
-    return {'one': one, 'project': 'sinvel'}
+class Vista(object):
+    def __init__(self, request):
+        print('HOLA:'+request.user.user_name)
+       # emp=Empleado()
+        print(request.authenticated_userid)
+        #request.session.expunge('empleado')
+        #emp=request.session['empleado']
+        #empl=Empleado()
+        #empl=emp
+        #print(empl.NOMBRE)
+
+    @view_config(route_name='home', renderer='../templates/mytemplate.jinja2', permission='edit')
+    def my_view(request):
+
+
+        #ResourceFactory(request)
+        return {'one': 'one', 'project': 'sinvel'}
+
+
+
+
 
 
 db_err_msg = """\

@@ -26,6 +26,8 @@ from .models import Vehiculo
 from .models import Venta
 from .models import Empleado
 from .models import User,Group,GroupsPermission,UsersGroup,Resource,UsersPermission,UsersResourcesPermission
+from .root_factory import RootFactory
+from .resource_factory import ResourceFactory
 
 # run configure_mappers after defining all of the models to ensure
 # all relationships can be setup

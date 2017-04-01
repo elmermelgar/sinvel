@@ -12,6 +12,7 @@ from ziggurat_foundations.models.user_permission import UserPermissionMixin
 from ziggurat_foundations.models.user_resource_permission import UserResourcePermissionMixin
 from ziggurat_foundations import ziggurat_model_init
 
+from pyramid.security import NO_PERMISSION_REQUIRED,Authenticated,Allow
 class Group(GroupMixin, Base):
     pass
 
@@ -28,16 +29,17 @@ class Resource(ResourceMixin, Base):
     # ... your own properties....
 
     # example implementation of ACLS for pyramid application
+    pass
     @property
     def __acl__(self):
         acls = []
 
-        if self.owner_user_id:
-            acls.extend([(Allow, self.owner_user_id, ALL_PERMISSIONS,), ])
-
-        if self.owner_group_id:
-            acls.extend([(Allow, "group:%s" % self.owner_group_id,
-                          ALL_PERMISSIONS,), ])
+        # if self.owner_user_id:
+        #     acls.extend([(Allow, self.owner_user_id, ALL_PERMISSIONS,), ])
+        #
+        #if self.owner_group_id:
+        #     acls.extend([(Allow, "group:%s" % self.owner_group_id,
+        #                   Authenticated,), ])
         return acls
 
 class UserPermission(UserPermissionMixin, Base):

@@ -5,6 +5,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.declarative import declarative_base
 
 
+
 Base = declarative_base()
 metadata = Base.metadata
 
@@ -30,10 +31,11 @@ class Empleado(Base):
     ID_BODEGA = Column(ForeignKey('bodega.ID_BODEGA'), nullable=False, index=True)
     ID_USER = Column(ForeignKey('users.id', ondelete='SET NULL'), index=True)
 
-    bodega = relationship('Bodega', primaryjoin='Empleado.ID_BODEGA == Bodega.ID_BODEGA', backref='empleadoes')
-    user = relationship('User', primaryjoin='Empleado.ID_USER == User.id', backref='empleadoes')
+    bodega = relationship('Bodega', primaryjoin='Empleado.ID_BODEGA == Bodega.ID_BODEGA', backref='empleadoes',lazy='subquery')
+    user = relationship('User', primaryjoin='Empleado.ID_USER == User.id', backref='empleadoes',lazy='subquery')
 
 class Bodega(Base):
+
     __tablename__ = 'bodega'
 
     ID_BODEGA = Column(Integer, primary_key=True)

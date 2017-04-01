@@ -1,17 +1,30 @@
-from pyramid.security import NO_PERMISSION_REQUIRED
+from pyramid.security import NO_PERMISSION_REQUIRED,Authenticated,DENY_ALL
 from ziggurat_foundations.ext.pyramid.sign_in import ZigguratSignInSuccess
 from ziggurat_foundations.ext.pyramid.sign_in import ZigguratSignInBadAuth
 from ziggurat_foundations.ext.pyramid.sign_in import ZigguratSignOut
+from ..models.models import Empleado
 from pyramid.httpexceptions import HTTPFound
+
+
 from pyramid.view import (
     view_config,
     view_defaults
     )
 @view_config(context=ZigguratSignInSuccess, permission=NO_PERMISSION_REQUIRED)
 def sign_in(request):
-    # get the user
-    user = request.context.user
-    print(user.user_name)
+
+    user_id = request.context.user.id
+    user_name=request.context.user.user_name
+    query = request.dbsession.query(Empleado)
+    empleado = query.filter(Empleado.ID_USER == user_id).first()
+
+    #request.session['empleado'] = empleado
+
+    print('user='+user_name)
+    #emp=request.session['empleado']
+    #print(emp.NOMBRE)
+
+
     # actions performed on sucessful logon, flash message/new csrf token
     # user status validation etc.
     if request.context.came_from != '/':
@@ -35,5 +48,6 @@ def bad_auth(request):
 
 @view_config(context=ZigguratSignOut, permission=NO_PERMISSION_REQUIRED)
 def sign_out(request):
-    return HTTPFound(location=request.route_url('/login'),
+
+    return HTTPFound(location=request.route_url('login'),
                      headers=request.context.headers)
