@@ -15,6 +15,14 @@ def my_view(request):
         return Response(db_err_msg, content_type='text/plain', status=500)
     return {'one': one, 'project': 'sinvel'}
 
+@view_config(route_name='inicio', renderer='../templates/inicio.jinja2')
+def inicio(request):
+    try:
+        query = request.dbsession.query(MyModel)
+        one = query.filter(MyModel.name == 'one').first()
+    except DBAPIError:
+        return Response(db_err_msg, content_type='text/plain', status=500)
+    return {'one': one, 'project': 'sinvel'}
 
 db_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
