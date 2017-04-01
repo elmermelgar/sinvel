@@ -31,9 +31,9 @@ class Vista(object):
         return {'one': 'one', 'user':self.user }
 
 
-
-
-
+    @view_config(route_name='inicio', renderer='../templates/inicio.jinja2')
+    def inicio(request):
+        return {'one': 'one', 'project': 'sinvel'}
 
 db_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem

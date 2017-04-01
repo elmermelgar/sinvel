@@ -1,64 +1,87 @@
 <!DOCTYPE html>
-<html lang="{{request.locale_name}}">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="pyramid web application">
-    <meta name="author" content="Pylons Project">
-    <link rel="shortcut icon" href="{{request.static_url('sinvel:static/pyramid-16x16.png')}}">
+<!--[if IE 9 ]><html class="ie9" lang="{{request.locale_name}}><![endif]-->
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <meta name="format-detection" content="telephone=no">
+        <meta charset="UTF-8">
+        <meta name="description" content="SuperFlat Responsive Admin Template">
+        <meta name="keywords" content="SuperFlat Admin, Admin, Template, Bootstrap">
+        <link rel="shortcut icon" href="{{request.static_url('sinvel:static/pyramid-16x16.png')}}">
 
-    <title>Cookiecutter Alchemy project for the Pyramid Web Framework</title>
+        <title>{% block title %} Título {% endblock title %}- Sinvel</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{{request.static_url('sinvel:static/vendors/bower_components/animate.css/animate.min.css')}}" rel="stylesheet">
+        <link href="{{request.static_url('sinvel:static/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css')}}" rel="stylesheet">
+        <link href="{{request.static_url('sinvel:static/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css')}}" rel="stylesheet">
+        <!-- CSS -->
+        {% block styles %}
+        {% endblock styles %}
+        <link href="{{request.static_url('sinvel:static/css/app.min.css')}}" rel="stylesheet">
+    </head>
 
-    <!-- Custom styles for this scaffold -->
-    <link href="{{request.static_url('sinvel:static/theme.css')}}" rel="stylesheet">
+    <body>
+            <header id="header" class="clearfix" data-spy="affix" data-offset-top="65">
+            <ul class="header-inner">
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
-  </head>
+                <!-- Logo -->
+                <li class="logo">
+                    <a href=""><img src="{{request.static_url('sinvel:static/img/logo.png')}}" alt=""></a>
+                    <div id="menu-trigger"><i class="zmdi zmdi-menu"></i></div>
+                </li>
 
-  <body>
-
-    <div class="starter-template">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-2">
-            <img class="logo img-responsive" src="{{request.static_url('sinvel:static/pyramid.png') }}" alt="pyramid web framework">
-          </div>
-          <div class="col-md-10">
-            {% block content %}
-                <p>No content</p>
-            {% endblock content %}
-          </div>
-        </div>
-        <div class="row">
-          <div class="links">
-            <ul>
-              <li><i class="glyphicon glyphicon-cog icon-muted"></i><a href="https://github.com/Pylons/pyramid">Github Project</a></li>
-              <li><i class="glyphicon glyphicon-globe icon-muted"></i><a href="https://webchat.freenode.net/?channels=pyramid">IRC Channel</a></li>
-              <li><i class="glyphicon glyphicon-home icon-muted"></i><a href="http://pylonsproject.org">Pylons Project</a></li>
+                <!-- Messages -->
+                {% include 'components/messages.jinja2' %}
+                <!-- Notifications -->
+                {% include 'components/notification.jinja2' %}
+                <!-- Ongoing Projects -->
+                {% include 'components/ongoing.jinja2' %}
+                <!-- Events -->
+                {% include 'components/events.jinja2' %}
+                <!-- Search -->
+                {% include 'components/search.jinja2' %}
+                <!-- Settings -->
+                {% include 'components/settings.jinja2' %}
+                <!-- Quick Apps -->
+                {% include 'components/quickapp.jinja2' %}
+                <!-- Time -->
+                {% include 'components/time.jinja2' %}
             </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="copyright">
-            Copyright &copy; Pylons Project
-          </div>
-        </div>
-      </div>
-    </div>
+        </header>
 
+        <aside id="sidebar">
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//oss.maxcdn.com/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
-  </body>
+            <!--| MAIN MENU |-->
+            {% include 'components/menu.jinja2' %}
+
+        </aside>
+
+            <section id="content">
+                <!-- Main content -->
+                {% block content %}
+
+                {% endblock content %}
+
+            </section>
+
+        <footer id="footer">
+            Copyright © 2017 BAD-115
+
+            {% include 'components/menufooter.jinja2' %}
+        </footer>
+
+        <!-- Javascript Libraries -->
+        <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{request.static_url('sinvel:static/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+        <script src="{{request.static_url('sinvel:static/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+        <script src="{{request.static_url('sinvel:static/vendors/bootstrap-growl/bootstrap-growl.min.js') }}"></script>
+
+        <!-- Placeholder for IE9 -->
+        <!--[if IE 9 ]>
+            <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js') }}"></script>
+        <![endif]-->
+        {% block scripts %}
+        {% endblock scripts %}
+        <script src="{{request.static_url('sinvel:static/js/functions.js') }}"></script>
+        <script src="{{request.static_url('sinvel:static/js/demo.js') }}"></script>
+    </body>
 </html>
