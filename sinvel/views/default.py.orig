@@ -10,12 +10,9 @@ from ..models import ResourceFactory
 
 
 class Vista(object):
-
-
     def __init__(self, request):
         print('HOLA:'+request.user.user_name)
        # emp=Empleado()
-        self.user=request.user.user_name
         print(request.authenticated_userid)
         #request.session.expunge('empleado')
         #emp=request.session['empleado']
@@ -23,16 +20,27 @@ class Vista(object):
         #empl=emp
         #print(empl.NOMBRE)
 
-    @view_config(route_name='home', renderer='../templates/home.jinja2', permission='view')
-    def my_view(self):
+    @view_config(route_name='home', renderer='../templates/mytemplate.jinja2', permission='edit')
+    def my_view(request):
 
 
         #ResourceFactory(request)
-        return {'one': 'one', 'user':self.user }
+        return {'one': 'one', 'project': 'sinvel'}
 
 
 
 
+<<<<<<< HEAD
+=======
+@view_config(route_name='home', renderer='../templates/home.jinja2')
+def my_view(request):
+    try:
+        query = request.dbsession.query(MyModel)
+        one = query.filter(MyModel.name == 'one').first()
+    except DBAPIError:
+        return Response(db_err_msg, content_type='text/plain', status=500)
+    return {'one': one, 'project': 'sinvel'}
+>>>>>>> 16d124d8dae22c82c26730de715e2087a64ab930
 
 
 db_err_msg = """\

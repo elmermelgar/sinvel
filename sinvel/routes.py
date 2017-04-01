@@ -4,7 +4,7 @@ def includeme(config):
     config.add_route('home', '/')
 
 
-    config.add_route('prueba', '/prueba')
+    config.add_route('registrar_vehiculo', '/RegistrarVehiculo/{id_importacion}')
 
 
     ############Seguridad################
