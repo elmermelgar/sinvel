@@ -44,6 +44,10 @@ class Vista(object):
     def tables(request):
         return {'one': 'one', 'user': 'sinvel'}
 
+    @view_config(route_name='panels', renderer='../templates/examples/panels.jinja2', permission='view')
+    def tables(request):
+        return {'one': 'one', 'user': 'sinvel'}
+
 db_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:
