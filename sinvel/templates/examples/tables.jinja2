@@ -1,5 +1,7 @@
 {% extends "../layout.jinja2" %}
-
+{% block styles %}
+<link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+{% endblock styles %}
 {% block content %}
     <div class="container">
             <header class="page-header">
@@ -350,3 +352,57 @@
                 </div>
             </div>
 {% endblock content %}
+{% block scripts %}
+         <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+
+    <!-- Data Table -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                //Basic Example
+                $("#data-table").bootgrid({
+                    css: {
+                        icon: 'zmdi icon',
+                        iconColumns: 'zmdi-view-module',
+                        iconDown: 'zmdi-expand-more',
+                        iconRefresh: 'zmdi-refresh',
+                        iconUp: 'zmdi-expand-less',
+                        iconSearch: 'zmdi-search'
+                    },
+                });
+
+                //Selection
+                $("#data-table-selection").bootgrid({
+                    css: {
+                        icon: 'zmdi icon',
+                        iconColumns: 'zmdi-view-module',
+                        iconDown: 'zmdi-expand-more',
+                        iconRefresh: 'zmdi-refresh',
+                        iconUp: 'zmdi-expand-less',
+                        iconSearch: 'zmdi-search'
+
+                    },
+                    selection: true,
+                    multiSelect: true,
+                    rowSelect: true,
+                    keepSelection: true
+                });
+
+                //Command Buttons
+                $("#data-table-command").bootgrid({
+                    css: {
+                        icon: 'zmdi icon',
+                        iconColumns: 'zmdi-view-module',
+                        iconDown: 'zmdi-expand-more',
+                        iconRefresh: 'zmdi-refresh',
+                        iconUp: 'zmdi-expand-less'
+                    },
+                    formatters: {
+                        "commands": function(column, row) {
+                            return "<button type=\"button\" class=\"btn btn-icon btn-info command-edit\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-edit\"></span></button> " +
+                                "<button type=\"button\" class=\"btn btn-icon btn-info command-delete\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-delete\"></span></button>";
+                        }
+                    }
+                });
+            });
+        </script>
+{% endblock scripts %}
