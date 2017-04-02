@@ -1,0 +1,15 @@
+{% extends "../layout.jinja2" %}
+
+{% block main_content %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                <h1><span class="font-semi-bold">403</span> <span class="smaller">Acceso denegado</span></h1>
+                    <p class="lead">No posee los permisos necesarios para ver el recursos solicitado.</p>
+                    <p class="lead">Tal vez quierra regresar a la <a href="{{ request.route_url('back') }}">página anterior</a>.</p>
+                    </div>
+            </div>
+        </div>
+    </section>
+{% endblock main_content %}
