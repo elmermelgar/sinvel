@@ -1,0 +1,201 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+    {% from '_helpers.jinja2' import input,label %}
+ <div class="col-12 col-lg-12 col-sm-9 ">
+         <div class="panel panel-primary">
+            <div class="panel-heading">
+                 <h2 class="panel-title">Registrar Vehiculo</h2>
+            </div>
+             </br>
+             </br>
+             <div class="panel">
+                 <h3 class="panel-title">Datos vehiculo</h3>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" action="{{request.route_url('guardar_registro_vehiculo')}}" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Linea de estilo:','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                    {{ input('LINEA_ESTILO', 'form-control', type='text') }}
+                                </div>
+                            </div>
+                       </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Marca','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                    {{ input('MARCA', 'form-control', type='text') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Modelo','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                    {{ input('MODELO', 'form-control', type='text') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Chasis','col-sm-2 control-label') }}
+                            <div class="form-group col-md-10">
+                                {{ input('CHASIS', 'form-control', type='text') }}
+                            </div>
+                         </div>
+                        </div>
+                        <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ label('Año','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                    {{ input('ANO', 'form-control', type='number') }}
+                                </div>
+                             </div>
+                          </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                                {{ label('No. motor','col-sm-2 control-label') }}
+                            <div class="form-group col-md-10">
+                                {{ input('NUM_MOTOR', 'form-control', type='text') }}
+                            </div>
+                         </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                                {{ label('VIN','col-sm-2 control-label') }}
+                            <div class="form-group col-md-10">
+                                {{ input('VIN', 'form-control', type='text') }}
+                            </div>
+                         </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                                {{ label('Color','col-sm-2 control-label') }}
+                            <div class="form-group col-md-10">
+                                {{ input('COLOR', 'form-control', type='text') }}
+                            </div>
+                         </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                    {{ label('Clase','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                    {{ input('CLASE', 'form-control', type='text') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                       <div class="form-group">
+                                        {{ label('Tipo combustible','col-sm-2 control-label') }}
+                                    <div class="form-group col-md-10">
+                                        {{ input('TIPO_COMBUSTIBLE', 'form-control', type='text') }}
+                                    </div>
+                                 </div>
+                      </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                                {{ label('Capacidad','col-sm-2 control-label') }}
+                            <div class="form-group col-md-10">
+                                {{ input('CAPACIDAD', 'form-control', type='text') }}
+                            </div>
+                         </div>
+                        </div>
+                        <div class="col-md-6">
+                       <div class="form-group">
+                            {{ label('Cilindros','col-sm-2 control-label') }}
+                        <div class="form-group col-md-10">
+                            {{ input('CILINDROS', 'form-control', type='text') }}
+                        </div>
+                     </div>
+                         </div>
+                        <div class="col-md-6">
+                       <div class="form-group">
+                            {{ label('Poliza','col-sm-2 control-label') }}
+                        <div class="form-group col-md-10">
+                            {{ input('POLIZA', 'form-control', type='text') }}
+                        </div>
+                     </div>
+                         </div>
+                        <div class="col-md-6">
+                   <div class="form-group">
+                        {{ label('Precio','col-sm-2 control-label') }}
+                    <div class="form-group col-md-10">
+                        {{ input('PRECIO_VEHICULO', 'form-control', type='number') }}
+                    </div>
+                 </div>
+                     </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Estado','col-sm-2 control-label') }}
+                           <div class="form-group col-md-10">
+                                <select name="ID_ESTADO" class="form-control ">
+                                <option value="">Seleccione...</option>
+                               {% for estado in  items_estado_vehiculo %}
+                                    <option value="{{estado.ID_ESTADO}}">{{estado.ESTADO}}</option>
+                                {% endfor %}
+                            </select>
+                            </div>
+                         </div>
+                        </div>
+                   </div>
+                    </br>
+                    </br>
+                    <div class="panel">
+                        <h3 class="panel-title">Datos importacion</h3>
+                    </div>
+                    <div class="col-md-8">
+                            {{ label('Desperfecto','col-sm-4 control-label') }}
+                             <div class="form-group col-md-8 ">
+                                {{ input('DETALLE_DESPERFECTO', 'form-control', type='TEXT') }}
+                            </div>
+                    </div>
+                    <div class="col-md-8">
+                            {{ label('No. importacion','col-sm-4 control-label') }}
+                             <div class="form-group col-md-8 ">
+                                 <input id="id_importacion" type="text" class="form-control"/>
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 ">
+                          <a id="buscar" class="btn btn-primary">Buscar</a>
+                        </div>
+                    </div>
+                      <div class="table">
+                         <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr align="center">
+                                    <th>No. importacion</th>
+                                    <th>Importador</th>
+                                    <th>Fecha importacion</th>
+                                    <th>Seleccionar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 <tr>
+                                        <td id="idimportacion"></td>
+                                        <td id="importador"></td>
+                                        <td id="fecha_importacion"></td>
+                                        <td id="select"></td>
+                                 </tr>
+                              </tbody>
+                         </table>
+                    </div>
+                  <input id="himportancion" type="hidden" name="ID_IMPORTACION" class="form-control" value=""/>
+                 <div class="col-sm-2">
+                        {{ input('submit','form-control btn btn-primary', type='submit',value='Guardar') }}
+                 </div>
+                </form>
+            </div>
+           </div>
+         </div>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous">
+    </script>
+     <script src="{{request.static_url('sinvel:static/js/RegistroVehiculo/registrovehiculo.js') }}"></script>
+
+{% endblock content %}

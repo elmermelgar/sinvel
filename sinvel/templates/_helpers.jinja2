@@ -1,0 +1,14 @@
+{% macro label(  title='',class='') -%}
+    <label class="{{ class }}" style="font-family: 'Arial'">{{ title }}</label>
+{%- endmacro %}
+
+{% macro input(name, class='', value='', type='text',readonly='false',required='false') -%}
+    {% if readonly=='true'%}
+        <input type="{{ type }}" name="{{ name }}" class="{{ class }}" value="{{ value }}" readonly   />
+    {% elif required=='true' %}
+        <input type="{{ type }}" name="{{ name }}" class="{{ class }}" value="{{ value }}" required />
+
+    {% else %}
+        <input type="{{ type }}" name="{{ name }}" class="{{ class }}" value="{{ value }}"  />
+    {% endif %}
+{%- endmacro %}

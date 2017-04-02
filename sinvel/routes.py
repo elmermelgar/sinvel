@@ -6,7 +6,11 @@ def includeme(config):
 
     config.add_route('prueba', '/prueba')
     config.add_route('inicio', '/inicio')
-    config.add_route('registrar_vehiculo','/RegistroVehiculo/{id_importacion}')
+    config.add_route('registrar_vehiculo','/RegistrarVehiculo')
+    config.add_route('buscar_importacion','/RegistrarVehiculo/BuscarImportacion/{id_importacion}')
+    config.add_route('guardar_registro_vehiculo','/RegistrarVehiculo/guardar')
+    #config.add_route('buscar_importacion', '/RegistrarVehiculo/BuscarImportacion?id_import={id_importacion}')
+    #config.add_route('registrar_vehiculo', '/RegistroVehiculo/{id_importacion}')
 
 
     ############Seguridad################
