@@ -1,5 +1,5 @@
 def includeme(config):
-    config.add_static_view('static', 'static', cache_max_age=3600)
+    #config.add_static_view('static', 'static', cache_max_age=3600)
     #config.add_route('home', '/{resource_id}')
     config.add_route('home', '/')
 
@@ -7,6 +7,8 @@ def includeme(config):
     config.add_route('prueba', '/prueba')
     config.add_route('inicio', '/inicio')
     config.add_route('registrar_vehiculo','/RegistroVehiculo/{id_importacion}')
+
+
 
 
     ############Seguridad################

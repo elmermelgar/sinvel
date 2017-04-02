@@ -1,0 +1,352 @@
+{% extends "../layout.jinja2" %}
+
+{% block content %}
+    <div class="container">
+            <header class="page-header">
+                <h3>jQuery Bootgrid <small>Bootgrid is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table.</small></h3>
+            </header>
+
+            <div class="tile">
+                    <div class="t-header">
+                        <div class="th-title">Basic Example <small>Basic example of the Data Table goes like this without any custom options</small></div>
+                    </div>
+
+                    <table id="data-table" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th data-column-id="id" data-type="numeric">ID</th>
+                                <th data-column-id="name">Name</th>
+                                <th data-column-id="sender">Sender</th>
+                                <th data-column-id="received">Received</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>10238</td>
+                                <td>eduardo@pingpong.com</td>
+                                <td>Alexandra</td>
+                                <td>14.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10243</td>
+                                <td>David Maroon</td>
+                                <td>eduardo@pingpong.com</td>
+                                <td>19.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10248</td>
+                                <td>Andrew Sabin</td>
+                                <td>eduardo@pingpong.com</td>
+                                <td>24.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10253</td>
+                                <td>Moon Carey</td>
+                                <td>eduardo@pingpong.com</td>
+                                <td>29.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10234</td>
+                                <td>Natasha</td>
+                                <td>lila@google.com</td>
+                                <td>10.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10239</td>
+                                <td>Sam Anderson</td>
+                                <td>lila@google.com</td>
+                                <td>15.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10244</td>
+                                <td>Alen Goofs</td>
+                                <td>lila@google.com</td>
+                                <td>20.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10249</td>
+                                <td>Carlton Read</td>
+                                <td>lila@google.com</td>
+                                <td>25.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10237</td>
+                                <td>Neal James</td>
+                                <td>robert@bingo.com</td>
+                                <td>13.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10242</td>
+                                <td>James Filterson</td>
+                                <td>robert@bingo.com</td>
+                                <td>18.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10247</td>
+                                <td>Gibbs</td>
+                                <td>robert@bingo.com</td>
+                                <td>23.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10252</td>
+                                <td>Harmison Steve</td>
+                                <td>robert@bingo.com</td>
+                                <td>28.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10236</td>
+                                <td>Andy Rutchell</td>
+                                <td>simon@yahoo.com</td>
+                                <td>12.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10241</td>
+                                <td>Fin Lee</td>
+                                <td>simon@yahoo.com</td>
+                                <td>17.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10246</td>
+                                <td>Brat Nathan</td>
+                                <td>simon@yahoo.com</td>
+                                <td>22.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10251</td>
+                                <td>Wayne Parnell</td>
+                                <td>simon@yahoo.com</td>
+                                <td>27.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10235</td>
+                                <td>Christian Seems</td>
+                                <td>tim@microsoft.com</td>
+                                <td>11.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10240</td>
+                                <td>Tim Cook</td>
+                                <td>tim@microsoft.com</td>
+                                <td>16.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10245</td>
+                                <td>Anderson Silva</td>
+                                <td>tim@microsoft.com</td>
+                                <td>21.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10250</td>
+                                <td>Vicky James</td>
+                                <td>tim@microsoft.com</td>
+                                <td>26.10.2013</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            <div class="tile">
+                <div class="t-header">
+                    <div class="th-title">Row Selection <small>You can also add Checkboxes in Table Rows to perform additional actions</small></div>
+                </div>
+
+                <table id="data-table-selection" class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th data-column-id="id" data-type="numeric" data-identifier="true">ID</th>
+                            <th data-column-id="sender">Sender</th>
+                            <th data-column-id="received" data-order="desc">Received</th>
+                            <th data-column-id="link" data-formatter="link" data-sortable="false">Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>me@rafaelstaib.com</td>
+                            <td>11.12.2014</td>
+                            <td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>me@rafaelstaib.com</td>
+                            <td>12.12.2014</td>
+                            <td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>me@rafaelstaib.com</td>
+                            <td>10.12.2014</td>
+                            <td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>mo@rafaelstaib.com</td>
+                            <td>12.08.2014</td>
+                            <td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>ma@rafaelstaib.com</td>
+                            <td>12.06.2014</td>
+                            <td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>me@rafaelstaib.com</td>
+                            <td>12.12.2014</td>
+                            <td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>ma@rafaelstaib.com</td>
+                            <td>12.11.2014</td>
+                            <td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>mo@rafaelstaib.com</td>
+                            <td>15.12.2014</td>
+                            <td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>me@rafaelstaib.com</td>
+                            <td>24.12.2014</td>
+                            <td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>ma@rafaelstaib.com</td>
+                            <td>14.12.2014</td>
+                            <td>Link</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>mo@rafaelstaib.com</td>
+                            <td>12.12.2014</td>
+                            <td>Link</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tile">
+                    <div class="t-header">
+                        <div class="th-title">Command Buttons <small>Add Command Buttons to Table Rows to perform custom actions such as Edit, Delete, View etc.</small></div>
+                    </div>
+
+                    <table id="data-table-command" class="table table-bordered table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th data-column-id="id" data-type="numeric">ID</th>
+                                <th data-column-id="sender">Sender</th>
+                                <th data-column-id="received" data-order="desc">Received</th>
+                                <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>10238</td>
+                                <td>eduardo@pingpong.com</td>
+                                <td>14.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10243</td>
+                                <td>eduardo@pingpong.com</td>
+                                <td>19.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10248</td>
+                                <td>eduardo@pingpong.com</td>
+                                <td>24.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10253</td>
+                                <td>eduardo@pingpong.com</td>
+                                <td>29.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10234</td>
+                                <td>lila@google.com</td>
+                                <td>10.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10239</td>
+                                <td>lila@google.com</td>
+                                <td>15.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10244</td>
+                                <td>lila@google.com</td>
+                                <td>20.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10249</td>
+                                <td>lila@google.com</td>
+                                <td>25.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10237</td>
+                                <td>robert@bingo.com</td>
+                                <td>13.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10242</td>
+                                <td>robert@bingo.com</td>
+                                <td>18.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10247</td>
+                                <td>robert@bingo.com</td>
+                                <td>23.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10252</td>
+                                <td>robert@bingo.com</td>
+                                <td>28.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10236</td>
+                                <td>simon@yahoo.com</td>
+                                <td>12.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10241</td>
+                                <td>simon@yahoo.com</td>
+                                <td>17.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10246</td>
+                                <td>simon@yahoo.com</td>
+                                <td>22.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10251</td>
+                                <td>simon@yahoo.com</td>
+                                <td>27.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10235</td>
+                                <td>tim@microsoft.com</td>
+                                <td>11.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10240</td>
+                                <td>tim@microsoft.com</td>
+                                <td>16.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10245</td>
+                                <td>tim@microsoft.com</td>
+                                <td>21.10.2013</td>
+                            </tr>
+                            <tr>
+                                <td>10250</td>
+                                <td>tim@microsoft.com</td>
+                                <td>26.10.2013</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+{% endblock content %}

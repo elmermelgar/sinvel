@@ -1,4 +1,5 @@
 from pyramid.response import Response
+from pyramid.renderers import render_to_response
 from pyramid.view import view_config
 from pyramid.security import NO_PERMISSION_REQUIRED,Authenticated
 from ziggurat_foundations.ext.pyramid.sign_in import ZigguratSignInSuccess
@@ -31,9 +32,17 @@ class Vista(object):
         return {'one': 'one', 'user':self.user }
 
 
-    @view_config(route_name='inicio', renderer='../templates/inicio.jinja2')
+    @view_config(route_name='inicio', renderer='../templates/examples/inicio.jinja2',  permission='view')
     def inicio(request):
-        return {'one': 'one', 'project': 'sinvel'}
+        return {'one': 'one', 'user': 'sinvel'}
+
+    @view_config(route_name='forms', renderer='../templates/examples/forms.jinja2', permission='view')
+    def forms(request):
+        return {'one': 'one', 'user': 'sinvel'}
+
+    @view_config(route_name='tables', renderer='../templates/examples/tables.jinja2', permission='view')
+    def tables(request):
+        return {'one': 'one', 'user': 'sinvel'}
 
 db_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
