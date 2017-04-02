@@ -285,17 +285,28 @@ class TipoRemolque(Base):
     CAPACIDAD = Column(String(20))
 
 
-class UbicacionBodega(Base):
-    __tablename__ = 'ubicacion_bodega'
+class Ubicacion(Base):
+    __tablename__ = 'ubicacion'
 
     ID_UBICACION = Column(Integer, primary_key=True)
     ID_NIVEL = Column(ForeignKey('nivel.ID_NIVEL'), index=True)
+    CORRELATIVO = Column(String(3))
+    DISPONIBLE = Column(Integer)
+
+    nivel = relationship('Nivel', primaryjoin='Ubicacion.ID_NIVEL == Nivel.ID_NIVEL', backref='ubicacions')
+
+
+class UbicacionBodega(Base):
+    __tablename__ = 'ubicacion_bodega'
+
+    ID_UBICACION_BG = Column(Integer, primary_key=True)
     ID_CONTROL = Column(ForeignKey('control_empresa.ID_CONTROL'), index=True)
-    CORRELATIVO = Column(String(5))
-    DISPOONIBLE = Column(Integer)
+    ID_UBICACION = Column(ForeignKey('ubicacion.ID_UBICACION'), index=True)
+    OBSERVACION = Column(String(5))
 
     control_empresa = relationship('ControlEmpresa', primaryjoin='UbicacionBodega.ID_CONTROL == ControlEmpresa.ID_CONTROL', backref='ubicacion_bodegas')
-    nivel = relationship('Nivel', primaryjoin='UbicacionBodega.ID_NIVEL == Nivel.ID_NIVEL', backref='ubicacion_bodegas')
+    ubicacion = relationship('Ubicacion', primaryjoin='UbicacionBodega.ID_UBICACION == Ubicacion.ID_UBICACION', backref='ubicacion_bodegas')
+
 
 
 class User(Base):
