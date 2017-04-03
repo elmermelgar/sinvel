@@ -1,0 +1,59 @@
+{% extends "../layout.jinja2" %}
+{% block styles %}
+<link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+    <div class="container">
+
+            <div class="tile">
+                    <div class="t-header">
+                        <div class="th-title">Importaciones <small>Importaciones que se tienen registradas</small></div>
+                    </div>
+
+                    <table class="table table-bordered table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th data-column-id="id" data-type="numeric">Numero de Registro</th>
+                                <th data-column-id="sender">Fecha de Importación</th>
+                                <th data-column-id="received">Desperfecto</th>
+                                <th data-column-id="commands">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for detalle in detalle %}
+                            {% for impor in impor %}
+                                {% if detalle.ID_IMPORTACION == impor.ID_IMPORTACION %}
+                                    <tr>
+                                        <td>{{ impor.NUM_REGISTRO }}</td>
+                                        <td>{{ impor.FECHA_IMP.strftime("%d/%m/%Y") }}</td>
+                                        <td>{{ detalle.DETALLE_DESPERFECTO }}</td>
+                                        <td> <a href="" class="btn btn-icon btn-warning command-edit"><span style="margin-top: 10px" class="zmdi zmdi-directions-car"></span></a> </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+{% endblock content %}
+{% block scripts %}
+         <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+
+    <!-- Data Table -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                //Basic Example
+                $("#data-table").bootgrid({
+                    css: {
+                        icon: 'zmdi icon',
+                        iconColumns: 'zmdi-view-module',
+                        iconDown: 'zmdi-expand-more',
+                        iconRefresh: 'zmdi-refresh',
+                        iconUp: 'zmdi-expand-less',
+                        iconSearch: 'zmdi-search'
+                    },
+                });
+            });
+        </script>
+{% endblock scripts %}
