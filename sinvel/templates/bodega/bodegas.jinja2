@@ -26,18 +26,18 @@
                         </div>
                     </div>
                     <div class="t-body ">
-                        <div class="tile animation-demo">
+{#                        <div class="tile animation-demo">#}
                             <div class="t-header">
-                                <div class="th-title">{{ bodega.NOMBRE_BODEGA }}
+                                <div class="th-title" >{{ bodega.NOMBRE_BODEGA }}
                                     <small>{{ bodega.DESCRIPCION_BODEGA }}</small>
                                 </div>
-                                <div class="ptib-item"><h6>Dirección: </h6> {{ bodega.DIRECCION_BODEGA }}</div>
-                                <div class="ptib-item"><h6>Departamento: </h6>{{ bodega.DEPARTAMENTO }}</div>
-                                <div class="ptib-item"><h6>Municipio: </h6>{{ bodega.MUNICIPIO }}</div>
+                                <div class="ptib-item"><b>Dirección: </b> {{ bodega.DIRECCION_BODEGA }}</div>
+                                <div class="ptib-item"><b>Departamento: </b>{{ bodega.DEPARTAMENTO }}</div>
+                                <div class="ptib-item"><b>Municipio: </b>{{ bodega.MUNICIPIO }}</div>
                             </div>
-                        </div>
-                        <div class="tb-padding">
-
+{#                        </div>#}
+                        <div class="tb-padding" style="margin-top: -30px">
+                        <h5>Disponibilidad</h5>
                             <ul class="list-group">
                                 {% for nivel in niveles %}
                                     {% if bodega.ID_BODEGA == nivel.ID_BODEGA %}
@@ -49,7 +49,7 @@
                                                               {% if x.append(x.pop()+ ubicacion["DISPONIBLE"]) -%}{% endif %}
                                                         {% endif %}
                                                     {% endfor %}
-                                                    {{ x }}
+                                                    {{ x|random }}
                                                     </span>
                                             {{ nivel.DESCRIPCION_NIVEL }}
                                         </li>
