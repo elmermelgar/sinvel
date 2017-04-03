@@ -42,13 +42,14 @@
                                 {% for nivel in niveles %}
                                     {% if bodega.ID_BODEGA == nivel.ID_BODEGA %}
                                         <li class="list-group-item">
-                                                    <span class="badge">
-                                                    {% for ubicacion in ubicaciones %}
+                                                {% set x = [0] -%}
+                                                    <span class="badge" style="font-size: 15px">
+                                                    {% for ubicacion in ubicaciones -%}
                                                         {% if nivel.ID_NIVEL == ubicacion.ID_NIVEL %}
-{#                                                             {{ Valor a contar }}#}
+                                                              {% if x.append(x.pop()+ ubicacion["DISPONIBLE"]) -%}{% endif %}
                                                         {% endif %}
                                                     {% endfor %}
-                                                    15
+                                                    {{ x }}
                                                     </span>
                                             {{ nivel.DESCRIPCION_NIVEL }}
                                         </li>
