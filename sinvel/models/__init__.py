@@ -25,6 +25,7 @@ from .models import UbicacionBodega
 from .models import Vehiculo
 from .models import Venta
 from .models import Empleado
+from .models import Ubicacion
 from .models import User,Group,GroupsPermission,UsersGroup,Resource,UsersPermission,UsersResourcesPermission
 from .root_factory import RootFactory
 from .resource_factory import ResourceFactory

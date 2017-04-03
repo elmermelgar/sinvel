@@ -1,0 +1,66 @@
+{% extends "../layout.jinja2" %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="m-b-25">
+            <header class="page-header">
+                <h2>Bodegas
+                </h2>
+            </header>
+        {% for bodega in bodegas %}
+            <div class="col-sm-4">
+                <div class="tile">
+                    <div class="t-header th-alt bg-black">
+                        <div class="th-title">{{ bodega.NOMBRE_BODEGA }}</div>
+
+                        <div class="actions dropdown">
+                            <a href="" data-toggle="dropdown" aria-expanded="false"><i
+                                    class="zmdi zmdi-more"></i></a>
+
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="">Editar</a></li>
+                                <li><a href="">Eliminar</a></li>
+                                <li><a href="">Ver</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="t-body ">
+                        <div class="tile animation-demo">
+                            <div class="t-header">
+                                <div class="th-title">{{ bodega.NOMBRE_BODEGA }}
+                                    <small>{{ bodega.DESCRIPCION_BODEGA }}</small>
+                                </div>
+                                <div class="ptib-item"><h6>Dirección: </h6> {{ bodega.DIRECCION_BODEGA }}</div>
+                                <div class="ptib-item"><h6>Departamento: </h6>{{ bodega.DEPARTAMENTO }}</div>
+                                <div class="ptib-item"><h6>Municipio: </h6>{{ bodega.MUNICIPIO }}</div>
+                            </div>
+                        </div>
+                        <div class="tb-padding">
+
+                            <ul class="list-group">
+                                {% for nivel in niveles %}
+                                    {% if bodega.ID_BODEGA == nivel.ID_BODEGA %}
+                                        <li class="list-group-item">
+                                                    <span class="badge">
+                                                    {% for ubicacion in ubicaciones %}
+                                                        {% if nivel.ID_NIVEL == ubicacion.ID_NIVEL %}
+{#                                                             {{ Valor a contar }}#}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    15
+                                                    </span>
+                                            {{ nivel.DESCRIPCION_NIVEL }}
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock content %}

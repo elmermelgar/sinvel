@@ -48,6 +48,8 @@ class Vista(object):
     def tables(request):
         return {'one': 'one', 'user': 'sinvel'}
 
+
+
 db_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:
