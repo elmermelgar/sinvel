@@ -8,9 +8,16 @@ from sqlalchemy.sql import func
 
 class AgregarImportador(object):
     def __init__(self,request):
+        self.request=request
 
-     @view_config(route_name='guardar_importador', request_method='POST')
-     def guardarImportador(self):
+
+    @view_config(route_name='agregar_importador',request_method='GET',renderer='../templates/agregar_importador.jinja2')
+    def createImportador(self):
+         print('createImportador')
+         return {'create':'create'}
+
+    @view_config(route_name='guardar_importador', request_method='POST')
+    def guardarImportador(self):
         try:
 
             data = self.request.POST
