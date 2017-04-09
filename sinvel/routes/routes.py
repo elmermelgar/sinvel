@@ -23,3 +23,5 @@ def includeme(config):
     config.add_route('user_register', '/user/register')
     config.add_route('user_create', '/user/create')
     ######################################
+
+    config.add_route('generar_reporte', '/generar')

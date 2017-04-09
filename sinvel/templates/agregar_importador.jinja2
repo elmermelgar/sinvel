@@ -23,7 +23,7 @@
                                     {{ input('NOMBRE', 'form-control', type='text') }}
                                 </div>
                             </div>
-                        </div>
+                       </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 {{ label('Apellido','col-sm-2 control-label') }}
@@ -46,8 +46,9 @@
                             </div>
                          </div>
                         </div>
-
-
+                   </div>
+                    </br>
+                    </br>
                     <div class="col-md-6">
                                 <div class="form-group">
                                     {{ label('Fecha Nacimiento','col-sm-2 control-label') }}
@@ -117,24 +118,14 @@
                           </div>
                         </div>
 
-                        </br>
 
-
-                        <div class="form-group">
-                          <input id="Aimportador" type="hidden" name="ID_IMPORTACION" class="form-control" value="" />
-                             <div class="col-sm-3">
-                                    {{ input('submit','form-control btn btn-primary', type='submit',value='Agregar') }}
-
-                                      <input  type="reset" class="form-control">
-                              </div>
-                         </div>
-
-
-
-
-
-
-
+                  <input id="Aimportador" type="hidden" name="ID_IMPORTACION" class="form-control" value=""/>
+                 <div class="col-sm-2">
+                        {{ input('submit','form-control btn btn-primary', type='submit',value='Agregar') }}
+                 </div>
+                 <div class="col-sm-2">
+                 <input  type="reset" class="form-control">
+                </div>
                 </form>
 
          </div>

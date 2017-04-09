@@ -48,6 +48,10 @@ class Vista(object):
     def tables(request):
         return {'one': 'one', 'user': 'sinvel'}
 
+    @view_config(route_name='wizard', renderer='../templates/examples/wizard.jinja2', permission='view')
+    def tables(request):
+        return {'one': 'one', 'user': 'sinvel'}
+
 
 
 db_err_msg = """\
