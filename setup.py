@@ -22,7 +22,11 @@ requires = [
     'flask-sqlalchemy',
     'flask-sqlacodegen',
     'bcrypt',
-    'ziggurat_foundations'
+    'ziggurat_foundations',
+    'pyjasper',
+
+
+
 ]
 
 tests_require = [

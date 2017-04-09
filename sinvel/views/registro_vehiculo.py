@@ -6,6 +6,11 @@ import transaction
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.sql import func
 
+
+import os
+from pyramid.response import FileResponse
+from pyjasper.jasperpy import JasperPy
+
 class RegistroVehiculo(object):
     def __init__(self,request):
         self.request=request
@@ -53,7 +58,7 @@ class RegistroVehiculo(object):
                 id_vehiculo=query.id_vehiculo
 
                 for key, value in data.items():
-                        print('2 vez')
+
                         print(key,value)
                         setattr(detalleImportacion, key, value)
                 detalleImportacion.ID_VEHICULO=id_vehiculo
@@ -63,7 +68,34 @@ class RegistroVehiculo(object):
             return print('Ocurrio un error al insertar el registro')
         return HTTPFound(location='/')
 
+    @view_config(route_name='generar_reporte', request_method='GET',renderer='../templates/registrar_vehiculo.jinja2')
+    def generarReporte(self):
+        print('HOLA')
+        print(os.path.dirname(os.path.abspath(__file__)))
+        input_file ='C:/Users/David/Documents/Pyramid/proyectos/sinvel/sinvel/reportes/registro_importacion.jrxml'
+        output = 'C:/Users/David/Documents/Pyramid/proyectos/sinvel/sinvel/reportes/'
 
-
-
+        con = {
+            'driver': 'mysql',
+            'username': 'root',
+            'password': 'admin',
+            'host': 'localhost',
+            'database': 'sinvel',
+            'port': '3306'
+        }
+        jasper = JasperPy()
+        jasper.process(
+            input_file,
+            output,
+            ["pdf"],
+            {'ID_IMPORTACION':str(1),'ID_USER':str(1)},
+            con,
+            'es_SV'
+        ).execute()
+        response = FileResponse(
+            'C:/Users/David/Documents/Pyramid/proyectos/sinvel/sinvel/reportes/registro_importacion.pdf',
+            request=self.request,
+            content_type='application/pdf'
+        )
+        return response
 
