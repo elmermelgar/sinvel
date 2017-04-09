@@ -5,6 +5,7 @@ from sqlalchemy.exc import DBAPIError
 import transaction
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.sql import func
+from pyramid_mailer.message import Message
 
 
 import os
@@ -70,6 +71,13 @@ class RegistroVehiculo(object):
 
     @view_config(route_name='generar_reporte', request_method='GET',renderer='../templates/registrar_vehiculo.jinja2')
     def generarReporte(self):
+        mailer = self.request.registry['mailer']
+        message = Message(subject="hello world",
+                          sender="camaraipraspi3@gmail.com",
+                          recipients=["polanco260593@gmail.com"],
+                          body="hola Polanco desde pyramid XD")
+        mailer.send_immediately(message, fail_silently=False)
+
         print('HOLA')
         print(os.path.dirname(os.path.abspath(__file__)))
         input_file ='C:/Users/David/Documents/Pyramid/proyectos/sinvel/sinvel/reportes/registro_importacion.jrxml'
