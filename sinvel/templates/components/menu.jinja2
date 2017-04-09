@@ -4,8 +4,12 @@
                         <img src="{{request.static_url('sinvel:static/img/profile-pic.jpg') }}" alt="">
 
                         <span class="f-11">
-                            <span class="d-block">Administrador</span>
-                            <small class="text-lowercase">@admin</small>
+                            <span class="d-block">
+                                {% if user == 'admin' %}
+                                    Administrador
+                                {% endif %}
+                            </span>
+                            <small class="text-lowercase">@{{ user }}</small>
                         </span>
                     </a>
 
@@ -22,12 +26,12 @@
                         <span>Home</span>
                     </a>
                 </li>
-{#                <li>#}
-{#                    <a href="typography.html">#}
-{#                        <i class="zmdi zmdi-format-underlined"></i>#}
-{#                        <span>Typography<span class="label label-danger">New</span></span>#}
-{#                    </a>#}
-{#                </li>#}
+                <li>
+                    <a href="{{ request.route_path('bodegas')  }}">
+                        <i class="zmdi zmdi-store-24"></i>
+                        <span>Bodegas</span>
+                    </a>
+                </li>
 {#                <li>#}
 {#                    <a href="widgets.html">#}
 {#                        <i class="zmdi zmdi-widgets"></i>#}

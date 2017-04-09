@@ -15,9 +15,10 @@
             <div class="panel-body">
                 <form class="form-horizontal" action="{{request.route_url('guardar_importador')}}" method="post">
                     <div class="row">
+
                         <div class="col-md-6">
                             <div class="form-group">
-                                {{ label('Linea de estilo:','col-sm-2 control-label') }}
+                                {{ label('Nombre','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
                                     {{ input('LINEA_ESTILO', 'form-control', type='text') }}
                                 </div>

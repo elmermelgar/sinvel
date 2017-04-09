@@ -13,7 +13,7 @@ from sqlalchemy.sql import func
 class Bodega_IU(object):
     def __init__(self,request):
         self.request=request
-        self.user=request.user
+        self.user=request.user.user_name
         self.bodega = Bodega()
         self.nivel = Nivel()
         self.ubicacion = Ubicacion()
@@ -24,6 +24,6 @@ class Bodega_IU(object):
         items_nivel = self.request.dbsession.query(Nivel).all()
         items_ubicacion = self.request.dbsession.query(Ubicacion).all()
 
-        return {'bodegas': items_bodega, 'niveles': items_nivel, 'ubicaciones': items_ubicacion}
+        return {'bodegas': items_bodega, 'niveles': items_nivel, 'ubicaciones': items_ubicacion,'user':self.user}
 
 

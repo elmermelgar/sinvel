@@ -1,5 +1,5 @@
 from pyramid.view import view_config
-from ..models import Importador
+from ..models import Importador,User
 import jsonpickle
 from sqlalchemy.exc import DBAPIError
 import transaction
@@ -21,15 +21,15 @@ class AgregarImportador(object):
         try:
 
             data = self.request.POST
-            vehiculo = Importador()
+            importador = Importador()
 
             for key, value in data.items():
                 print(key, value)
-                setattr(vehiculo, key, value)
-            self.request.dbsession.add(vehiculo)
+                setattr(importador, key, value)
+            self.request.dbsession.add(importador)
             transaction.commit()
-            query = self.request.dbsession.query(func.max(Importador.ID_IMPORTADOR).label('id_IMPORTADOR')).one()
-            id_vehiculo = query.id_vehiculo
+            query = self.request.dbsession.query(func.max(Importador.ID_IMPORTADOR).label('id_importador')).one()
+            id_importador = query.id_importador
 
 
 
