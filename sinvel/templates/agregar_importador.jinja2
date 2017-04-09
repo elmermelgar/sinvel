@@ -38,7 +38,7 @@
                                 {{ label('Genero','col-sm-2 control-label') }}
                            <div class="form-group col-md-10">
                                 <select name="GENERO" class="form-control ">
-                                <option value="">Genero</option>
+                                <option value=""> </option>
                                  <option value="M">Masculino</option>
                                   <option value="F">Femenino</option>
 
@@ -102,35 +102,47 @@
                         </div>
 
 
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                    {{ label('Correo(Usuario)','col-sm-4 control-label') }}
-                                <div class="form-group col-md-8">
+                                    {{ label('Correo ','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
                                     {{ input('CORREO_IMPORTADOR', 'form-control', type='email' ) }}
                                 </div>
                             </div>
-                        </div>
-
-                     <div class="col-md-8">
-                            {{ label('NIT(Contraseña)','col-sm-4 control-label') }}
-                             <div class="form-group col-md-8 ">
+                             <div class="form-group">
+                            {{ label('NIT ','col-sm-2 control-label') }}
+                             <div class="form-group col-md-10 ">
                                 {{ input('NIT', 'form-control', type='password') }}
                             </div>
-                    </div>
+                          </div>
+                        </div>
+
+                        </br>
 
 
-                  <input id="Aimportador" type="hidden" name="ID_IMPORTACION" class="form-control" value=""/>
-                 <div class="col-sm-2">
-                        {{ input('submit','form-control btn btn-primary', type='submit',value='Agregar') }}
-                 </div>
-                 <div class="col-sm-2">
-                 <input  type="reset" class="form-control">
-                </div>
+                        <div class="form-group">
+                          <input id="Aimportador" type="hidden" name="ID_IMPORTACION" class="form-control" value="" />
+                             <div class="col-sm-3">
+                                    {{ input('submit','form-control btn btn-primary', type='submit',value='Agregar') }}
+
+                                      <input  type="reset" class="form-control">
+                              </div>
+                         </div>
+
+
+
+
+
+
+
                 </form>
-            </div>
+
          </div>
+         </div>
+
+
+
  </div>
 
-     <script src="{{request.static_url('sinvel:static/js/AgregarImportador/agregarimportador.js') }}"></script>
 
 {% endblock content %}
