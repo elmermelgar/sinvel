@@ -20,28 +20,37 @@
                             <div class="form-group">
                                 {{ label('Nombre','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('NOMBRE', 'form-control', type='text') }}
+                                    {{ input('LINEA_ESTILO', 'form-control', type='text') }}
                                 </div>
                             </div>
                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                {{ label('Apellido','col-sm-2 control-label') }}
+                                {{ label('Nombre_Im','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('APELLIDO', 'form-control', type='text') }}
+                                    {{ input('NOMBRE_IM', 'form-control', type='text') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Apellido_Im','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                    {{ input('APELLIDO_IM', 'form-control', type='text') }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                {{ label('Genero','col-sm-2 control-label') }}
+                                {{ label('Genero_Im','col-sm-2 control-label') }}
                            <div class="form-group col-md-10">
-                                <select name="GENERO" class="form-control ">
-                                <option value=""> </option>
-                                 <option value="M">Masculino</option>
-                                  <option value="F">Femenino</option>
-
+                                <select name="ID_GENERO" class="form-control ">
+                                <option value="">Genero...</option>
+                               {% for genero in  items_genero %}
+                                    <option value="masculino">Masculino</option>
+                                    <option value="femenino">Femenino</option>
+                                {% endfor %}
                             </select>
                             </div>
                          </div>
@@ -51,89 +60,100 @@
                     </br>
                     <div class="col-md-6">
                                 <div class="form-group">
-                                    {{ label('Fecha Nacimiento','col-sm-2 control-label') }}
+                                    {{ label('Fecha_Nacimiento_Im','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('FECHA_NACIMIENTO', 'form-control' ,type='text' )}}
+                                    {{ input('FECHA_NACIMIENTO_IM', 'form-control', type='text') }}
                                 </div>
                                 </div>
                      </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                {{ label('Responsable','col-sm-2 control-label') }}
+                                {{ label('Responsable_Im','col-sm-2 control-label') }}
                              <div class="form-group col-md-10">
-                                {{ input('RESPONSABLE', 'form-control', type='text') }}
+                                {{ input('RESPONSABLE_IM', 'form-control', type='text') }}
                              </div>
                              </div>
                          </div>
 
                        <div class="col-md-6">
                            <div class="form-group">
-                                {{ label('Apellido Casada','col-sm-2 control-label') }}
+                                {{ label('Apellido_Casada_Im','col-sm-2 control-label') }}
                               <div class="form-group col-md-10">
-                                {{ input('APELLIDO_CASADA', 'form-control', type='text') }}
+                                {{ input('APELLIDO_CASADA_IM', 'form-control', type='text') }}
                               </div>
                             </div>
                          </div>
                         <div class="col-md-6">
                            <div class="form-group">
-                                {{ label('Telefono Casa','col-sm-2 control-label') }}
+                                {{ label('Telefono_Casa_Im','col-sm-2 control-label') }}
                               <div class="form-group col-md-10">
-                                {{ input('TELEFONO_CASA', 'form-control', type='text') }}
+                                {{ input('TELEFONO_CASA_IM', 'form-control', type='text') }}
                               </div>
                            </div>
                           </div>
                         <div class="col-md-6">
                            <div class="form-group">
-                                {{ label('Celular','col-sm-2 control-label') }}
+                                {{ label('Celular_Im','col-sm-2 control-label') }}
                              <div class="form-group col-md-10">
-                                {{ input('TELEFONO_CELULAR', 'form-control', type='text') }}
+                                {{ input('CELULAR_IM', 'form-control', type='text') }}
                               </div>
                             </div>
                          </div>
-
-
-
                         <div class="col-md-6">
                             <div class="form-group">
-                                    {{ label('DUI','col-sm-2 control-label') }}
+                                    {{ label('DUI_Im','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('DUI', 'form-control', type='text') }}
+                                    {{ input('DUI_IM', 'form-control', type='text') }}
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="col-md-6">
-                            <div class="form-group">
-                                    {{ label('Correo ','col-sm-2 control-label') }}
-                                <div class="form-group col-md-10">
-                                    {{ input('CORREO_IMPORTADOR', 'form-control', type='email' ) }}
-                                </div>
+                           <div class="form-group">
+                                        {{ label('NIT_Im','col-sm-2 control-label') }}
+                                    <div class="form-group col-md-10">
+                                        {{ input('NIT_IM', 'form-control', type='text') }}
+                                    </div>
+                             </div>
+                         </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                                {{ label('Correo_Im','col-sm-2 control-label') }}
+                              <div class="form-group col-md-10">
+                                {{ input('CORREO_IM', 'form-control', type='text') }}
+                               </div>
                             </div>
-                             <div class="form-group">
-                            {{ label('NIT ','col-sm-2 control-label') }}
-                             <div class="form-group col-md-10 ">
-                                {{ input('NIT', 'form-control', type='password') }}
+                         </div>
+
+                    <div class="panel">
+                        <h3 class="panel-title">Datos Autentificacion</h3>
+                    </div>
+                     <div class="col-md-8">
+                            {{ label('Usuario_Im','col-sm-4 control-label') }}
+                             <div class="form-group col-md-8 ">
+                                {{ input('NIT_IM', 'form-control', type='text') }}
                             </div>
-                          </div>
+                    </div>
+                      <div class="col-md-8">
+                            {{ label('Correo_Im','col-sm-4 control-label') }}
+                             <div class="form-group col-md-8 ">
+                                 <input id="CORREO_IM" type="text" class="form-control"/>
+                             </div>
+                       </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 ">
+                          <a id="verificar" class="btn btn-primary">VerificarUsuario</a>
                         </div>
-
-
+                     </div>
+                  </div>
                   <input id="Aimportador" type="hidden" name="ID_IMPORTACION" class="form-control" value=""/>
                  <div class="col-sm-2">
                         {{ input('submit','form-control btn btn-primary', type='submit',value='Agregar') }}
                  </div>
-                 <div class="col-sm-2">
-                 <input  type="reset" class="form-control">
-                </div>
                 </form>
-
+            </div>
          </div>
-         </div>
-
-
-
  </div>
 
+     <script src="{{request.static_url('sinvel:static/js/AgregarImportador/agregarimportador.js') }}"></script>
 
 {% endblock content %}

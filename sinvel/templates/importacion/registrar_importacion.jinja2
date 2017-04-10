@@ -1,0 +1,157 @@
+{% extends "../layout.jinja2" %}
+
+{% block content %}
+
+    <div class="col-12 col-lg-12 col-sm-9 " xmlns="http://www.w3.org/1999/html">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2 class="panel-title">Registrar importacion</h2>
+            </div>
+            </br>
+            </br>
+            <div class="panel">
+                <h3 class="panel-title">Datos de la importacion</h3>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" action="{{ request.route_url('registroImportacionGuardar') }}"
+                      method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">No. importacion:</label>
+                                <div class="form-group col-md-9">
+                                    <input class="form-control" name="NUM_REGISTRO" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Valor aduanero ($):</label>
+                                <div class="form-group col-md-9">
+                                    <input class="form-control" name="VALOR_ADUANERO" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Fecha:</label>
+                                <div class="form-group col-md-9">
+                                    <input class="form-control" name="FECHA_IMP" type="date" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Valor facturado ($):</label>
+                                <div class="form-group col-md-9">
+                                    <input class="form-control" name="VALOR_FACTURADO" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Cantidad vehiculos:</label>
+                                <div class="form-group col-md-9">
+                                    <input class="form-control" name="CANTIDAD" type="number" min="1" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Peso (Kg):</label>
+                                <div class="form-group col-md-9">
+                                    <input class="form-control" name="PESO" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Pais origen:</label>
+                                <div class="form-group col-md-9">
+                                    <input class="form-control" name="PAIS_ORIGEN" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    </br>
+                    </br>
+                    <div class="row">
+                        <div class="panel">
+                            <h3 class="panel-title">Datos del importador</h3>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="col-sm-2 control-label">NIT:</label>
+                            <div class="form-group col-md-8 ">
+                                <input class="form-control" name="BUSQ_NIT" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <div class="col-md-2"></div>
+                                <div class="col-sm-2 ">
+                                    <a id="buscar" class="btn btn-primary">Buscar</a>
+                                </div>
+                                <div class="col-sm-2 ">
+                                    <a id="buscar" class="btn btn-primary">Agregar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="table">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                    <tr align="center">
+                                        <th>Nombre</th>
+                                        <th>DUI</th>
+                                        <th>NIT</th>
+                                        <th>Seleccionar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for aimportador in importadores %}
+                                        <tr>
+                                            <td id="nom_importador">{% if aimportador %}{{ aimportador.NOMBRE }}
+                                                {{ aimportador.APELLIDO }}{% endif %}</td>
+                                            <td id="dui_importador">
+                                                {% if aimportador %}{{ aimportador.DUI }}{% endif %}</td>
+                                            <td id="nit_importador">
+                                                {% if aimportador %}{{ aimportador.NIT }}{% endif %}</td>
+                                            <td id="select"></td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td id="nom_importador"></td>
+                                            <td id="dui_importador"></td>
+                                            <td id="nit_importador"></td>
+                                            <td id="select"></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    </br>
+                    </br>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <input class="form-control btn btn-primary" type="submit" value="Guardar">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+{% block scripts %}
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous">
+    </script>
+
+{% endblock scripts %}

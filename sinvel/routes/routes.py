@@ -13,7 +13,6 @@ def includeme(config):
     #config.add_route('registrar_vehiculo', '/RegistroVehiculo/{id_importacion}')
     config.add_route('agregar_importador', '/AgregarImportador')
     config.add_route('guardar_importador', '/AgregarImportador/guardar')
-
     ##prueba para envio##
 
 

@@ -107,5 +107,3 @@ class RegistroVehiculo(object):
         )
         return response
 
-
-
