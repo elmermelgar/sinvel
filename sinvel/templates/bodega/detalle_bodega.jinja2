@@ -36,6 +36,7 @@
                         <div class="row">
                             <div class="col-sm-12 m-b-25">
                                 <div class="panel-group" data-collapse-color="cyan" id="accordionRed" role="tablist" aria-multiselectable="true">
+                                    {% if niveles %}
                                     {% for nivel in niveles %}
                                     <div class="panel panel-collapse">
                                         <div class="panel-heading active" role="tab">
@@ -48,6 +49,7 @@
                                         </div>
                                         <div id="accordionRed-{{ nivel.ID_NIVEL }}" class="collapse in" role="tabpanel">
                                             <div class="panel-body">
+                                            {% if ubicaciones %}
                                                 {% for ubicacion in ubicaciones %}
                                                     {% if ubicacion.ID_NIVEL == nivel.ID_NIVEL %}
                                                         {% if ubicacion.DISPONIBLE == 1 %}
@@ -57,12 +59,13 @@
                                                         {% endif %}
                                                     {% endif %}
                                                 {% endfor %}
-
+                                            {% endif %}
                                             </div>
 {#                                        <a href="#" class="btn btn-alt btn-primary"><i class="zmdi zmdi-plus-square"></i> Nueva Ubicación</a>#}
                                         </div>
                                     </div>
                                     {% endfor %}
+                                {% endif %}
                                 </div>
                             </div>
 

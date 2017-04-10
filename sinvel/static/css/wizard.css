@@ -1,11 +1,10 @@
 .wizard {
-    margin: 20px auto;
-    background: #fff;
+    margin: 0px auto;
 }
 
     .wizard .nav-tabs {
         position: relative;
-        margin: 40px auto;
+        margin: 10px auto;
         margin-bottom: 0;
         border-bottom-color: #e0e0e0;
     }
@@ -65,7 +64,7 @@ span.round-tab:hover {
 }
 
 .wizard .nav-tabs > li {
-    width: 25%;
+    width: 20%;
 }
 
 .wizard li:after {

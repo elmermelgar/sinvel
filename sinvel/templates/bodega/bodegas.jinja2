@@ -1,6 +1,54 @@
 {% extends "../layout.jinja2" %}
-
+{% block styles %}
+<link href="{{request.static_url('sinvel:static/css/wizard.css')}}" rel="stylesheet">
+{% endblock styles %}
 {% block content %}
+    <div class="wizard">
+            <div class="wizard-inner">
+                <div class="connecting-line"></div>
+                <ul class="nav nav-tabs" role="tablist">
+
+                    <li role="presentation" class="active">
+                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Verificar Disponibilidad">
+                            <span class="round-tab">
+                                <i class="zmdi zmdi-search-for"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Ingresar Importación">
+                            <span class="round-tab">
+                                <i class="zmdi zmdi-boat"></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="disabled">
+                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Registrar Vehículos">
+                            <span class="round-tab">
+                                <i class="zmdi zmdi-car"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#step4" data-toggle="tab" aria-controls="step4" role="tab" title="Subir Fotos y Ubicar">
+                            <span class="round-tab">
+                                <i class="zmdi zmdi-pin-drop"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Finalizar">
+                            <span class="round-tab">
+                                <i class="zmdi zmdi-check-circle-u"></i>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     <div class="container">
 
         <div class="m-b-25">
@@ -13,7 +61,7 @@
         {% for bodega in bodegas %}
             <div class="col-sm-4">
                 <div class="tile">
-                    <div class="t-header th-alt bg-black">
+                    <div class="t-header th-alt bg-bluegray">
                         <div class="th-title">{{ bodega.NOMBRE_BODEGA }}</div>
 
                         <div class="actions dropdown">
@@ -41,24 +89,28 @@
                             </div>
 {#                        </div>#}
                         <div class="tb-padding" style="margin-top: -30px">
-                        <h5>Disponibilidad</h5>
+                            <h5>Disponibilidad</h5>
                             <ul class="list-group">
-                                {% for nivel in niveles %}
-                                    {% if bodega.ID_BODEGA == nivel.ID_BODEGA %}
-                                        <li class="list-group-item">
+                                {% if niveles %}
+                                    {% for nivel in niveles %}
+                                        {% if bodega.ID_BODEGA == nivel.ID_BODEGA %}
+                                            <li class="list-group-item">
                                                 {% set x = [0] -%}
-                                                    <span class="badge" style="font-size: 15px">
-                                                    {% for ubicacion in ubicaciones -%}
-                                                        {% if nivel.ID_NIVEL == ubicacion.ID_NIVEL %}
-                                                              {% if x.append(x.pop()+ ubicacion["DISPONIBLE"]) -%}{% endif %}
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                    {{ x|random }}
+                                                <span class="badge" style="font-size: 15px">
+                                                    {% if ubicaciones %}
+                                                        {% for ubicacion in ubicaciones -%}
+                                                            {% if nivel.ID_NIVEL == ubicacion.ID_NIVEL %}
+                                                                {% if x.append(x.pop()+ ubicacion["DISPONIBLE"]) -%}{% endif %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        {{ x|random }}
+                                                    {% endif %}
                                                     </span>
-                                            {{ nivel.DESCRIPCION_NIVEL }}
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
+                                                {{ nivel.DESCRIPCION_NIVEL }}
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
@@ -71,4 +123,8 @@
         </div>
 
     </div>
+    <a href="{{ request.route_url('registroImportacion') }}" class="btn bg-lightblue" style="float: right; margin-right: 50px"> Continuar <i class="zmdi zmdi-arrow-forward"></i></a>
 {% endblock content %}
+{% block scripts %}
+         <script src="{{request.static_url('sinvel:static/js/wizard.js') }}"></script>
+{% endblock scripts %}
