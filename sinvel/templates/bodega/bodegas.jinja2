@@ -8,6 +8,8 @@
                 <h2>Bodegas
                 </h2>
             </header>
+        {% if bodegas %}
+
         {% for bodega in bodegas %}
             <div class="col-sm-4">
                 <div class="tile">
@@ -21,7 +23,7 @@
                             <ul class="dropdown-menu pull-right">
                                 <li><a href="">Editar</a></li>
                                 <li><a href="">Eliminar</a></li>
-                                <li><a href="">Ver</a></li>
+                                <li><a href="{{ request.route_url('detalle_bodega', id_bod=bodega.ID_BODEGA) }}">Ver</a></li>
                             </ul>
                         </div>
                     </div>
@@ -30,10 +32,12 @@
                             <div class="t-header">
                                 <div class="th-title" >{{ bodega.NOMBRE_BODEGA }}
                                     <small>{{ bodega.DESCRIPCION_BODEGA }}</small>
+                                    <a style="float: right; margin-top: -50px" href="{{ request.route_url('detalle_bodega', id_bod=bodega.ID_BODEGA) }}" class="btn bg-green btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-apps"></i></a>
                                 </div>
                                 <div class="ptib-item"><b>Dirección: </b> {{ bodega.DIRECCION_BODEGA }}</div>
                                 <div class="ptib-item"><b>Departamento: </b>{{ bodega.DEPARTAMENTO }}</div>
                                 <div class="ptib-item"><b>Municipio: </b>{{ bodega.MUNICIPIO }}</div>
+
                             </div>
 {#                        </div>#}
                         <div class="tb-padding" style="margin-top: -30px">
@@ -61,6 +65,9 @@
                 </div>
             </div>
             {% endfor %}
+            {% else %}
+            No existen Bodegas para mostrar
+        {% endif %}
         </div>
 
     </div>

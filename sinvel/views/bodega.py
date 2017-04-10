@@ -26,4 +26,14 @@ class Bodega_IU(object):
 
         return {'bodegas': items_bodega, 'niveles': items_nivel, 'ubicaciones': items_ubicacion,'user':self.user}
 
+    @view_config(route_name='detalle_bodega', renderer='../templates/bodega/detalle_bodega.jinja2', request_method='GET')
+    def bodega_detalle(self):
+        id = int(self.request.matchdict['id_bod'])
+        items_bodega = self.request.dbsession.query(Bodega).get(id)
+        items_nivel = self.request.dbsession.query(Nivel).filter_by(ID_BODEGA=items_bodega.ID_BODEGA)
+        items_ubicacion = self.request.dbsession.query(Ubicacion).all()
+
+
+        return {'bodega': items_bodega, 'user': self.user, 'niveles': items_nivel, 'ubicaciones': items_ubicacion}
+
 
