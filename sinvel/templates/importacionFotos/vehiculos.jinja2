@@ -13,19 +13,19 @@
                     <table class="table table-bordered table-vmiddle">
                         <thead>
                             <tr>
-                                <th data-column-id="id" data-type="numeric">Numero de Registro</th>
-                                <th data-column-id="sender">Fecha de Importación</th>
-                                <th data-column-id="received">Vehículos</th>
+                                <th data-column-id="id" data-type="numeric">Marca</th>
+                                <th data-column-id="sender">Modelo</th>
+                                <th data-column-id="received">Año</th>
                                 <th data-column-id="commands">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for impor in impor %}
+                        {% for id_veh in veh  %}
                                     <tr>
-                                        <td>{{ impor.NUM_REGISTRO }}</td>
-                                        <td>{{ impor.FECHA_IMP.strftime("%d/%m/%Y") }}</td>
-                                        <td>{{ impor.CANTIDAD }}</td>
-                                        <td> <a href="{{ request.route_url('list_vehiculos', id_detImp=impor.ID_IMPORTACION) }}" class="btn btn-icon btn-warning command-edit"><span style="margin-top: 10px" class="zmdi zmdi-directions-car"></span></a> </td>
+                                        <td>{{ id_veh.vehiculo.MARCA }}</td>
+                                        <td>{{ id_veh.vehiculo.MODELO }}</td>
+                                        <td>{{ id_veh.vehiculo.ANO }}</td>
+                                        <td> <a href="{{ request.route_url('vehiculo',id_imp=id_veh.ID_IMPORTACION, id_veh=id_veh.vehiculo.ID_VEHICULO) }}" class="btn btn-icon btn-warning command-edit"><span style="margin-top: 10px" class="zmdi zmdi-directions-car"></span></a> </td>
                                     </tr>
                         {% endfor %}
                         </tbody>

@@ -24,9 +24,8 @@ requires = [
     'bcrypt',
     'ziggurat_foundations',
     'pyjasper',
-
-
-
+    'pyramid_mailer',
+    'jsonpickle'
 ]
 
 tests_require = [
