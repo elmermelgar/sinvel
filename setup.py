@@ -25,7 +25,8 @@ requires = [
     'ziggurat_foundations',
     'pyjasper',
     'pyramid_mailer',
-    'jsonpickle'
+    'jsonpickle',
+    'pyramid_storage'
 ]
 
 tests_require = [
