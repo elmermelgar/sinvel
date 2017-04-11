@@ -1,10 +1,12 @@
 {% extends "../layout.jinja2" %}
 {% block content %}
+    <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"  enctype="multipart/form-data" name="formulario" >
     <div class="box-content">
+
         <div class="col-md-12" style="text-align: center">
             <div class="col-md-4">
-                <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
-                      enctype="multipart/form-data" name="formulario">
+              {#  <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
+                      enctype="multipart/form-data" name="formulario">#}
                     <h3 class="c-black">Bumper</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -14,17 +16,17 @@
                                     <span class="fileinput-exists">Cambiar</span>
                                     <input type="file" name="foto1">
                                 </span>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+{#                            <button type="submit" class="btn btn-primary">Guardar</button>#}
                             <a href="#" class="btn btn-danger fileinput-exists"
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
-                </form>
+{#                </form>#}
             </div>
 
             <div class="col-md-4">
-                <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
-                      enctype="multipart/form-data" name="formulario">
+              {#  <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
+                      enctype="multipart/form-data" name="formulario">#}
                     <h3 class="c-black">Parachoques</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -34,17 +36,17 @@
                                     <span class="fileinput-exists">Cambiar</span>
                                     <input type="file" name="foto2">
                                 </span>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+{#                            <button type="submit" class="btn btn-primary">Guardar</button>#}
                             <a href="#" class="btn btn-danger fileinput-exists"
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
-                </form>
+{#                </form>#}
             </div>
 
             <div class="col-md-4">
-                <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
-                      enctype="multipart/form-data" name="formulario">
+            {#    <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
+                      enctype="multipart/form-data" name="formulario">#}
                     <h3 class="c-black">Costado Izquierdo</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -54,20 +56,20 @@
                                     <span class="fileinput-exists">Cambiar</span>
                                     <input type="file" name="foto3">
                                 </span>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+{#                            <button type="submit" class="btn btn-primary">Guardar</button>#}
                             <a href="#" class="btn btn-danger fileinput-exists"
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
-                </form>
+{#                </form>#}
             </div>
 
         </div>
 
         <div class="col-md-12" style="text-align: center">
             <div class="col-md-4">
-                <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
-                      enctype="multipart/form-data" name="formulario">
+            {#    <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
+                      enctype="multipart/form-data" name="formulario">#}
                     <h3 class="c-black">Costado Derecho</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -77,17 +79,17 @@
                                     <span class="fileinput-exists">Cambiar</span>
                                     <input type="file" name="foto4">
                                 </span>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+{#                            <button type="submit" class="btn btn-primary">Guardar</button>#}
                             <a href="#" class="btn btn-danger fileinput-exists"
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
-                </form>
+{#                </form>#}
             </div>
 
             <div class="col-md-4">
-                <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
-                      enctype="multipart/form-data" name="formulario">
+             {#   <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
+                      enctype="multipart/form-data" name="formulario">#}
                     <h3 class="c-black">Tapicería Interna</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -97,17 +99,17 @@
                                     <span class="fileinput-exists">Cambiar</span>
                                     <input type="file" name="foto5">
                                 </span>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+{#                            <button type="submit" class="btn btn-primary">Guardar</button>#}
                             <a href="#" class="btn btn-danger fileinput-exists"
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
-                </form>
+{#                </form>#}
             </div>
 
             <div class="col-md-4">
-                <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
-                      enctype="multipart/form-data" name="formulario">
+             {#   <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
+                      enctype="multipart/form-data" name="formulario">#}
                     <h3 class="c-black">Motor</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -117,21 +119,24 @@
                                     <span class="fileinput-exists">Cambiar</span>
                                     <input type="file" name="foto6">
                                 </span>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+{#                            <button type="submit" class="btn btn-primary">Guardar</button>#}
                             <a href="#" class="btn btn-danger fileinput-exists"
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
-                </form>
+{#                </form>#}
             </div>
 
         </div>
         <div class="col-md-12" style="margin-top: 3%; text-align: center">
+             <button type="submit" class="btn btn-primary">Guardar</button>
             <a href="{{ request.route_url('list_vehiculos', id_detImp=imp) }}"
                class="btn btn-success fileinput-exists"
                style="width: 10%;">Regresar</a>
         </div>
+
     </div>
+     </form>
 {% endblock content %}
 {% block scripts %}
     <script src="{{ request.static_url('sinvel:static/vendors/fileinput/fileinput.min.js') }}"></script>

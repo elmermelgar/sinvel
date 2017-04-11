@@ -29,6 +29,7 @@ def main(global_config, **settings):
     config.registry['mailer'] = Mailer.from_settings(settings)
     config.include('pyramid_jinja2')
     config.include('pyramid_mailer')
+    config.include('pyramid_storage')
 
     config.include('.models')
     config.include('.routes')

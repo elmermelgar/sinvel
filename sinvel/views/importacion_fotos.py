@@ -2,6 +2,8 @@ from pyramid.view import view_config
 from ..models.models import DetalleImportacion, Importacion, Vehiculo
 from pyramid.httpexceptions import HTTPSeeOther
 from pyramid_storage.exceptions import FileNotAllowed
+from io import FileIO
+
 
 class Importaciones(object):
     def __init__(self,request):
@@ -36,10 +38,22 @@ class Importaciones(object):
         return {'veh': vehiculo, 'imp': imp}
 
     @view_config(route_name='subir', request_method='POST')
-    def upload(request):
+    def upload(self):
         try:
-            request.storage.save(request.POST['foto1'], extensions=('jpg', 'png', 'txt'))
+            foto1=self.request.POST['foto1']
+            foto2=self.request.POST['foto2']
+            foto3=self.request.POST['foto3']
+            foto4=self.request.POST['foto4']
+            foto5=self.request.POST['foto5']
+            foto6=self.request.POST['foto6']
+            fotos=[foto1,foto2,foto3,foto4,foto5,foto6]
+
+            for foto in fotos:
+                if foto is not None:
+                    self.request.storage.save(foto, extensions=('jpg', 'png', 'jpeg'),randomize=True)
+
+
         except FileNotAllowed:
-            request.session.flash('Lo sentimos, este archivo no esta Permitido!!!')
-        return HTTPSeeOther(request.route_url('home'))
+            self.request.session.flash('Lo sentimos, este archivo no esta Permitido!!!')
+        return HTTPSeeOther(self.request.route_url('home'))
 
