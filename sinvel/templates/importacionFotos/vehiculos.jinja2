@@ -25,7 +25,7 @@
                                         <td>{{ id_veh.vehiculo.MARCA }}</td>
                                         <td>{{ id_veh.vehiculo.MODELO }}</td>
                                         <td>{{ id_veh.vehiculo.ANO }}</td>
-                                        <td> <a href="{{ request.route_url('vehiculo',id_imp=id_veh.ID_IMPORTACION, id_veh=id_veh.vehiculo.ID_VEHICULO) }}" class="btn btn-icon btn-success command-edit"><span style="margin-top: 10px" class="zmdi zmdi-upload" title="Subir Fotos"></span></a> </td>
+                                        <td> <a href="{{ request.route_url('vehiculo',id_imp=id_veh.ID_IMPORTACION, id_veh=id_veh.vehiculo.ID_VEHICULO, id_detImp=id_veh.ID_DETALLE_IMPORT) }}" class="btn btn-icon btn-success command-edit"><span style="margin-top: 10px" class="zmdi zmdi-upload" title="Subir Fotos"></span></a> </td>
                                     </tr>
                         {% endfor %}
                         </tbody>

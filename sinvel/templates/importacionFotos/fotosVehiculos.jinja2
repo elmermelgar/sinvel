@@ -1,7 +1,8 @@
 {% extends "../layout.jinja2" %}
 {% block content %}
     <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"  enctype="multipart/form-data" name="formulario" >
-    <input type="hidden" value="{{ imp }}" name="id_imp">
+    <input type="hidden" value="{{ detImp.ID_DETALLE_IMPORT }}" name="id_detImp">
+        <input type="hidden" value="{{ detImp.ID_VEHICULO }}" name="id_veh">
         <div class="box-content">
 
         <div class="col-md-12" style="text-align: center">
@@ -109,7 +110,7 @@
         </div>
         <div class="col-md-12" style="margin-top: 3%; text-align: center">
              <button type="submit" class="btn btn-primary" style="width: 10%">Guardar</button>
-            <a href="{{ request.route_url('list_vehiculos', id_imp=imp) }}"
+            <a href="{{ request.route_url('list_vehiculos', id_imp=detImp.ID_IMPORTACION) }}"
                class="btn btn-success fileinput-exists"
                style="width: 10%;">Regresar</a>
         </div>
