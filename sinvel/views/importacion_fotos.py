@@ -1,9 +1,8 @@
 from pyramid.view import view_config
-from ..models.models import DetalleImportacion, Importacion, Vehiculo
+from ..models.models import DetalleImportacion, Importacion, Vehiculo, FotosDesperfecto
 from pyramid.httpexceptions import HTTPSeeOther
 from pyramid_storage.exceptions import FileNotAllowed
-from io import FileIO
-
+import transaction
 
 class Importaciones(object):
     def __init__(self,request):
@@ -17,14 +16,13 @@ class Importaciones(object):
 
     @view_config(route_name='list_importadores', renderer='../templates/importacionFotos/importadores.jinja2', request_method='GET')
     def importaciones(self):
-            detalles = self.query_detalleImp.all()
             importacion = self.query_importacion.all()
 
-            return {'detalle': detalles, 'impor': importacion}
+            return {'impor': importacion}
 
     @view_config(route_name='list_vehiculos', renderer='../templates/importacionFotos/vehiculos.jinja2', request_method='GET')
     def vehiculos(self):
-        id_det=self.request.matchdict['id_detImp']
+        id_det=self.request.matchdict['id_imp']
         vehiculos=self.query_detalleImp.filter_by(ID_IMPORTACION =id_det)
 
         return {'veh': vehiculos}
@@ -48,12 +46,19 @@ class Importaciones(object):
             foto6=self.request.POST['foto6']
             fotos=[foto1,foto2,foto3,foto4,foto5,foto6]
 
+            id_imp=self.request.POST['id_imp']
+            detImp=self.query_detalleImp.filter_by(ID_IMPORTACION=id_imp)
+            detImp2=detImp.ID_DETALLE_IMPORT
+
             for foto in fotos:
                 if foto is not None:
-                    self.request.storage.save(foto, extensions=('jpg', 'png', 'jpeg'),randomize=True)
-
+                    self.request.storage.save(foto, extensions=('jpg', 'png', 'jpeg'))
+                    fv=FotosDesperfecto(ID_DETALLE_IMPORT=detImp2, FOTO_DESCRIP="b", FOTO="a")
+                    self.request.dbsession.add(fv)
 
         except FileNotAllowed:
             self.request.session.flash('Lo sentimos, este archivo no esta Permitido!!!')
-        return HTTPSeeOther(self.request.route_url('home'))
+
+
+        return HTTPSeeOther(self.request.route_url('list_vehiculos', id_imp=id_imp))
 

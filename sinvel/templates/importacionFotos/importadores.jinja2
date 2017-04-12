@@ -25,7 +25,7 @@
                                         <td>{{ impor.NUM_REGISTRO }}</td>
                                         <td>{{ impor.FECHA_IMP.strftime("%d/%m/%Y") }}</td>
                                         <td>{{ impor.CANTIDAD }}</td>
-                                        <td> <a href="{{ request.route_url('list_vehiculos', id_detImp=impor.ID_IMPORTACION) }}" class="btn btn-icon btn-warning command-edit"><span style="margin-top: 10px" class="zmdi zmdi-directions-car"></span></a> </td>
+                                        <td> <a href="{{ request.route_url('list_vehiculos', id_imp=impor.ID_IMPORTACION) }}" class="btn btn-icon btn-warning command-edit"><span style="margin-top: 10px" class="zmdi zmdi-directions-car" title="Lista de Vehiculos"></span></a> </td>
                                     </tr>
                         {% endfor %}
                         </tbody>
