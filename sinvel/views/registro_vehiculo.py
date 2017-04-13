@@ -10,7 +10,6 @@ from pyramid_mailer.message import Message
 
 import os
 from pyramid.response import FileResponse
-from pyjasper.jasperpy import JasperPy
 
 class RegistroVehiculo(object):
     def __init__(self,request):

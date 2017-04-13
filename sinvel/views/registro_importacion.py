@@ -1,5 +1,7 @@
+from flask.helpers import url_for
 from pyramid.response import Response
 from pyramid.view import view_config, view_defaults
+from werkzeug.utils import redirect
 
 from sinvel.models.models import Importador
 from sinvel.views.user import db_err_msg
@@ -19,9 +21,7 @@ class RegistroImportacion(object):
     def createRegistroImportacion(self):
         try:
             importadores = self.request.dbsession.query(Importador).all()
-            #print('importadores', importadores)
-            #importacion = Importacion()
-            #importacion.importador=importadores
+
         except DBAPIError:
             return Response(db_err_msg, content_type='text/plain', status=500)
         return {'importadores':importadores}
@@ -38,5 +38,8 @@ class RegistroImportacion(object):
             transaction.commit()
 
         except DBAPIError:
-            return print('Ocurrio un error al insertar el registro')
-        return HTTPFound(location='/')
+            print('Ocurrio un error al insertar el registro')
+            print(db_err_msg)
+            #return Response(db_err_msg, content_type='text/plain', status=500)
+            return HTTPFound(location='/registro_importacion')
+        return HTTPFound(location='/RegistrarVehiculo')
