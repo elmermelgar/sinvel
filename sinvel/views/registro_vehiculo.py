@@ -67,7 +67,7 @@ class RegistroVehiculo(object):
                 transaction.commit()
         except DBAPIError:
             return print('Ocurrio un error al insertar el registro')
-        return HTTPFound(location='/')
+        return HTTPFound(location='/RegistrarVehiculo')
 
     @view_config(route_name='generar_reporte', request_method='GET',renderer='../templates/registrar_vehiculo.jinja2')
     def generarReporte(self):

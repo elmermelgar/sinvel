@@ -24,12 +24,12 @@ class Vista(object):
         #empl=emp
         #print(empl.NOMBRE)
 
-    @view_config(route_name='home', renderer='../templates/home.jinja2', permission='view')
+    @view_config(route_name='home', renderer='../templates/home.jinja2', permission=NO_PERMISSION_REQUIRED)
     def my_view(self):
 
 
         #ResourceFactory(request)
-        return {'one': 'one', 'user':self.user }
+        return {'one': 'one'}
 
 
     @view_config(route_name='inicio', renderer='../templates/examples/inicio.jinja2',  permission='view')
