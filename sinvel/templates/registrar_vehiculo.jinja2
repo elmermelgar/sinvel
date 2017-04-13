@@ -238,12 +238,15 @@
                         {{ input('submit','form-control btn btn-primary', type='submit',value='Guardar') }}
 
                  </div>
-                     <div class="col-sm-2">
-
-                        <a href="#" class="btn btn-danger">
-                           Continuar
-                        </a>
-                 </div>
+                      </br>
+                        </br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a href="{{request.route_url('list_importadores')}}" class="form-control btn bg-lightblue"  style="float: right; margin-right: 50px; width: auto;">
+                                    Continuar <i class="zmdi zmdi-arrow-forward"></i>
+                                </a>
+                            </div>
+                        </div>
                 </form>
             </div>
            </div>
