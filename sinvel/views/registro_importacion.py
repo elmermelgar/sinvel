@@ -1,7 +1,6 @@
-from flask.helpers import url_for
+
 from pyramid.response import Response
 from pyramid.view import view_config, view_defaults
-from werkzeug.utils import redirect
 
 from sinvel.models.models import Importador
 from sinvel.views.user import db_err_msg
@@ -9,6 +8,8 @@ from ..models import Importacion
 import transaction
 from sqlalchemy.exc import DBAPIError
 from pyramid.httpexceptions import HTTPFound
+from datetime import datetime
+import sys
 
 view_defaults(route_name='registroImportacion')
 
@@ -32,7 +33,10 @@ class RegistroImportacion(object):
             data = self.request.POST
             importacion = Importacion()
             for key, value in data.items():
-                print(key, value)
+                #Convertir FECHA_IMP a fecha
+                if key=='FECHA_IMP':
+                    value = datetime.strptime(value, '%d-%m-%Y')
+                #print(key, value)
                 setattr(importacion, key, value)
             self.request.dbsession.add(importacion)
             transaction.commit()

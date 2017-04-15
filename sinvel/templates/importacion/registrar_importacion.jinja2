@@ -4,6 +4,8 @@
 {% block styles %}
     <link href="{{ request.static_url('sinvel:static/css/wizard.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ request.static_url('sinvel:static/css/bootstrap-datetimepicker.min.css') }}">
 {% endblock styles %}
 
 {% block content %}
@@ -90,7 +92,8 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Fecha:</label>
                                     <div class="form-group col-md-9">
-                                        <input class="form-control datepicker" name="FECHA_IMP" type="date" required>
+                                        <input class="form-control form_datetime" name="FECHA_IMP" type="date"
+                                               placeholder="dd-mm-yyyy" required>
                                     </div>
                                 </div>
                             </div>
@@ -137,10 +140,12 @@
                             <div class="col-md-8">
                                 <label class="col-sm-2 control-label">Importador:</label>
                                 <div class="form-group col-md-8 ">
-                                    <select name="ID_IMPORTADOR" class="form-control js-example-basic-single js-states" required>
+                                    <select name="ID_IMPORTADOR" class="form-control js-example-basic-single js-states"
+                                            required>
                                         <option value="">Seleccione un importador</option>
                                         {% for aimportador in importadores %}
-                                            <option value="{{ aimportador.ID_IMPORTADOR }}">{{ aimportador.NIT }} - {{ aimportador.NOMBRE }} {{ aimportador.APELLIDO }}</option>
+                                            <option value="{{ aimportador.ID_IMPORTADOR }}">{{ aimportador.NIT }}
+                                                - {{ aimportador.NOMBRE }} {{ aimportador.APELLIDO }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -150,7 +155,8 @@
                             <div class="col-md-10">
                                 <div class="form-group">
                                     <div class="col-sm-2 ">
-                                        <a href="{{request.route_url('agregar_importador')}}" id="buscar" class="btn btn-primary">Agregar</a>
+                                        <a href="{{ request.route_url('agregar_importador') }}" id="buscar"
+                                           class="btn btn-primary">Agregar</a>
                                     </div>
                                 </div>
                             </div>
@@ -160,7 +166,8 @@
                         </br>
                         <div class="row">
                             <div class="col-sm-12">
-                                <button class="form-control btn bg-lightblue" type="submit" style="float: right; margin-right: 50px; width: auto;">
+                                <button class="form-control btn bg-lightblue" type="submit"
+                                        style="float: right; margin-right: 50px; width: auto;">
                                     Continuar <i class="zmdi zmdi-arrow-forward"></i>
                                 </button>
                             </div>
@@ -173,7 +180,11 @@
 
 {% endblock content %}
 {% block scripts %}
+
     <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/moment.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ request.static_url('sinvel:static/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script type="text/javascript">
         $(function () {
             // turn the element to select2 select style
@@ -181,6 +192,11 @@
                 placeholder: "Seleccione un importador",
                 allowClear: true
             });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $(".form_datetime").datetimepicker({format: 'DD-MM-YYYY'});
         });
     </script>
     <script src="{{ request.static_url('sinvel:static/js/wizard.js') }}"></script>
