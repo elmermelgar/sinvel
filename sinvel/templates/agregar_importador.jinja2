@@ -1,4 +1,14 @@
 {% extends "layout.jinja2" %}
+
+<!-- CSS -->
+{% block styles %}
+    <link href="{{ request.static_url('sinvel:static/css/wizard.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ request.static_url('sinvel:static/css/bootstrap-datetimepicker.min.css') }}">
+{% endblock styles %}
+
+
 {% block content %}
     {% from '_helpers.jinja2' import input,label %}
  <div class="col-12 col-lg-12 col-sm-9 ">
@@ -20,140 +30,133 @@
                             <div class="form-group">
                                 {{ label('Nombre','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('LINEA_ESTILO', 'form-control', type='text') }}
-                                </div>
+                                 <input name="NOMBRE" type="text" maxlength="30" class="form-control" placeholder="eg: Juan Jose" required>
+                                 </div>
                             </div>
                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                {{ label('Nombre_Im','col-sm-2 control-label') }}
+                                {{ label('Apellido','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('NOMBRE_IM', 'form-control', type='text') }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                {{ label('Apellido_Im','col-sm-2 control-label') }}
-                                <div class="form-group col-md-10">
-                                    {{ input('APELLIDO_IM', 'form-control', type='text') }}
+                                    <input name="APELLIDO" type="text" maxlength="30" class="form-control" placeholder="eg: Pèrez Prado" required>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                {{ label('Genero_Im','col-sm-2 control-label') }}
+                                {{ label('Genero','col-sm-2 control-label') }}
                            <div class="form-group col-md-10">
-                                <select name="ID_GENERO" class="form-control ">
-                                <option value="">Genero...</option>
-                               {% for genero in  items_genero %}
-                                    <option value="masculino">Masculino</option>
-                                    <option value="femenino">Femenino</option>
-                                {% endfor %}
+                                <select name="GENERO" class="form-control ">
+                                <option value=""> </option>
+                                 <option value="M">Masculino</option>
+                                  <option value="F">Femenino</option>
+
                             </select>
                             </div>
                          </div>
-                        </div>
-                   </div>
-                    </br>
-                    </br>
-                    <div class="col-md-6">
+                      </div>
+                               <div class="col-md-6">
                                 <div class="form-group">
-                                    {{ label('Fecha_Nacimiento_Im','col-sm-2 control-label') }}
+                                    {{ label('Fecha Nacimiento','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('FECHA_NACIMIENTO_IM', 'form-control', type='text') }}
+                                   <input class="form-control form_datetime" name="FECHA_NACIMIENTO" type="text"   placeholder="yyyy-mm-dd"  required>
                                 </div>
                                 </div>
                      </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                {{ label('Responsable_Im','col-sm-2 control-label') }}
+                                {{ label('Responsable','col-sm-2 control-label') }}
                              <div class="form-group col-md-10">
-                                {{ input('RESPONSABLE_IM', 'form-control', type='text') }}
+                                <input name="RESPONSABLE" type="text" maxlength="15" class="form-control"  required>
+
                              </div>
                              </div>
                          </div>
 
                        <div class="col-md-6">
                            <div class="form-group">
-                                {{ label('Apellido_Casada_Im','col-sm-2 control-label') }}
+                                {{ label('Apellido Casada','col-sm-2 control-label') }}
                               <div class="form-group col-md-10">
-                                {{ input('APELLIDO_CASADA_IM', 'form-control', type='text') }}
+                                <input name="APELLIDO_CASADA" type="text" maxlength="15" class="form-control" >
                               </div>
                             </div>
                          </div>
                         <div class="col-md-6">
                            <div class="form-group">
-                                {{ label('Telefono_Casa_Im','col-sm-2 control-label') }}
+                                {{ label('Telefono Casa','col-sm-2 control-label') }}
                               <div class="form-group col-md-10">
-                                {{ input('TELEFONO_CASA_IM', 'form-control', type='text') }}
+                                 <input name="TELEFONO_CASA" type="text" maxlength="9" class="form-control" placeholder="eg: 2250-5555" required>
                               </div>
                            </div>
                           </div>
+
+
                         <div class="col-md-6">
                            <div class="form-group">
-                                {{ label('Celular_Im','col-sm-2 control-label') }}
+                                {{ label('Celular','col-sm-2 control-label') }}
                              <div class="form-group col-md-10">
-                                {{ input('CELULAR_IM', 'form-control', type='text') }}
+                                <input name="TELEFONO_CELULAR" type="text" maxlength="9" input type="text" class="form-control input-mask" data-mask="0000-0000"   placeholder="eg:0000-0000" >
                               </div>
                             </div>
                          </div>
+
+
                         <div class="col-md-6">
                             <div class="form-group">
-                                    {{ label('DUI_Im','col-sm-2 control-label') }}
+                                    {{ label('DUI','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('DUI_IM', 'form-control', type='text') }}
+                                <input name="DUI" type="text" maxlength="10" class="form-control" placeholder="eg: 00002132-9" required>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                           <div class="form-group">
-                                        {{ label('NIT_Im','col-sm-2 control-label') }}
-                                    <div class="form-group col-md-10">
-                                        {{ input('NIT_IM', 'form-control', type='text') }}
-                                    </div>
-                             </div>
-                         </div>
-                        <div class="col-md-6">
-                           <div class="form-group">
-                                {{ label('Correo_Im','col-sm-2 control-label') }}
-                              <div class="form-group col-md-10">
-                                {{ input('CORREO_IM', 'form-control', type='text') }}
-                               </div>
-                            </div>
-                         </div>
 
-                    <div class="panel">
-                        <h3 class="panel-title">Datos Autentificacion</h3>
-                    </div>
-                     <div class="col-md-8">
-                            {{ label('Usuario_Im','col-sm-4 control-label') }}
-                             <div class="form-group col-md-8 ">
-                                {{ input('NIT_IM', 'form-control', type='text') }}
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                    {{ label('Correo ','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                   <input name="CORREO_IMPORTADOR" type="email"  class="form-control" placeholder="eg: BD1152017@GMAIL.COM" required>
+                                </div>
                             </div>
-                    </div>
-                      <div class="col-md-8">
-                            {{ label('Correo_Im','col-sm-4 control-label') }}
-                             <div class="form-group col-md-8 ">
-                                 <input id="CORREO_IM" type="text" class="form-control"/>
-                             </div>
-                       </div>
-                    <div class="form-group">
-                        <div class="col-sm-4 ">
-                          <a id="verificar" class="btn btn-primary">VerificarUsuario</a>
+                             <div class="form-group">
+                            {{ label('NIT ','col-sm-2 control-label') }}
+                             <div class="form-group col-md-10 ">
+                               <input name="NIT" type="text" maxlength="17" class="form-control" placeholder="eg: 0515-260593-111-8" required>
+                            </div>
+                          </div>
                         </div>
-                     </div>
-                  </div>
+
+
                   <input id="Aimportador" type="hidden" name="ID_IMPORTACION" class="form-control" value=""/>
                  <div class="col-sm-2">
                         {{ input('submit','form-control btn btn-primary', type='submit',value='Agregar') }}
                  </div>
+                 <div class="col-sm-2">
+                 <input  type="reset" class="form-control">
+                </div>
                 </form>
-            </div>
+
          </div>
+         </div>
+
+
+
  </div>
+ {% endblock content %}
 
-     <script src="{{request.static_url('sinvel:static/js/AgregarImportador/agregarimportador.js') }}"></script>
+{% block scripts %}
 
-{% endblock content %}
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/moment.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ request.static_url('sinvel:static/js/bootstrap-datetimepicker.min.js') }}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $(".form_datetime").datetimepicker({format: 'YYYY-MM-DD'});
+        });
+    </script>
+    <script src="{{ request.static_url('sinvel:static/js/wizard.js') }}"></script>
+
+{% endblock scripts %}
