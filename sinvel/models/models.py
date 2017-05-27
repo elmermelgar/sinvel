@@ -319,7 +319,6 @@ class Reparacion(Base):
     ID_REPARACION = Column(Integer, primary_key=True)
     ID_TALLER = Column(ForeignKey('taller.ID_TALLER'), index=True)
     ID_DET_CONTROL = Column(ForeignKey('detalle_control_empresa.ID_DET_CONTROL'), index=True)
-    ID_TIPO_REPARACION = Column(ForeignKey('tipo_reparacion.ID_TIPO_REPARACION'), index=True)
     DESCRIP_REPARACION = Column(String(200))
     FECHA_REPARACION = Column(Date)
     COSTO = Column(Numeric(10, 2))
@@ -328,7 +327,6 @@ class Reparacion(Base):
 
     detalle_control_empresa = relationship('DetalleControlEmpresa', primaryjoin='Reparacion.ID_DET_CONTROL == DetalleControlEmpresa.ID_DET_CONTROL', backref='reparacions')
     taller = relationship('Taller', primaryjoin='Reparacion.ID_TALLER == Taller.ID_TALLER', backref='reparacions')
-    tipo_reparacion = relationship('TipoReparacion', primaryjoin='Reparacion.ID_TIPO_REPARACION == TipoReparacion.ID_TIPO_REPARACION', backref='reparacions')
 
 
 class Resource(Base):
@@ -350,9 +348,12 @@ class Taller(Base):
     __tablename__ = 'taller'
 
     ID_TALLER = Column(Integer, primary_key=True)
+    ID_TIPO_REPARACION = Column(ForeignKey('tipo_reparacion.ID_TIPO_REPARACION'), index=True)
     NOMBRE_TALLER = Column(String(50))
     DIRECCION_TALLER = Column(String(200))
     TELEFONO_TALLER = Column(String(10))
+
+    tipo_reparacion = relationship('TipoReparacion', primaryjoin='Taller.ID_TIPO_REPARACION == TipoReparacion.ID_TIPO_REPARACION', backref='tallers')
 
 
 class TipoCosto(Base):
@@ -480,9 +481,11 @@ class Venta(Base):
     ID_VENTA = Column(Integer, primary_key=True)
     ID_CLIENTE = Column(ForeignKey('cliente.ID_CLIENTE'), index=True)
     ID_DET_CONTROL = Column(ForeignKey('detalle_control_empresa.ID_DET_CONTROL'), index=True)
+    ID_EMPLEADO = Column(ForeignKey('empleado.ID_EMPLEADO'), index=True)
     DESCRIP_VENTA = Column(String(200))
     FECHA_VENTA = Column(Date)
     PRECIO_VENTA = Column(Numeric(10, 2))
 
     cliente = relationship('Cliente', primaryjoin='Venta.ID_CLIENTE == Cliente.ID_CLIENTE', backref='ventas')
     detalle_control_empresa = relationship('DetalleControlEmpresa', primaryjoin='Venta.ID_DET_CONTROL == DetalleControlEmpresa.ID_DET_CONTROL', backref='ventas')
+    empleado = relationship('Empleado', primaryjoin='Venta.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='ventas')
