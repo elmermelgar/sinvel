@@ -14,6 +14,7 @@ from .models import DetalleImportacion
 from .models import EstadoVeh
 from .models import FotosDesperfecto
 from .models import Importacion
+from .models import Inventario
 from .models import Nivel
 from .models import Remolque
 from .models import Reparacion
@@ -24,7 +25,7 @@ from .models import UbicacionBodega
 from .models import Vehiculo
 from .models import Venta
 from .models import Empleado
-from .models import Ubicacion, Cliente, CostosBodega, Departamento, Municipio, DetalleControlEmpresa, ImportadorTaller, Marca, Modelo, TipoReparacion
+from .models import Ubicacion
 from .models import User,Group,GroupsPermission,UsersGroup,Resource,UsersPermission,UsersResourcesPermission
 from .root_factory import RootFactory
 from .resource_factory import ResourceFactory
