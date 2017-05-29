@@ -14,12 +14,12 @@
                         </div>
                         <div class="col-md-3">
                             <p class="c-black f-500 m-b-5">Departamento</p>
-                            <small>{{ bodega.DEPARTAMENTO }} </small>
+                            <small>{{ bodega.municipio.departamento.DEPARTAMENTO }} </small>
                             <br/>
                         </div>
                         <div class="col-md-3">
                             <p class="c-black f-500 m-b-5">Municipio</p>
-                            <small>{{ bodega.MUNICIPIO }} </small>
+                            <small>{{ bodega.municipio.MUNICIPIO }} </small>
                             <br/>
                         </div>
                         <div class="col-md-3">
@@ -52,7 +52,7 @@
                                             {% if ubicaciones %}
                                                 {% for ubicacion in ubicaciones %}
                                                     {% if ubicacion.ID_NIVEL == nivel.ID_NIVEL %}
-                                                        {% if ubicacion.DISPONIBLE == 1 %}
+                                                        {% if ubicacion.DISPOONIBLE == 1 %}
                                                             <a href="#" style="height: 80px; width: 40px; margin: 3px" class="btn bg-lightgreen"><i style="margin-top: 18px" class="zmdi zmdi-car"></i><br/> {{ ubicacion.CORRELATIVO }}</a>
                                                         {% else %}
                                                             <button style="height: 80px; width: 40px; margin: 3px" class="btn bg-deeporange"><i class="zmdi zmdi-close"></i><br/> {{ ubicacion.CORRELATIVO }}</button>

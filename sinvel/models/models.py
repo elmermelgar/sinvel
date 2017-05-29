@@ -97,11 +97,11 @@ class DetalleControlEmpresa(Base):
     ID_DET_CONTROL = Column(Integer, primary_key=True)
     ID_CONTROL = Column(ForeignKey('control_empresa.ID_CONTROL'), index=True)
     ID_EMPLEADO = Column(ForeignKey('empleado.ID_EMPLEADO'), index=True)
-    ID_DETALLE_IMPORT = Column(ForeignKey('detalle_importacion.ID_DETALLE_IMPORT'), index=True)
+    ID_VEHICULO = Column(ForeignKey('vehiculo.ID_VEHICULO'), index=True)
 
     control_empresa = relationship('ControlEmpresa', primaryjoin='DetalleControlEmpresa.ID_CONTROL == ControlEmpresa.ID_CONTROL', backref='detalle_control_empresas')
-    detalle_importacion = relationship('DetalleImportacion', primaryjoin='DetalleControlEmpresa.ID_DETALLE_IMPORT == DetalleImportacion.ID_DETALLE_IMPORT', backref='detalle_control_empresas')
     empleado = relationship('Empleado', primaryjoin='DetalleControlEmpresa.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='detalle_control_empresas')
+    vehiculo = relationship('Vehiculo', primaryjoin='DetalleControlEmpresa.ID_VEHICULO == Vehiculo.ID_VEHICULO', backref='detalle_control_empresas')
 
 
 class DetalleImportacion(Base):
@@ -302,14 +302,13 @@ class Remolque(Base):
     ID_REMOLQUE = Column(Integer, primary_key=True)
     ID_TIPO_REMOLQUE = Column(ForeignKey('tipo_remolque.ID_TIPO_REMOLQUE'), index=True)
     ID_BODEGA = Column(ForeignKey('bodega.ID_BODEGA'), index=True)
-    ID_EMPLEADO = Column(ForeignKey('empleado.ID_EMPLEADO'), ForeignKey('empleado.ID_EMPLEADO'), index=True)
+    ID_EMPLEADO = Column(ForeignKey('empleado.ID_EMPLEADO'), index=True)
     DESCRIP_REMOLQUE = Column(String(200))
     NOMBRE_REMOLQUE = Column(String(100))
     DISPONIBLE = Column(Integer)
 
     bodega = relationship('Bodega', primaryjoin='Remolque.ID_BODEGA == Bodega.ID_BODEGA', backref='remolques')
-    empleado = relationship('Empleado', primaryjoin='Remolque.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='empleado_remolques')
-    empleado1 = relationship('Empleado', primaryjoin='Remolque.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='empleado_remolques_0')
+    empleado = relationship('Empleado', primaryjoin='Remolque.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='remolques')
     tipo_remolque = relationship('TipoRemolque', primaryjoin='Remolque.ID_TIPO_REMOLQUE == TipoRemolque.ID_TIPO_REMOLQUE', backref='remolques')
 
 
