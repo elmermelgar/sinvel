@@ -11,11 +11,13 @@ from ..models import ResourceFactory
 
 
 class Vista(object):
+
+
     def __init__(self, request):
-        print('HOLA:')
-        #emp=Empleado()
-        #self.user=request.user.user_name
-        #print(request.authenticated_userid)
+        print('HOLA:'+request.user.user_name)
+       # emp=Empleado()
+        self.user=request.user.user_name
+        print(request.authenticated_userid)
         #request.session.expunge('empleado')
         #emp=request.session['empleado']
         #empl=Empleado()
