@@ -1,13 +1,16 @@
 
 from pyramid.view import view_config
-from sqlalchemy.exc import DBAPIError
 import transaction
-import jsonpickle
+from pyramid.response import Response
 from pyramid.httpexceptions import HTTPFound
 from ..models import Bodega
 from ..models import Nivel
 from  ..models import Ubicacion
-from sqlalchemy.sql import func
+from ..models import Departamento
+from sinvel.views.user import db_err_msg
+from ..models import Municipio
+from pyramid.httpexceptions import HTTPSeeOther
+from sqlalchemy.exc import DBAPIError
 
 
 class Bodega_IU(object):
@@ -17,6 +20,17 @@ class Bodega_IU(object):
         self.bodega = Bodega()
         self.nivel = Nivel()
         self.ubicacion = Ubicacion()
+
+    @view_config(route_name='registrarBodega', renderer='../templates/bodega/registrar_bodegas.jinja2',
+                 request_method='GET')
+    def createRegistroImportacion(self):
+        try:
+            departamentos = self.request.dbsession.query(Departamento).all()
+            municipios = self.request.dbsession.query(Municipio).all()
+
+        except DBAPIError:
+            return Response(db_err_msg, content_type='text/plain', status=500)
+        return {'departamentos': departamentos, 'municipios': municipios}
 
     @view_config(route_name='bodegas', renderer='../templates/bodega/bodegas.jinja2', request_method='GET')
     def bodegas(self):
@@ -35,5 +49,22 @@ class Bodega_IU(object):
 
 
         return {'bodega': items_bodega, 'user': self.user, 'niveles': items_nivel, 'ubicaciones': items_ubicacion}
+
+    @view_config(route_name='registroBodegaGuardar', request_method='POST')
+    def guardarRegistroBodega(self):
+        try:
+            data = self.request.POST
+            bodega = Bodega()
+            for key, value in data.items():
+                setattr(bodega, key, value)
+            self.request.dbsession.add(bodega)
+            transaction.commit()
+
+        except DBAPIError:
+            print('Ocurrio un error al insertar el registro')
+            print(db_err_msg)
+            # return Response(db_err_msg, content_type='text/plain', status=500)
+            return HTTPFound(location='/registro_bodega')
+        return HTTPFound(location='/bodegas')
 
 
