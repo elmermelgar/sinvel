@@ -24,3 +24,10 @@ def includeme(config):
     ######################################
 
     config.add_route('generar_reporte', '/generar')
+
+
+
+
+    #################Salida Reparacion#############
+    config.add_route('verificar_remolque', '/salida_reparacion/verificar_remolque')
+    config.add_route('buscar_tipo_remolque', '/salida_reparacion/verificar_remolque/{id_tipo_remolque}')

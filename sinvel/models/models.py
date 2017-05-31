@@ -6,6 +6,7 @@ from sqlalchemy.dialects.mysql.types import LONGBLOB
 from sqlalchemy.ext.declarative import declarative_base
 
 
+
 Base = declarative_base()
 metadata = Base.metadata
 
@@ -454,6 +455,7 @@ class Vehiculo(Base):
     ID_VEHICULO = Column(Integer, primary_key=True)
     ID_ESTADO = Column(ForeignKey('estado_veh.ID_ESTADO'), index=True)
     ID_MODELO = Column(ForeignKey('modelo.ID_MODELO'), ForeignKey('modelo.ID_MODELO'), index=True)
+    ID_IMPORTACION = Column(ForeignKey('importacion.ID_IMPORTACION'), index=True)
     LINEA_ESTILO = Column(String(40))
     CHASIS = Column(String(50))
     ANO = Column(Integer)
@@ -469,6 +471,7 @@ class Vehiculo(Base):
     FOTO_VEH = Column(LONGBLOB)
     PLACA = Column(String(10))
 
+    importacion=relationship('Importacion', primaryjoin='Vehiculo.ID_IMPORTACION == Importacion.ID_IMPORTACION', backref='importaciones')
     estado_veh = relationship('EstadoVeh', primaryjoin='Vehiculo.ID_ESTADO == EstadoVeh.ID_ESTADO', backref='vehiculoes')
     modelo = relationship('Modelo', primaryjoin='Vehiculo.ID_MODELO == Modelo.ID_MODELO', backref='modelo_vehiculoes')
     modelo1 = relationship('Modelo', primaryjoin='Vehiculo.ID_MODELO == Modelo.ID_MODELO', backref='modelo_vehiculoes_0')
