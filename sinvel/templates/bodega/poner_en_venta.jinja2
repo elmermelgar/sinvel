@@ -1,0 +1,90 @@
+{% extends "../layout.jinja2" %}
+<!-- CSS -->
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+    <link href="{{request.static_url('sinvel:static/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css')}}" rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+    <div class="container c-boxed">
+        <div class="text-center">
+            <h2 class="f-400 m-b-15">Poner en Venta Vehículo</h2>
+            <h4 class="f-400 m-b-15">PLACA: {{ vehiculo.PLACA }}</h4>
+        </div>
+    <div class="tile">
+                    <div class="t-header">
+                        <div class="th-title">Año: {{ vehiculo.ANO }} - VIN: {{ vehiculo.VIN }} </div>
+                        <a href="{{ request.route_url('vehiculos') }}" style="float: right; margin-top: -25px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+                    </div>
+        <form class="form-horizontal" enctype="multipart/form-data" action="{{ request.route_url('ventaVehiculoActualizar') }}" method="post">
+            <div class="t-body tb-padding">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <input type="hidden" name="ID_VEHICULO" class="form-control"
+                                   value="{{ vehiculo.ID_VEHICULO }}">
+                            {% for estado in estados %}
+                                {% if estado.ESTADO == 'En venta' %}
+                                    <input type="hidden" name="ID_ESTADO" class="form-control"
+                                           value="{{ estado.ID_ESTADO }}">
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+
+                        <div class="input-group">
+                            <span class="input-group-addon"> - Precio de Venta  $</span>
+                            <input type="text" name="PRECIO_VEHICULO" class="form-control"
+                                   value="{{ vehiculo.PRECIO_VEHICULO }}" placeholder="Precio de venta" required>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-md-4">
+                            <h3 class="c-black">Foto para publicar</h3>
+                            <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
+                                <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
+                                <div>
+                                <span class="btn btn-info btn-file">
+                                    <span class="fileinput-new">Subir Foto</span>
+                                    <span class="fileinput-exists">Cambiar</span>
+                                    <input type="file" name="FOTO_VEH" required>
+                                </span>
+                                    <a href="#" class="btn btn-danger fileinput-exists"
+                                       data-dismiss="fileinput">Eliminar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+
+                </div>
+                <br/>
+                <div style="text-align: center">
+                    <input type="submit" style="width: 30%; height: 35px" class="btn bg-lightblue"
+                           value="Guardar Cambios">
+                </div>
+
+            </div>
+        </form>
+                    <br/>
+                </div>
+
+    </div>
+{% endblock content %}
+{% block scripts %}
+    <script src="{{request.static_url('sinvel:static/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js') }}"></script>
+    <script src="{{ request.static_url('sinvel:static/vendors/fileinput/fileinput.min.js') }}"></script>
+    <script src="{{ request.static_url('sinvel:static/vendors/input-mask/input-mask.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            // turn the element to select2 select style
+            $(".Municipios").select2({
+                placeholder: "Seleccione un municipio",
+                allowClear: true
+            });
+        });
+    </script>
+
+{% endblock scripts %}
