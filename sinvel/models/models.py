@@ -25,8 +25,7 @@ class Bodega(Base):
     NOMBRE_BODEGA = Column(String(50))
     DESCRIPCION_BODEGA = Column(String(200))
     DIRECCION_BODEGA = Column(String(200))
-    DEPARTAMENTO = Column(String(50))
-    MUNICIPIO = Column(String(50))
+
 
     municipio = relationship('Municipio', primaryjoin='Bodega.ID_MUNICIPIO == Municipio.ID_MUNICIPIO', backref='municipio_bodegas')
     municipio1 = relationship('Municipio', primaryjoin='Bodega.ID_MUNICIPIO == Municipio.ID_MUNICIPIO', backref='municipio_bodegas_0')

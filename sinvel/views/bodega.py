@@ -1,4 +1,6 @@
+from tkinter import Image
 
+from pyramid import request
 from pyramid.view import view_config
 import transaction
 from pyramid.response import Response
@@ -7,6 +9,8 @@ from ..models import Bodega
 from ..models import Nivel
 from  ..models import Ubicacion
 from ..models import Departamento
+from ..models import  Vehiculo
+from ..models import EstadoVeh
 from sinvel.views.user import db_err_msg
 from ..models import Municipio
 from pyramid.httpexceptions import HTTPSeeOther
@@ -67,4 +71,39 @@ class Bodega_IU(object):
             return HTTPFound(location='/registro_bodega')
         return HTTPFound(location='/bodegas')
 
+    @view_config(route_name='vehiculos', renderer='../templates/bodega/vehiculos.jinja2', request_method='GET')
+    def vehiculos(self):
+        items_vehiculos = self.request.dbsession.query(Vehiculo).all()
 
+        return {'vehiculos': items_vehiculos, 'user': self.user}
+
+    @view_config(route_name='ponerEnVenta', renderer='../templates/bodega/poner_en_venta.jinja2',
+                 request_method='GET')
+    def poner_en_venta(self):
+        id = int(self.request.matchdict['id_veh'])
+        items_vehiculo = self.request.dbsession.query(Vehiculo).get(id)
+        items_estados = self.request.dbsession.query(EstadoVeh).all()
+
+
+        return {'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados}
+
+    @view_config(route_name='ventaVehiculoActualizar', request_method='POST')
+    def actualizarVehiculo(self):
+        try:
+            data = self.request.POST
+            id = data.get('ID_VEHICULO')
+            vehiculo = self.request.dbsession.query(Vehiculo).get(id)
+
+            for key, value in data.items():
+                if key == 'FOTO_VEH':
+                    value = self.request.POST['FOTO_VEH'].file
+                    value = value.read()
+                setattr(vehiculo, key, value)
+            transaction.commit()
+
+        except DBAPIError:
+            print('Ocurrio un error al actualizar el registro')
+            print(db_err_msg)
+            # return Response(db_err_msg, content_type='text/plain', status=500)
+            return HTTPFound(location='/vehiculos')
+        return HTTPFound(location='/vehiculos')

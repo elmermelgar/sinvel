@@ -12,6 +12,7 @@
     <div class="tile">
                     <div class="t-header">
                         <div class="th-title">Registrar Nueva Bodega </div>
+                        <a href="{{ request.route_url('bodegas') }}" style="float: right; margin-top: -25px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
                     </div>
                 <form class="form-horizontal" action="{{ request.route_url('registroBodegaGuardar') }}" method="post">
                     <div class="t-body tb-padding">
