@@ -41,6 +41,14 @@ class SalidaReparacion(object):
 
         return {'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
 
+    @view_config(route_name='remolques', request_method='GET', renderer='json')
+    def all_json_models(self):
+        remolques = self.request.dbsession.query(Remolque).all()
+
+        json_models = jsonpickle.encode(remolques,max_depth=4)
+        print(json_models)
+        return {'json_models': json_models}
+
     @view_config(route_name='registro_control', renderer='../templates/salida_reparacion/registro_control.jinja2',
                  request_method='GET')
     def registroControl(self):

@@ -9,6 +9,7 @@ def includeme(config):
     config.add_route('registrar_vehiculo','/RegistrarVehiculo')
     config.add_route('buscar_importacion','/RegistrarVehiculo/BuscarImportacion/{id_importacion}')
     config.add_route('guardar_registro_vehiculo','/RegistrarVehiculo/guardar')
+    config.add_route('models','/models/{id_marca}/all_json_models')
     #config.add_route('buscar_importacion', '/RegistrarVehiculo/BuscarImportacion?id_import={id_importacion}')
     #config.add_route('registrar_vehiculo', '/RegistroVehiculo/{id_importacion}')
     config.add_route('agregar_importador', '/AgregarImportador')
@@ -35,3 +36,6 @@ def includeme(config):
     config.add_route('aprobar_salidas', '/salida_reparacion/aprobar_salidas')
     config.add_route('aprobar_salidas_guardar', '/salida_reparacion/aprobar_salidas/save')
     config.add_route('buscar_tipo_remolque', '/salida_reparacion/verificar_remolque/{id_tipo_remolque}')
+
+
+    config.add_route('remolques', '/get_remolques')
