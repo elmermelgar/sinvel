@@ -1,0 +1,74 @@
+{% extends "../layout.jinja2" %}
+<!-- CSS -->
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+    <link href="{{request.static_url('sinvel:static/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css')}}" rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+    <div class="container c-boxed">
+        <div class="text-center">
+            <h2 class="f-400 m-b-15">Asignar Vendedor a Vehículo</h2>
+            <h4 class="f-400 m-b-15">PLACA: {{ vehiculo.PLACA }} - VENTA ID: {{ venta.ID_VENTA }}</h4>
+        </div>
+    <div class="tile">
+                    <div class="t-header">
+                        <div class="th-title">Año: {{ vehiculo.ANO }} - VIN: {{ vehiculo.VIN }} </div>
+{#                        <a href="{{ request.route_url('vehiculos') }}" style="float: right; margin-top: -25px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>#}
+                    </div>
+        <form class="form-horizontal" action="{{ request.route_url('actualizarVendedor') }}" method="post">
+            <div class="t-body tb-padding">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <input type="hidden" name="ID_VENTA" class="form-control"
+                                   value="{{ venta.ID_VENTA }}">
+                        </div>
+
+
+                        <div class="input-group">
+                            <span class="input-group-addon"> - Seleccione un Vendedor -</span>
+                        </div>
+
+                    <br/>
+                        <div class="input-group">
+                                     <select name="ID_EMPLEADO" class="selectpicker" data-live-search="true"
+                                            required>
+                                                {% for empleado in empleados %}
+                                                        <option value="{{ empleado.ID_EMPLEADO }}" >{{ empleado.NOMBRE }} {{ empleado.APELLIDO }}</option>
+                                                {% endfor %}
+                                    </select>
+{#                                    <span class="input-group-addon last"><i class="zmdi zmdi-my-location"></i></span>#}
+                        </div>
+                    <br/><br/>
+                    </div>
+
+                </div>
+                <br/>
+                <div style="text-align: center">
+                    <input type="submit" style="width: 30%; height: 35px" class="btn bg-lightblue"
+                           value="Guardar Cambios">
+                </div>
+
+            </div>
+        </form>
+                    <br/>
+                </div>
+
+    </div>
+{% endblock content %}
+{% block scripts %}
+    <script src="{{request.static_url('sinvel:static/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js') }}"></script>
+    <script src="{{ request.static_url('sinvel:static/vendors/fileinput/fileinput.min.js') }}"></script>
+    <script src="{{ request.static_url('sinvel:static/vendors/input-mask/input-mask.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            // turn the element to select2 select style
+            $(".Municipios").select2({
+                placeholder: "Seleccione un municipio",
+                allowClear: true
+            });
+        });
+    </script>
+
+{% endblock scripts %}
