@@ -1,0 +1,59 @@
+{% extends "../layout.jinja2" %}
+{% block styles %}
+<link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+    <div class="container">
+
+            <div class="tile">
+                    <div class="t-header">
+                        <div class="th-title">Detalle Costos <small>Informacion del costo seleccionado </small></div>
+                    </div>
+
+                    <table class="table table-bordered table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th data-column-id="id" data-type="numeric">Descripcion </th>
+                                <th data-column-id="sender">Tipo Costo</th>
+                                <th data-column-id="received">Taller</th>
+                                <th data-column-id="commands">Tipo Reparacion</th>
+                                <th data-column-id="commands1">Monto</th>
+                                <th data-column-id="commands2">Fecha</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                                         <tr>
+                                        <td>{{ det_cos.DESCRIP_COSTO }}</td>
+                                        <td>{{ det_cos.TIPO_COSTO }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{ det_cos.MONTO }}</td>
+                                        <td></td>
+                                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+{% endblock content %}
+{% block scripts %}
+         <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+
+    <!-- Data Table -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                //Basic Example
+                $("#data-table").bootgrid({
+                    css: {
+                        icon: 'zmdi icon',
+                        iconColumns: 'zmdi-view-module',
+                        iconDown: 'zmdi-expand-more',
+                        iconRefresh: 'zmdi-refresh',
+                        iconUp: 'zmdi-expand-less',
+                        iconSearch: 'zmdi-search'
+                    },
+                });
+            });
+        </script>
+{% endblock scripts %}
