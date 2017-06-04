@@ -11,7 +11,6 @@ from sqlalchemy.sql import func
 from pyramid_mailer.message import Message
 from sqlalchemy.sql.expression import literal
 from sqlalchemy.orm import create_session
-
 from sqlalchemy import *
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import create_session

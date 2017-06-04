@@ -98,10 +98,12 @@ class DetalleControlEmpresa(Base):
     ID_CONTROL = Column(ForeignKey('control_empresa.ID_CONTROL'), index=True)
     ID_EMPLEADO = Column(ForeignKey('empleado.ID_EMPLEADO'), index=True)
     ID_VEHICULO = Column(ForeignKey('vehiculo.ID_VEHICULO'), index=True)
+    ID_BODEGA = Column(ForeignKey('bodega.ID_BODEGA'), index=True)
     TIPO_CONTROL_DET=Column(String(20))
     control_empresa = relationship('ControlEmpresa', primaryjoin='DetalleControlEmpresa.ID_CONTROL == ControlEmpresa.ID_CONTROL', backref='detalle_control_empresas')
     empleado = relationship('Empleado', primaryjoin='DetalleControlEmpresa.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='detalle_control_empresas')
     vehiculo = relationship('Vehiculo', primaryjoin='DetalleControlEmpresa.ID_VEHICULO == Vehiculo.ID_VEHICULO', backref='detalle_control_empresas')
+    bodega = relationship('Bodega', primaryjoin='DetalleControlEmpresa.ID_BODEGA == Bodega.ID_BODEGA', backref='detalle_control_empresas')
 
 
 class DetalleImportacion(Base):

@@ -76,7 +76,7 @@
                        </div>
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-                   
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 {{ label('Marca','col-sm-2 control-label') }}
@@ -100,11 +100,9 @@
                                             disabled="true">
                                         <option>Selecccione un modelo</option>
                                     </select>
-
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 {{ label('Chasis','col-sm-2 control-label') }}
@@ -269,7 +267,6 @@
                   <input id="himportancion" type="hidden" name="ID_IMPORTACION" class="form-control" value=""/>
                  <div class="col-sm-2">
                         {{ input('submit','form-control btn btn-primary', type='submit',value='Guardar') }}
-
                  </div>
                       </br>
                         </br>
@@ -330,8 +327,9 @@ var options = '<option value="Z">Seleccione un modelo</option>';
 var array=JSON.parse(models.json_models);
 console.log(array);
 for (var i = 0; i < array.length; i++) {
+  var newValue = array[i].MODELO.replace(new RegExp('\'', 'g'),"");
 
-options += '<option value="' + array[i].ID_MODELO + '">' + array[i].MODELO + '</option>';
+options += '<option value="' + array[i].ID_MODELO + '">'+newValue+'</option>';
 }
 $("select#ID_MODELO").html(options);
 $("select#ID_MODELO option:first").attr('selected', 'selected');

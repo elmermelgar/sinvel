@@ -37,5 +37,8 @@ def includeme(config):
     config.add_route('aprobar_salidas_guardar', '/salida_reparacion/aprobar_salidas/save')
     config.add_route('buscar_tipo_remolque', '/salida_reparacion/verificar_remolque/{id_tipo_remolque}')
 
+    ################Entradas#######################
+    config.add_route('registro_control_entrada','/entrada/registro_control_entrada')
+    config.add_route('registro_entrada_control_guardar','/entrada/registro_entrada_control_guardar')
 
     config.add_route('remolques', '/get_remolques')
