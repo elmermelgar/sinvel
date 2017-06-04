@@ -14,7 +14,7 @@ def includeme(config):
     #config.add_route('registrar_vehiculo', '/RegistroVehiculo/{id_importacion}')
     config.add_route('agregar_importador', '/AgregarImportador')
     config.add_route('costo_veh', '/costo_vehiculo/{id_vehiculo}')
-    config.add_route('detalle_costo', '/detalle_costo/{id_tipo_costo}')
+    config.add_route('detalle_costo', '/detalle_costo/{id_costo}')
 
     config.add_route('guardar_importador', '/AgregarImportador/guardar')
     ##prueba para envio##

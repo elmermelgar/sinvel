@@ -1,6 +1,6 @@
 import bcrypt
 from pyramid.view import view_config
-from ..models import Costo,User,Vehiculo,Importacion,Importador,TipoCosto
+from ..models import Costo,User,Vehiculo,Importacion,Importador,TipoCosto,DetalleControlEmpresa,Reparacion
 import jsonpickle
 from sqlalchemy.exc import DBAPIError
 import transaction
@@ -22,17 +22,21 @@ class costoVehiculo(object):
     def costo_ve (self):
         id_vehiculo=self.request.matchdict['id_vehiculo']
         costos = self.query_costos.filter(Costo.ID_VEHICULO==id_vehiculo).all()
-
-
-
         return {'costos': costos}
 
 
 
     @view_config(route_name='detalle_costo', renderer='../templates/costos/detalle_costo.jinja2', request_method='GET')
     def detalle_costo(self):
-        id_tipo_costo = self.request.matchdict['id_tipo_costo']
-        det_cos = self.query_costos.filter(Costo.ID_TIPO_COSTO == id_tipo_costo).all()
-        return {'det_cos': det_cos}
+        id_costo = self.request.matchdict['id_costo']
+        costo = self.request.dbsession.query(Costo).\
+            filter(Costo.ID_COSTO==id_costo).one()
+       # det_cos = self.query_costos.filter(Costo.ID_COSTO == id_costo).one()
+        det_cos = self.request.dbsession.query(Costo,DetalleControlEmpresa,Reparacion).\
+            filter(Costo.ID_VEHICULO==DetalleControlEmpresa.ID_VEHICULO)\
+            .filter(DetalleControlEmpresa.ID_DET_CONTROL==Reparacion.ID_DET_CONTROL)\
+             .filter(Costo.ID_COSTO==id_costo).one()
+
+        return {'det_cos': det_cos,'id_vehicu':costo.ID_VEHICULO}
 
 
