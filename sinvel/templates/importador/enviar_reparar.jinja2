@@ -1,0 +1,133 @@
+{% extends "../layout.jinja2" %}
+
+<!-- CSS -->
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+{% endblock styles %}
+
+{% block content %}
+
+    <br/>
+    <div class="container">
+        <form class="form-horizontal" action="{{ request.route_url('enviarVehRepararGuardar') }}" method="post">
+            <div class="tile">
+                <div class="t-header">
+                    <div class="th-title">ENVIAR VEHICULO A REPARAR
+                        <small>SOME_INFO_HERE</small>
+                    </div>
+                    <a href="{{ request.route_url('bodegas') }}" style="float: right; margin-top: -35px"
+                       class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px"
+                                                                  class="zmdi zmdi-arrow-back"></i></a>
+                    <br/>
+
+
+                </div>
+
+
+                <div class="t-body tb-padding">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Tipo de reparacion: </label>
+                                <div class="form-group col-md-10">
+                                    <select id="ID_TIPO_REPARACION" name="ID_TIPO_REPARACION"
+                                            class="form-control js-example-basic-single js-states"
+                                            required>
+                                        <option value="Z">Seleccione un Tipo de Reparacion</option>
+                                        {% for trep in items_trep %}
+                                            <option value="{{ trep.ID_TIPO_REPARACION }}">{{ trep.TIPO_REPARACION }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Taller: </label>
+                                <div class="form-group col-md-10">
+                                    <select id="ID_TALLER" name="ID_TALLER"
+                                            class="form-control js-example-basic-single js-states"
+                                            disabled="true" required>
+                                        <option>Selecccione un taller</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Descripción de la reparación: </label>
+                                <div class="form-group col-md-10">
+                                    <textarea id="DESCRIP_REPARACION" class="form-control" name="DESCRIP_REPARACION"
+                                              rows="6"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-group col-md-10">
+                                    <button class="form-control btn bg-lightblue" type="submit" style="margin-right: 50px; width: auto;">
+                                        Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            // turn the element to select2 select style
+            $(".js-example-basic-single").select2({
+                placeholder: "Seleccione...",
+                allowClear: true
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(
+            function () {
+                $("select#ID_TIPO_REPARACION").change(function () {
+                    if ($(this).val() == 'Z') {
+                        $("select#ID_TALLER").html("<option>Seleccione tipo de reparacion</option>");
+                        $("select#ID_TALLER").attr('disabled', true);
+                    }
+                    else {
+                        var url = "/tipoRep/" + $(this).val() + "/busqtalleres";
+                        var trep = $(this).val();
+                        $.getJSON(url, function (talleres) {
+                            var options = '<option value="Z">Seleccione un taller</option>';
+                            var array = JSON.parse(talleres.json_talleres);
+                            console.log(array);
+                            for (var i = 0; i < array.length; i++) {
+                                options += '<option value="' + array[i].ID_TALLER + '">' + array[i].NOMBRE_TALLER.replace(new RegExp('\'', 'g'), "") + '</option>';
+                            }
+                            $("select#ID_TALLER").html(options);
+                            $("select#ID_TALLER option:first").attr('selected', 'selected');
+                            $("select#ID_TALLER").attr('disabled', false);
+                        });
+                    }
+                });
+                $("select#ID_TALLER").change(function (vent) {
+                    if ($(this).val() == -1) {
+                        return;
+                    }
+                });
+            });
+    </script>
+{% endblock scripts %}
