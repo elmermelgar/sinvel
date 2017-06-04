@@ -1,14 +1,15 @@
 from pyramid.view import view_config
-from ..models import Importacion,EstadoVeh,Empleado,Vehiculo,DetalleImportacion,Marca,Modelo
+from ..models import Importacion,EstadoVeh,Empleado,Vehiculo,DetalleImportacion,Marca,Modelo,DetalleControlEmpresa,Remolque,TipoRemolque,ControlEmpresa
 import jsonpickle
 from sqlalchemy.exc import DBAPIError
 import transaction
 from pyramid.httpexceptions import HTTPFound
-
+from ..models import get_engine
 from sqlalchemy.sql import func
 from pyramid_mailer.message import Message
 import jsonpickle
 import json
+import time
 
 
 import os
@@ -30,9 +31,9 @@ class RegistroVehiculo(object):
     @view_config(route_name='buscar_importacion', renderer='json')
     def buscarImportacion(self):
         empleado=self.request.dbsession.query(Empleado).filter(Empleado.ID_USER==self.user.id).one()
-        id_importacion = self.request.matchdict['id_importacion']
+        no_importacion = self.request.matchdict['id_importacion']
         try:
-            self.importacion=self.request.dbsession.query(Importacion).filter(Importacion.ID_IMPORTACION==id_importacion).first()
+            self.importacion=self.request.dbsession.query(Importacion).filter(Importacion.NUM_REGISTRO==no_importacion).first()
         except DBAPIError:
             print('Error')
         if self.importacion is not None:
@@ -49,9 +50,11 @@ class RegistroVehiculo(object):
     @view_config(route_name='guardar_registro_vehiculo', request_method='POST')
     def guardarRegistroVehiculo(self):
         try:
+                empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
                 data = self.request.POST
                 vehiculo = Vehiculo()
                 detalleImportacion=DetalleImportacion()
+                detalleControlEmpresa=DetalleControlEmpresa()
                 #Guardando el vehiculo
                 for key, value in data.items():
                         print(key,value)
@@ -60,13 +63,18 @@ class RegistroVehiculo(object):
                 transaction.commit()
                 query=self.request.dbsession.query(func.max(Vehiculo.ID_VEHICULO).label('id_vehiculo')).one()
                 id_vehiculo=query.id_vehiculo
-
+                #Guardando DetalleImportacion
                 for key, value in data.items():
-
                         print(key,value)
                         setattr(detalleImportacion, key, value)
                 detalleImportacion.ID_VEHICULO=id_vehiculo
                 self.request.dbsession.add(detalleImportacion)
+                transaction.commit()
+                #Guardando DetalleControlEmpresa
+                detalleControlEmpresa.TIPO_CONTROL_DET='ENTRA'
+                detalleControlEmpresa.ID_VEHICULO=id_vehiculo
+                detalleControlEmpresa.ID_BODEGA=empleado.ID_BODEGA
+                self.request.dbsession.add(detalleControlEmpresa)
                 transaction.commit()
         except DBAPIError:
             return print('Ocurrio un error al insertar el registro')
@@ -77,11 +85,65 @@ class RegistroVehiculo(object):
     @view_config(route_name='models', request_method='GET', renderer='json')
     def all_json_models(self):
         current_brand = self.request.matchdict['id_marca']
-        print('Marca')
-        print(current_brand)
         models = self.request.dbsession.query(Modelo).filter(Modelo.ID_MARCA==current_brand).all()
         json_models = jsonpickle.encode(models,max_depth=2)
         return {'json_models': json_models}
+
+    @view_config(route_name='registro_control_entrada', renderer='../templates/registrar_entrada.jinja2',
+                 request_method='GET')
+    def registroControlEntrada(self):
+        remolques = None
+        entradas = None
+        try:
+
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
+            remolques = self.request.dbsession.query(Remolque).filter(Remolque.ID_BODEGA == empleado.ID_BODEGA) \
+                .filter(Remolque.DISPONIBLE == 0)
+            entradas = self.request.dbsession.query(DetalleControlEmpresa, Vehiculo). \
+                join(Vehiculo) \
+                .filter(DetalleControlEmpresa.ID_CONTROL == None) \
+                .filter(DetalleControlEmpresa.ID_EMPLEADO == None) \
+                .filter(DetalleControlEmpresa.ID_BODEGA == empleado.ID_BODEGA) \
+                .filter(DetalleControlEmpresa.TIPO_CONTROL_DET =='ENTRA').all()
+
+
+        except DBAPIError:
+            print('Error al recuperar los remolques')
+        return {'entradas': entradas, 'remolques': remolques}
+
+    @view_config(route_name='registro_entrada_control_guardar', request_method='POST')
+    def registroControlSave(self):
+        id_user=self.user.id
+        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel_2'}
+        engine = get_engine(settings)
+        connection = engine.raw_connection()
+        cursor = connection.cursor()
+
+        control = ControlEmpresa()
+        id_remolque = self.request.POST['ID_REMOLQUE']
+        descripcion_control = self.request.POST['DESCRIPCION_CONTROL']
+        control.DESCRIPCION_CONTROL = descripcion_control
+        control.ID_REMOLQUE = id_remolque
+        control.TIPO_CONTROL = 'ENTRA'
+        control.FECHA_CONTROL = time.strftime("%x")
+        control.HORA_CONTROL = time.strftime("%H:%M:%S")
+        self.request.dbsession.add(control)
+        transaction.commit()
+        query = self.request.dbsession.query(func.max(ControlEmpresa.ID_CONTROL).label('id_control_empresa')).one()
+        id_ctrl_emp = query.id_control_empresa
+        ids_det_control = self.request.params.getall("selected_vehiculos")
+        try:
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == id_user).one()
+            for id_det_ctrl_emp in ids_det_control:
+                args = [int(id_det_ctrl_emp), id_ctrl_emp,empleado.ID_EMPLEADO, 0]
+                result_args = cursor.callproc('sp_update_entrada', args)
+                print(result_args[0])
+        except DBAPIError:
+            print('Error al realizar la transaccion')
+        finally:
+            cursor.close()
+            connection.commit()
+        return HTTPFound(location='/entrada/registro_control_entrada')
 
     @view_config(route_name='generar_reporte', request_method='GET',renderer='../templates/registrar_vehiculo.jinja2')
     def generarReporte(self):

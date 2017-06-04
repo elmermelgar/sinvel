@@ -1,4 +1,4 @@
-{% extends "../layout.jinja2" %}
+{% extends "../templates/layout.jinja2" %}
 {% block styles %}
      <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
 <link href="{{request.static_url('sinvel:static/css/wizard.css')}}" rel="stylesheet">
@@ -19,14 +19,14 @@
                         </a>
                     </li>
 
-                    <li role="presentation" class="disabled">
+                    <li role="presentation" class="active">
                         <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Ingresar control salida">
                             <span class="round-tab">
                                 <i class="zmdi zmdi-boat"></i>
                             </span>
                         </a>
                     </li>
-                    <li role="presentation" class="active">
+                    <li role="presentation" class="disabled">
                         <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Aprobar salidas">
                             <span class="round-tab">
                                 <i class="zmdi zmdi-car"></i>
@@ -49,18 +49,48 @@
 {#    Fin del Wizard #}
     <div class="container" >
       <div class="col-12 col-lg-12 col-sm-9 " xmlns="http://www.w3.org/1999/html">
-        <form class="form-horizontal" action="{{ request.route_url('aprobar_salidas_guardar') }}" method="post">
+        <form class="form-horizontal" action="{{ request.route_url('registro_entrada_control_guardar') }}" method="post">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h2 class="panel-title">Aprobar salidas</h2>
+                    <h2 class="panel-title">Registrar entrada</h2>
                 </div>
                 </br>
 
                 <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                                <label class="col-sm-4 control-label">Remolque:</label>
+                                <div class="form-group col-md-8 ">
+                                    <select name="ID_REMOLQUE" class="form-control js-example-basic-single js-states"
+                                            required>
+                                        <option value="">Seleccione un remolque</option>
+                                        {% for remolque in remolques %}
+                                            <option value="{{ remolque.ID_REMOLQUE }}">{{ remolque.NOMBRE_REMOLQUE }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                        </div>
+                    </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Descripción entrada:</label>
+                                        <div class="form-group col-md-8">
+                                            <textarea class="form-control" name="DESCRIPCION_CONTROL" ></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                            {% if salidas %}
+                            {% if entradas %}
                                 <div class="tile">
-
+                                <div class="t-header">
+                                    <div class="th-title">
+                                        Vehiculos a ingresar
+                                    </div>
+                                </div>
                                 <table id="data-table" class="table table-hover table-bordered">
                                     <thead>
                                     <tr align="center">
@@ -68,35 +98,28 @@
                                         <th>Placa</th>
                                         <th>Marca</th>
                                         <th>Modelo</th>
-                                        <th>Tipo salida</th>
-                                        <th>Fecha de registro</th>
-                                        <th>Descripción</th>
+                                        <th>Año</th>
 
 
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for salida in salidas %}
+                                    {% for entrada in entradas %}
                                         <tr>
                                             <td><input type="checkbox" name="selected_vehiculos"
-                                                       value="{{ salida[0].ID_DET_CONTROL }}"></td>
-                                            <td>{{ salida[1].PLACA }}</td>
-                                            <td>{{ salida[1].modelo.marca.MARCA }}</td>
-                                            <td>{{ salida[1].modelo.MODELO }}</td>
-                                            <td>{% if  salida[0].TIPO_CONTROL_DET=='SALREP' %}
-                                                REPARACION
-                                                {% else %}
-                                                VENTA
-                                                {% endif %}
-                                            </td>
-                                            <td>{{ salida[2].FECHA_CONTROL }}</td>
-                                            <td>{{ salida[2].DESCRIPCION_CONTROL }}</td>
+                                                       value="{{ entrada[0].ID_DET_CONTROL }}"></td>
+                                            <td>{{ entrada[1].PLACA }}</td>
+                                            <td>{{ entrada[1].modelo.marca.MARCA }}</td>
+                                            <td>{{ entrada[1].modelo.MODELO }}</td>
+                                            <td>{{ entrada[1].ANO }}</td>
+
+
                                         </tr>
                                     {% endfor %}
                                     </tbody>
                                 </table>
                             {% else %}
-                                No hay salidas pendientes para aprobación
+                                No existen entradas disponibles para mostrar
                             {% endif %}
                             </div>
 
@@ -106,15 +129,13 @@
                                  <a href="{{ request.route_url('registroImportacion') }}" class="btn bg-lightblue" style="float: right; margin-right: 50px"> Continuar <i class="zmdi zmdi-arrow-forward"></i></a>
                                  <button class="form-control btn bg-lightblue" type="submit"
                                         style="float: right; margin-right: 50px; width: auto;">
-                                    Aprobar <i class="zmdi zmdi-check"></i>
+                                    Guardar <i class="zmdi zmdi-save"></i>
                                 </button>
                             </div>
                         </div>
 
                 </div>
 
-
-            </div>
         </form>
     </div>
     </div>

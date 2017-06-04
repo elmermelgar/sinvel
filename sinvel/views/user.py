@@ -25,7 +25,6 @@ class UserView(object):
     @view_config(route_name='user_create', request_method='POST')
     def createUser(self):
         try:
-
             data = self.request.POST
             user = seguridad.User()
             for key, value in data.items():
