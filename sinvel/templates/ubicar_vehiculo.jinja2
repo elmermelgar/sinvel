@@ -1,0 +1,165 @@
+{% extends "layout.jinja2" %}
+
+<!-- CSS -->
+{% block styles %}
+    <link href="{{ request.static_url('sinvel:static/css/wizard.css') }}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+    <div class="wizard">
+        <div class="wizard-inner">
+            <div class="connecting-line"></div>
+            <ul class="nav nav-tabs" role="tablist">
+
+                <li role="presentation">
+                    <a href="{{ request.route_url('bodegas') }}" data-toggle="tab" aria-controls="step1" role="tab"
+                       title="Verificar Disponibilidad">
+                            <span class="round-tab">
+                                <i class="zmdi zmdi-search-for"></i>
+                            </span>
+                    </a>
+                </li>
+
+                <li role="presentation" class="disabled">
+                    <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Ingresar Importación">
+                            <span class="round-tab">
+                                <i class="zmdi zmdi-boat"></i>
+                            </span>
+                    </a>
+                </li>
+                <li role="presentation" class="disabled">
+                    <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Registrar Vehículos">
+                            <span class="round-tab">
+                                <i class="zmdi zmdi-car"></i>
+                            </span>
+                    </a>
+                </li>
+
+                <li role="presentation" class="active">
+                    <a href="#step4" data-toggle="tab" aria-controls="step4" role="tab" title="Subir Fotos y Ubicar">
+                            <span class="round-tab">
+                                <i class="zmdi zmdi-pin-drop"></i>
+                            </span>
+                    </a>
+                </li>
+
+                <li role="presentation" class="disabled">
+                    <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Finalizar">
+                            <span class="round-tab">
+                                <i class="zmdi zmdi-check-circle-u"></i>
+                            </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br/>
+    <div class="container">
+        <div class="tile">
+            <div class="t-header">
+                <div class="th-title">{{ bodega.NOMBRE_BODEGA }}
+                    <small>{{ bodega.DESCRIPCION_BODEGA }}.</small>
+                </div>
+                <a href="{{ request.route_url('bodegas') }}" style="float: right; margin-top: -35px"
+                   class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+                <br/>
+                <div class="col-md-3">
+                    <p class="c-black f-500 m-b-5">Dirección</p>
+                    <small>{{ bodega.DIRECCION_BODEGA }} </small>
+                </div>
+                <div class="col-md-3">
+                    <p class="c-black f-500 m-b-5">Departamento</p>
+                    <small>{{ bodega.municipio.departamento.DEPARTAMENTO }} </small>
+                    <br/>
+                </div>
+                <div class="col-md-3">
+                    <p class="c-black f-500 m-b-5">Municipio</p>
+                    <small>{{ bodega.municipio.MUNICIPIO }} </small>
+                    <br/>
+                </div>
+                <div class="col-md-3">
+
+                </div>
+
+            </div>
+
+
+            <div class="t-body tb-padding">
+
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-sm-12 m-b-25">
+                        <div class="panel-group" data-collapse-color="cyan" id="accordionRed" role="tablist"
+                             aria-multiselectable="true">
+                            {% if item_ub %}
+                                <h1>VEHICULO UBICADO</h1>
+                                <div class="tile">
+                                    <div class="t-header">
+                                        <div class="th-title">Nivel
+                                            <small>{{ item_ub.ubicacion.nivel.DESCRIPCION_NIVEL }}</small>
+                                        </div>
+                                        <br/>
+                                        <div class="th-title">Ubicacion
+                                            <small>{{ item_ub.ubicacion.CORRELATIVO }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+
+                                {% if niveles %}
+                                    {% for nivel in niveles %}
+                                        <div class="panel panel-collapse">
+                                            <div class="panel-heading active" role="tab">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordionRed"
+                                                       href="#accordionRed-{{ nivel.ID_NIVEL }}" aria-expanded="true">
+                                                        {{ nivel.DESCRIPCION_NIVEL }}
+                                                        {# <div style="float: right"><a style="margin-top: -60px" href="#" class="btn btn-alt btn-primary"><i class="zmdi zmdi-border-color"></i></a></div>#}
+                                                    </a>
+
+                                                </h4>
+                                            </div>
+                                            <div id="accordionRed-{{ nivel.ID_NIVEL }}" class="collapse in"
+                                                 role="tabpanel">
+                                                <div class="panel-body">
+                                                    {% if ubicaciones %}
+                                                        {% for ubicacion in ubicaciones %}
+                                                            {% if ubicacion.ID_NIVEL == nivel.ID_NIVEL %}
+                                                                {% if ubicacion.DISPOONIBLE == 1 %}
+                                                                    <a href="{{ request.route_url('ubiVehGuardar',idv=idVeh, idu=ubicacion.ID_UBICACION) }}"
+                                                                       style="height: 80px; width: 40px; margin: 3px"
+                                                                       class="btn bg-lightgreen"><i
+                                                                            style="margin-top: 18px"
+                                                                            class="zmdi zmdi-car"></i><br/> {{ ubicacion.CORRELATIVO }}
+                                                                    </a>
+                                                                {% else %}
+                                                                    <button style="height: 80px; width: 40px; margin: 3px"
+                                                                            class="btn bg-deeporange"><i
+                                                                            class="zmdi zmdi-close"></i><br/> {{ ubicacion.CORRELATIVO }}
+                                                                    </button>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </div>
+                                                {#    <a href="#" class="btn btn-alt btn-primary"><i class="zmdi zmdi-plus-square"></i> Nueva Ubicación</a>#}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{{ request.static_url('sinvel:static/js/wizard.js') }}"></script>
+{% endblock scripts %}
