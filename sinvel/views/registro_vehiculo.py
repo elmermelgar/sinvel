@@ -1,11 +1,14 @@
 from pyramid.view import view_config
-from ..models import Importacion,EstadoVeh,Empleado,Vehiculo,DetalleImportacion
+from ..models import Importacion,EstadoVeh,Empleado,Vehiculo,DetalleImportacion,Marca,Modelo
 import jsonpickle
 from sqlalchemy.exc import DBAPIError
 import transaction
 from pyramid.httpexceptions import HTTPFound
+
 from sqlalchemy.sql import func
 from pyramid_mailer.message import Message
+import jsonpickle
+import json
 
 
 import os
@@ -20,7 +23,8 @@ class RegistroVehiculo(object):
     @view_config(route_name='registrar_vehiculo',request_method='GET', renderer='../templates/registrar_vehiculo.jinja2')
     def createRegistro(self):
         items_estado_vehiculo=self.request.dbsession.query(EstadoVeh).all()
-        return {'items_estado_vehiculo': items_estado_vehiculo,'importacion':self.importacion}
+        items_marcas=self.request.dbsession.query(Marca).all()
+        return {'items_estado_vehiculo': items_estado_vehiculo,'importacion':self.importacion,'items_marcas':items_marcas}
 
 
     @view_config(route_name='buscar_importacion', renderer='json')
@@ -28,7 +32,7 @@ class RegistroVehiculo(object):
         empleado=self.request.dbsession.query(Empleado).filter(Empleado.ID_USER==self.user.id).one()
         id_importacion = self.request.matchdict['id_importacion']
         try:
-            self.importacion=self.request.dbsession.query(Importacion).filter(Importacion.ID_IMPORTACION==id_importacion).filter(Importacion.ID_BODEGA==empleado.ID_BODEGA).first()
+            self.importacion=self.request.dbsession.query(Importacion).filter(Importacion.ID_IMPORTACION==id_importacion).first()
         except DBAPIError:
             print('Error')
         if self.importacion is not None:
@@ -68,13 +72,24 @@ class RegistroVehiculo(object):
             return print('Ocurrio un error al insertar el registro')
         return HTTPFound(location='/RegistrarVehiculo')
 
+
+
+    @view_config(route_name='models', request_method='GET', renderer='json')
+    def all_json_models(self):
+        current_brand = self.request.matchdict['id_marca']
+        print('Marca')
+        print(current_brand)
+        models = self.request.dbsession.query(Modelo).filter(Modelo.ID_MARCA==current_brand).all()
+        json_models = jsonpickle.encode(models,max_depth=2)
+        return {'json_models': json_models}
+
     @view_config(route_name='generar_reporte', request_method='GET',renderer='../templates/registrar_vehiculo.jinja2')
     def generarReporte(self):
         mailer = self.request.registry['mailer']
         message = Message(subject="hello world",
                           sender="camaraipraspi3@gmail.com",
                           recipients=["polanco260593@gmail.com"],
-                          body="hola Polanco desde pyramid XD")
+                          body="hola Polanco desde pyramid")
         mailer.send_immediately(message, fail_silently=False)
 
         print('HOLA')

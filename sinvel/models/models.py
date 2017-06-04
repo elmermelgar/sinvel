@@ -6,6 +6,7 @@ from sqlalchemy.dialects.mysql.types import LONGBLOB
 from sqlalchemy.ext.declarative import declarative_base
 
 
+
 Base = declarative_base()
 metadata = Base.metadata
 
@@ -24,8 +25,7 @@ class Bodega(Base):
     NOMBRE_BODEGA = Column(String(50))
     DESCRIPCION_BODEGA = Column(String(200))
     DIRECCION_BODEGA = Column(String(200))
-    DEPARTAMENTO = Column(String(50))
-    MUNICIPIO = Column(String(50))
+
 
     municipio = relationship('Municipio', primaryjoin='Bodega.ID_MUNICIPIO == Municipio.ID_MUNICIPIO', backref='municipio_bodegas')
     municipio1 = relationship('Municipio', primaryjoin='Bodega.ID_MUNICIPIO == Municipio.ID_MUNICIPIO', backref='municipio_bodegas_0')
@@ -99,7 +99,7 @@ class DetalleControlEmpresa(Base):
     ID_CONTROL = Column(ForeignKey('control_empresa.ID_CONTROL'), index=True)
     ID_EMPLEADO = Column(ForeignKey('empleado.ID_EMPLEADO'), index=True)
     ID_VEHICULO = Column(ForeignKey('vehiculo.ID_VEHICULO'), index=True)
-
+    TIPO_CONTROL_DET=Column(String(20))
     control_empresa = relationship('ControlEmpresa', primaryjoin='DetalleControlEmpresa.ID_CONTROL == ControlEmpresa.ID_CONTROL', backref='detalle_control_empresas')
     empleado = relationship('Empleado', primaryjoin='DetalleControlEmpresa.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='detalle_control_empresas')
     vehiculo = relationship('Vehiculo', primaryjoin='DetalleControlEmpresa.ID_VEHICULO == Vehiculo.ID_VEHICULO', backref='detalle_control_empresas')
@@ -258,8 +258,9 @@ class Modelo(Base):
     __tablename__ = 'modelo'
 
     ID_MODELO = Column(Integer, primary_key=True)
-    ID_MARCA = Column(ForeignKey('marca.ID_MARCA'), ForeignKey('marca.ID_MARCA'), nullable=False, index=True)
     MODELO = Column(String(100))
+    ID_MARCA = Column(ForeignKey('marca.ID_MARCA'), ForeignKey('marca.ID_MARCA'), nullable=False, index=True)
+
 
     marca = relationship('Marca', primaryjoin='Modelo.ID_MARCA == Marca.ID_MARCA', backref='marca_modeloes')
     marca1 = relationship('Marca', primaryjoin='Modelo.ID_MARCA == Marca.ID_MARCA', backref='marca_modeloes_0')
@@ -310,7 +311,7 @@ class Remolque(Base):
 
     bodega = relationship('Bodega', primaryjoin='Remolque.ID_BODEGA == Bodega.ID_BODEGA', backref='remolques')
     empleado = relationship('Empleado', primaryjoin='Remolque.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='remolques')
-    tipo_remolque = relationship('TipoRemolque', primaryjoin='Remolque.ID_TIPO_REMOLQUE == TipoRemolque.ID_TIPO_REMOLQUE', backref='remolques')
+    tipo_remolque = relationship('TipoRemolque', primaryjoin='Remolque.ID_TIPO_REMOLQUE == TipoRemolque.ID_TIPO_REMOLQUE', backref='remolques',lazy="joined", innerjoin=True)
 
 
 class Reparacion(Base):
@@ -455,6 +456,7 @@ class Vehiculo(Base):
     ID_VEHICULO = Column(Integer, primary_key=True)
     ID_ESTADO = Column(ForeignKey('estado_veh.ID_ESTADO'), index=True)
     ID_MODELO = Column(ForeignKey('modelo.ID_MODELO'), ForeignKey('modelo.ID_MODELO'), index=True)
+    ID_IMPORTACION = Column(ForeignKey('importacion.ID_IMPORTACION'), index=True)
     LINEA_ESTILO = Column(String(40))
     CHASIS = Column(String(50))
     ANO = Column(Integer)
@@ -470,6 +472,7 @@ class Vehiculo(Base):
     FOTO_VEH = Column(LONGBLOB)
     PLACA = Column(String(10))
 
+    importacion=relationship('Importacion', primaryjoin='Vehiculo.ID_IMPORTACION == Importacion.ID_IMPORTACION', backref='importaciones')
     estado_veh = relationship('EstadoVeh', primaryjoin='Vehiculo.ID_ESTADO == EstadoVeh.ID_ESTADO', backref='vehiculoes')
     modelo = relationship('Modelo', primaryjoin='Vehiculo.ID_MODELO == Modelo.ID_MODELO', backref='modelo_vehiculoes')
     modelo1 = relationship('Modelo', primaryjoin='Vehiculo.ID_MODELO == Modelo.ID_MODELO', backref='modelo_vehiculoes_0')

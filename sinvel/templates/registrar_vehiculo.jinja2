@@ -1,6 +1,7 @@
 {% extends "layout.jinja2" %}
 {% block styles %}
 <link href="{{request.static_url('sinvel:static/css/wizard.css')}}" rel="stylesheet">
+     <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
 {% endblock styles %}
 {% block content %}
         {#    Inicio del Wizard #}
@@ -73,11 +74,21 @@
                                 </div>
                             </div>
                        </div>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+                   
                         <div class="col-md-6">
                             <div class="form-group">
                                 {{ label('Marca','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('MARCA', 'form-control', type='text',required='true') }}
+                                         <select id="ID_MARCA" name="ID_MARCA" class="form-control js-example-basic-single js-states"
+                                            required>
+                                        <option value="Z">Seleccione una marca</option>
+                                        {% for marca in items_marcas %}
+                                            <option value="{{ marca.ID_MARCA }}">{{ marca.MARCA }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -85,10 +96,15 @@
                             <div class="form-group">
                                 {{ label('Modelo','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('MODELO', 'form-control', type='text',required='true') }}
+                                    <select id="ID_MODELO" name="ID_MODELO" class="form-control js-example-basic-single js-states"
+                                            disabled="true">
+                                        <option>Selecccione un modelo</option>
+                                    </select>
+
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 {{ label('Chasis','col-sm-2 control-label') }}
@@ -141,7 +157,23 @@
                        <div class="form-group">
                                         {{ label('Tipo combustible','col-sm-2 control-label') }}
                                     <div class="form-group col-md-10">
-                                        {{ input('TIPO_COMBUSTIBLE', 'form-control', type='text',required='true') }}
+
+                                         <select name="TIPO_COMBUSTIBLE" class="form-control js-example-basic-single js-states"
+                                            required>
+                                        <option value="">Seleccione un tipo de combustible</option>
+
+                                            <option value="Gasolina">Gasolina</option>
+                                            <option value="Diesel">Diesel</option>
+                                            <option value="Etanol">Etanol</option>
+                                            <option value="Gas natural">Gas natural</option>
+                                            <option value="Electricidad">Electricidad</option>
+                                            <option value="Hidrogeno">Hidrogeno</option>
+                                            <option value="GLP">GLP</option>
+                                            <option value="Biodiesel">Biodiesel</option>
+                                            <option value="Metanol">Metanol</option>
+                                            <option value="P-Serie">P-Serie</option>
+
+                                    </select>
                                     </div>
                                  </div>
                       </div>
@@ -199,7 +231,8 @@
                     <div class="col-md-8">
                             {{ label('Desperfecto','col-sm-4 control-label') }}
                              <div class="form-group col-md-8 ">
-                                {{ input('DETALLE_DESPERFECTO', 'form-control', type='TEXT',required='true') }}
+                                 <textarea name="DETALLE_DESPERFECTO" cols="10" rows="5" class="form-control"></textarea>
+
                             </div>
                     </div>
                     <div class="col-md-8">
@@ -260,5 +293,62 @@
 
 {% endblock content %}
 {% block scripts %}
+     <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+
          <script src="{{request.static_url('sinvel:static/js/wizard.js') }}"></script>
+     <script type="text/javascript">
+        $(function () {
+            // turn the element to select2 select style
+            $(".js-example-basic-single").select2({
+                placeholder: "Seleccione uno...",
+                allowClear: true
+            });
+        });
+    </script>
+
+
+    <script type="text/javascript">
+
+$(document).ready(
+
+function() {
+
+$("select#ID_MARCA").change(function() {
+
+if ($(this).val() == 'Z') {
+
+$("select#ID_MODELO").html("<option>Select a model</option>");
+$("select#ID_MODELO").attr('disabled', true);
+}
+else {
+
+var url = "/models/" + $(this).val() + "/all_json_models";
+var brand = $(this).val();
+$.getJSON(url, function(models) {
+var options = '<option value="Z">Seleccione un modelo</option>';
+
+var array=JSON.parse(models.json_models);
+console.log(array);
+for (var i = 0; i < array.length; i++) {
+
+options += '<option value="' + array[i].ID_MODELO + '">' + array[i].MODELO + '</option>';
+}
+$("select#ID_MODELO").html(options);
+$("select#ID_MODELO option:first").attr('selected', 'selected');
+$("select#ID_MODELO").attr('disabled', false);
+});
+}
+});
+
+
+$("select#ID_MODELO").change(function(vent) {
+if ($(this).val() == -1) {
+return;
+}
+{#myAwesomeFunctionToCallWhenAModelIsSelected();#}
+});
+});
+
+
+</script>
 {% endblock scripts %}
