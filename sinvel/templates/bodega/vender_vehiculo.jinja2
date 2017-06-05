@@ -3,6 +3,8 @@
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
     <link href="{{request.static_url('sinvel:static/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+          href="{{ request.static_url('sinvel:static/css/bootstrap-datetimepicker.min.css') }}">
 {% endblock styles %}
 {% block content %}
     <div class="container c-boxed">
@@ -12,40 +14,44 @@
     <div class="tile">
                     <div class="t-header">
                         <div class="th-title">Registrar Nueva Bodega </div>
-                        <a href="{{ request.route_url('bodegas') }}" style="float: right; margin-top: -25px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+                        <a href="{{ request.route_url('vehiculosAsignados') }}" style="float: right; margin-top: -25px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
                     </div>
-                <form class="form-horizontal" action="{{ request.route_url('registroBodegaGuardar') }}" method="post">
+                <form class="form-horizontal" action="{{ request.route_url('actualizarVenta') }}" method="post">
                     <div class="t-body tb-padding">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-local-store"></i></span>
-                                    <input type="text" name="NOMBRE_BODEGA" class="form-control" placeholder="Nombre de Bodega">
+                                    <span class="input-group-addon"><i class="zmdi zmdi-money"></i></span>
+                                    <input type="hidden"  name="ID_VEHICULO" class="form-control" value="{{ venta.detalle_control_empresa.vehiculo.ID_VEHICULO }}">
+                                    <input type="hidden"  name="ID_VENTA" class="form-control" value="{{ venta.ID_VENTA }}">
+                                    <input type="hidden"  name="ID_ESTADO" class="form-control" value="6">
+                                    <input type="number" step="any" name="PRECIO_VENTA" class="form-control" placeholder="Precio de Venta">
                                 </div>
 
                                 <br/>
 
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-pin"></i></span>
-                                    <input type="text" name="DIRECCION_BODEGA" class="form-control" placeholder="Dirección">
+                                    <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                    <input type="text" name="FECHA_VENTA" class="form-control form_datetime" placeholder="Fecha de la Venta">
                                 </div>
 
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="input-group">
-                                    <input type="text" name="DESCRIPCION_BODEGA" class="form-control" placeholder="Descripción de la Bodega">
+                                    <input type="text" name="DESCRIP_VENTA" class="form-control" placeholder="Descripción de la Venta">
                                     <span class="input-group-addon last"><i class="zmdi zmdi-view-headline"></i></span>
                                 </div>
 
                                 <br/>
 
                                  <div class="input-group">
-                                     <select name="ID_MUNICIPIO" class="selectpicker" data-live-search="true"
+                                     <select name="ID_CLIENTE" class="selectpicker cliente" data-live-search="true" style="width: 495px"
                                             required>
-                                                {% for cliente in clientes %}
+
+                                         {% for cliente in clientes %}
                                                         <option value="{{ cliente.ID_CLIENTE }}" >{{ cliente.NOMBRE_CLIENTE }} {{ cliente.APELLIDO_CLIENTE }}</option>
-                                                {% endfor %}
+                                         {% endfor %}
                                     </select>
 {#                                    <span class="input-group-addon last"><i class="zmdi zmdi-my-location"></i></span>#}
                                 </div>
@@ -54,7 +60,7 @@
                         </div>
                     <br/>
                     <div style="text-align: center">
-                        <input  type="submit" style="width: 30%; height: 35px" class="btn bg-lightblue" value="Guardar Bodega">
+                        <input  type="submit" style="width: 30%; height: 35px" class="btn bg-lightblue" value="Guardar Venta">
                     </div>
 
                     </div>
@@ -66,15 +72,22 @@
 {% endblock content %}
 {% block scripts %}
     <script src="{{request.static_url('sinvel:static/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js') }}"></script>
-
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/moment.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ request.static_url('sinvel:static/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
     <script type="text/javascript">
         $(function () {
             // turn the element to select2 select style
-            $(".Municipios").select2({
-                placeholder: "Seleccione un municipio",
+            $(".cliente").select2({
+                placeholder: "Seleccione un cliente",
                 allowClear: true
             });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $(".form_datetime").datetimepicker({format: 'DD-MM-YYYY'});
         });
     </script>
 

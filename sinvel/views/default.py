@@ -5,7 +5,7 @@ from pyramid.security import NO_PERMISSION_REQUIRED,Authenticated
 from ziggurat_foundations.ext.pyramid.sign_in import ZigguratSignInSuccess
 from sqlalchemy.exc import DBAPIError
 from ..models.models import Empleado
-from ..models import MyModel
+from ..models import Venta
 from ..models import get_session_callable
 from ..models import ResourceFactory
 
@@ -14,7 +14,7 @@ class Vista(object):
 
 
     def __init__(self, request):
-        print('HOLA:')
+        self.request = request
         #emp=Empleado()
         #self.user=request.user.user_name
         #print(request.authenticated_userid)
@@ -26,10 +26,9 @@ class Vista(object):
 
     @view_config(route_name='home', renderer='../templates/home.jinja2', permission=NO_PERMISSION_REQUIRED)
     def my_view(self):
-
-
+        items_ventas = self.request.dbsession.query(Venta).all()
         #ResourceFactory(request)
-        return {'one': 'one'}
+        return {'one': 'one', 'ventas': items_ventas}
 
 
     @view_config(route_name='inicio', renderer='../templates/examples/inicio.jinja2',  permission='view')

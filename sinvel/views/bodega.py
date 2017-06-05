@@ -18,6 +18,7 @@ from sinvel.views.user import db_err_msg
 from ..models import Municipio
 from pyramid.httpexceptions import HTTPSeeOther
 from sqlalchemy.exc import DBAPIError
+from datetime import datetime
 
 
 class Bodega_IU(object):
@@ -172,3 +173,42 @@ class Bodega_IU(object):
 
         return {'vehiculo': items_vehiculo, 'user': self.user, 'clientes': items_clientes, 'venta': items_venta}
 
+    @view_config(route_name='actualizarVenta', request_method='POST')
+    def actualizarVenta(self):
+        try:
+            data = self.request.POST
+            id_ven = data.get('ID_VENTA')
+            id_veh = data.get('ID_VEHICULO')
+            dato1 = data.get('PRECIO_VENTA')
+            dato2 = data.get('DESCRIP_VENTA')
+            dato3 = datetime.strptime(data.get('FECHA_VENTA'), '%d-%m-%Y')
+            dato4 = data.get('ID_CLIENTE')
+
+            estadoVeh = self.request.dbsession.query(EstadoVeh).filter(EstadoVeh.COD_ESTADO == '006').one()
+            self.request.dbsession.query(Vehiculo).filter(Vehiculo.ID_VEHICULO == id_veh).update(
+                {"ID_ESTADO": estadoVeh.ID_ESTADO})
+
+            self.request.dbsession.query(Venta).filter(Venta.ID_VENTA == id_ven).update(
+                {"PRECIO_VENTA": dato1, "DESCRIP_VENTA": dato2, "FECHA_VENTA":dato3, "ID_CLIENTE": dato4 })
+
+            transaction.commit()
+
+        except DBAPIError:
+            print('Ocurrio un error al actualizar el registro')
+            print(db_err_msg)
+            # return Response(db_err_msg, content_type='text/plain', status=500)
+            return HTTPFound(location='/vehiculos_asignados')
+        return HTTPFound(location='/vehiculos_asignados')
+
+    @view_config(route_name='detalleVehiculoCliente', renderer='../templates/bodega/detalle_vehiculo_cliente.jinja2',
+                 request_method='GET')
+    def detalleVehiculoCliente(self):
+        id = int(self.request.matchdict['id_veh'])
+        id_ven = int(self.request.matchdict['id_ven'])
+        items_vehiculo = self.request.dbsession.query(Vehiculo).get(id)
+        items_venta = self.request.dbsession.query(Venta).get(id_ven)
+        items_estados = self.request.dbsession.query(EstadoVeh).all()
+        filename = 'sinvel/static/fotos_vehiculos/Vehiculo' + items_vehiculo.VIN + '.jpg'
+        with open(filename, 'wb') as f:
+            f.write(items_vehiculo.FOTO_VEH)
+        return {'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
