@@ -67,6 +67,7 @@ class Costo(Base):
     ID_VEHICULO = Column(ForeignKey('vehiculo.ID_VEHICULO'), index=True)
     DESCRIP_COSTO = Column(String(100))
     MONTO = Column(Numeric(10, 2))
+    FECHA_COSTO=Column(Date)
 
     tipo_costo = relationship('TipoCosto', primaryjoin='Costo.ID_TIPO_COSTO == TipoCosto.ID_TIPO_COSTO', backref='costoes')
     vehiculo = relationship('Vehiculo', primaryjoin='Costo.ID_VEHICULO == Vehiculo.ID_VEHICULO', backref='costoes')
@@ -146,6 +147,7 @@ class EstadoVeh(Base):
     ID_ESTADO = Column(Integer, primary_key=True)
     ESTADO = Column(String(50))
     DESCRIP_ESTADO = Column(String(200))
+    COD_ESTADO = Column(String(10))
 
 
 class ExternalIdentity(Base):
