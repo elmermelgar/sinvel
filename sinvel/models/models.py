@@ -147,6 +147,7 @@ class EstadoVeh(Base):
     ID_ESTADO = Column(Integer, primary_key=True)
     ESTADO = Column(String(50))
     DESCRIP_ESTADO = Column(String(200))
+    COD_ESTADO = Column(String(10))
 
 
 class ExternalIdentity(Base):

@@ -10,19 +10,30 @@
     <br/>
     <div class="container">
         <form class="form-horizontal" action="{{ request.route_url('enviarVehRepararGuardar') }}" method="post">
+            <input id="idVeh" name="idVeh" type="hidden" value="{{ veh.ID_VEHICULO }}">
             <div class="tile">
                 <div class="t-header">
-                    <div class="th-title">ENVIAR VEHICULO A REPARAR
-                        <small>SOME_INFO_HERE</small>
+                    <div class="th-title">
+                        ENVIAR VEHICULO A REPARAR
                     </div>
                     <a href="{{ request.route_url('bodegas') }}" style="float: right; margin-top: -35px"
                        class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px"
                                                                   class="zmdi zmdi-arrow-back"></i></a>
                     <br/>
-
-
+                    <div class="col-md-1">
+                        <p class="c-black f-500 m-b-5">ID:</p>
+                        <small>{{ veh.ID_VEHICULO }} </small>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="c-black f-500 m-b-5">Marca:</p>
+                        <small>{{ veh.modelo.marca.MARCA }} </small>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="c-black f-500 m-b-5">Modelo:</p>
+                        <small>{{ veh.modelo.MODELO }} </small>
+                    </div>
+                    <br/>
                 </div>
-
 
                 <div class="t-body tb-padding">
 
@@ -72,7 +83,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="form-group col-md-10">
-                                    <button class="form-control btn bg-lightblue" type="submit" style="margin-right: 50px; width: auto;">
+                                    <button class="form-control btn bg-lightblue" type="submit"
+                                            style="margin: 5px 50px; width: auto;">
                                         Guardar
                                     </button>
                                 </div>
@@ -109,11 +121,10 @@
                     }
                     else {
                         var url = "/tipoRep/" + $(this).val() + "/busqtalleres";
-                        var trep = $(this).val();
                         $.getJSON(url, function (talleres) {
                             var options = '<option value="Z">Seleccione un taller</option>';
                             var array = JSON.parse(talleres.json_talleres);
-                            console.log(array);
+                            /*console.log(array);*/
                             for (var i = 0; i < array.length; i++) {
                                 options += '<option value="' + array[i].ID_TALLER + '">' + array[i].NOMBRE_TALLER.replace(new RegExp('\'', 'g'), "") + '</option>';
                             }
