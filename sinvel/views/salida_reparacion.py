@@ -121,6 +121,7 @@ class SalidaReparacion(object):
                 .filter(Ubicacion.ID_NIVEL == Nivel.ID_NIVEL) \
                 .filter(Nivel.ID_BODEGA == empleado.ID_BODEGA) \
                 .filter(DetalleControlEmpresa.ID_EMPLEADO == None) \
+                .filter((DetalleControlEmpresa.TIPO_CONTROL_DET == 'SALREP') |(DetalleControlEmpresa.TIPO_CONTROL_DET == 'Venta')) \
                 .all()
 
 
