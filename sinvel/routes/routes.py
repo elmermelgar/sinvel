@@ -12,11 +12,7 @@ def includeme(config):
     config.add_route('models','/models/{id_marca}/all_json_models')
     #config.add_route('buscar_importacion', '/RegistrarVehiculo/BuscarImportacion?id_import={id_importacion}')
     #config.add_route('registrar_vehiculo', '/RegistroVehiculo/{id_importacion}')
-    config.add_route('agregar_importador', '/AgregarImportador')
-    config.add_route('costo_veh', '/costo_vehiculo/{id_vehiculo}')
-    config.add_route('detalle_costo', '/detalle_costo/{id_costo}')
 
-    config.add_route('guardar_importador', '/AgregarImportador/guardar')
     ##prueba para envio##
 
 
@@ -30,7 +26,11 @@ def includeme(config):
     config.add_route('generar_reporte', '/generar')
 
 
-
+    ############IMPORTADOR Y COSTOS###################
+    config.add_route('agregar_importador', '/AgregarImportador')
+    config.add_route('costo_veh', '/costo_vehiculo/{id_vehiculo}')
+    config.add_route('detalle_costo', '/detalle_costo/{id_costo}')
+    config.add_route('guardar_importador', '/AgregarImportador/guardar')
 
     #################Salida Reparacion#############
     config.add_route('verificar_remolque', '/salida_reparacion/verificar_remolque')
