@@ -1,0 +1,71 @@
+{% extends "../layout.jinja2" %}
+{% block styles %}
+<link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+    <div class="container">
+
+            <div class="tile">
+                    <div class="t-header">
+                        <div class="th-title">Resultado de la Búsqueda <small>Vehículos buscados por distintos parámetros</small></div>
+                         <a href="{{ request.route_url('buscar') }}" style="float: right; margin-top: -35px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+                    </div>
+
+                    <table class="table table-bordered table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center">Marca</th>
+                                <th style="text-align: center">Modelo</th>
+                                <th style="text-align: center">Año</th>
+                                <th style="text-align: center">Estado</th>
+                                <th style="text-align: center">precio</th>
+                                <th style="text-align: center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for veh in veh  %}
+                                    <tr>
+                                        <td style="text-align: center">{{ veh.MARCA }}</td>
+                                        <td style="text-align: center">{{ veh.MODELO }}</td>
+                                        <td style="text-align: center">{{ veh.ANO }}</td>
+                                        <td style="text-align: center">{{ veh.ESTADO }}</td>
+                                        <td style="text-align: center">{{ veh.PRECIO }}</td>
+                                    <td style="text-align: center"><a href="{{ request.route_url('detalle', id_veh=veh.ID_VEHICULO)}}" class="btn btn-icon bg-gray command-edit"><span style="margin-top: 10px" class="zmdi zmdi-eye" data-toggle="tooltip" data-placement="top" data-original-title="Ver Detalles"></span></a>
+                                        <a href="{{ request.route_url('costo_veh', id_vehiculo=veh.ID_VEHICULO)}}" class="btn btn-icon btn-primary command-edit"><span style="margin-top: 10px" class="zmdi zmdi-money" data-toggle="tooltip" data-placement="top" data-original-title="Ver Costos"></span></a>
+
+
+                                        {% if veh.ESTADO == 'DAÑADO' %}
+                                         <a href="{{ request.route_url('enviarVehReparar', idv=veh.ID_VEHICULO)}}" class="btn btn-icon btn-warning command-edit"><span style="margin-top: 10px" class="zmdi zmdi-wrench" data-toggle="tooltip" data-placement="top" data-original-title="Enviar a Reparación"></span></a>
+                                        {% endif %}
+
+
+                                    {% if veh.ESTADO == 'REPARADO' %}
+                                         <a href="{{ request.route_url('ponerEnVenta', id_veh=veh.ID_VEHICULO)}}" class="btn btn-icon btn-success command-edit"><span style="margin-top: 10px" class="zmdi zmdi-mall" data-toggle="tooltip" data-placement="top" data-original-title="Poner en Venta"></span></a> </td>
+                                    {% endif %}
+                                    </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+{% endblock content %}
+{% block scripts %}
+         <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+
+    <!-- Data Table -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                //Basic Example
+                $("#data-table").bootgrid({
+                    css: {
+                        icon: 'zmdi icon',
+                        iconColumns: 'zmdi-view-module',
+                        iconDown: 'zmdi-expand-more',
+                        iconRefresh: 'zmdi-refresh',
+                        iconUp: 'zmdi-expand-less',
+                        iconSearch: 'zmdi-search'
+                    },
+                });
+            });
+        </script>
+{% endblock scripts %}
