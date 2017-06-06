@@ -1,5 +1,7 @@
+from datetime import datetime
+from datetime import  date
 from pyramid.view import view_config
-from ..models import Importacion,EstadoVeh,Empleado,Ubicacion,UbicacionBodega,Nivel,Vehiculo,DetalleImportacion,Marca,Modelo,DetalleControlEmpresa,Remolque,TipoRemolque,ControlEmpresa
+from ..models import Importacion,EstadoVeh,Empleado,Ubicacion,Importador,UbicacionBodega,Nivel,Vehiculo,DetalleImportacion,Marca,Modelo,DetalleControlEmpresa,Remolque,TipoRemolque,ControlEmpresa
 import jsonpickle
 from sqlalchemy.exc import DBAPIError
 import transaction
@@ -168,6 +170,34 @@ class RegistroVehiculo(object):
             print('Error al recuperar los remolques')
         return {'entradas': entradas, 'remolques': remolques}
 
+    @view_config(route_name='alerta_multa', renderer='../templates/alerta_multa.jinja2',
+                 request_method='GET')
+    def alertaMulta(self):
+
+        vehiculos = None
+        try:
+
+            importador = self.request.dbsession.query(Importador).filter(Importador.ID_USER == self.user.id).one()
+
+            vehiculos = self.request.dbsession.query(Vehiculo,EstadoVeh,  Importacion,Importador, UbicacionBodega,Ubicacion,Nivel)\
+                .join(EstadoVeh).join(Importacion).join(Importador).join(UbicacionBodega).join(Ubicacion).join(Nivel) \
+                .filter(Importador.ID_USER == self.user.id) \
+                .filter((EstadoVeh.COD_ESTADO == '001') | (EstadoVeh.COD_ESTADO == '002') |(EstadoVeh.COD_ESTADO == '003') |(EstadoVeh.COD_ESTADO == '004') |(EstadoVeh.COD_ESTADO == '005') ) \
+                .all()
+            now = datetime.now().date()
+
+            for i in vehiculos:
+                d1 = datetime.strptime(str(now), "%Y-%m-%d")
+                d2 = datetime.strptime(str(i[4].FECHAINGRESO), "%Y-%m-%d")
+                i[4].MULTA_EN=(15-(d1 - d2).days)
+                i[4].MULTA_EN_STR=str(15-(d1 - d2).days)+' días'
+
+
+
+
+        except DBAPIError:
+            print('Error al recuperar los remolques')
+        return {'vehiculos': vehiculos}
 
 
 
