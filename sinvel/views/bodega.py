@@ -1,6 +1,4 @@
-from tkinter import Image
 
-from pyramid import request
 from pyramid.view import view_config
 import transaction
 from pyramid.response import Response
@@ -11,10 +9,16 @@ from  ..models import Ubicacion
 from ..models import Departamento
 from ..models import  Vehiculo
 from ..models import EstadoVeh
+from ..models import DetalleControlEmpresa
+from ..models import Venta
+from ..models import Cliente
+from ..models import Empleado
+from ..models import User
 from sinvel.views.user import db_err_msg
 from ..models import Municipio
 from pyramid.httpexceptions import HTTPSeeOther
 from sqlalchemy.exc import DBAPIError
+from datetime import datetime
 
 
 class Bodega_IU(object):
@@ -27,7 +31,7 @@ class Bodega_IU(object):
 
     @view_config(route_name='registrarBodega', renderer='../templates/bodega/registrar_bodegas.jinja2',
                  request_method='GET')
-    def createRegistroImportacion(self):
+    def createRegistroBodega(self):
         try:
             departamentos = self.request.dbsession.query(Departamento).all()
             municipios = self.request.dbsession.query(Municipio).all()
@@ -84,7 +88,6 @@ class Bodega_IU(object):
         items_vehiculo = self.request.dbsession.query(Vehiculo).get(id)
         items_estados = self.request.dbsession.query(EstadoVeh).all()
 
-
         return {'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados}
 
     @view_config(route_name='ventaVehiculoActualizar', request_method='POST')
@@ -93,7 +96,7 @@ class Bodega_IU(object):
             data = self.request.POST
             id = data.get('ID_VEHICULO')
             vehiculo = self.request.dbsession.query(Vehiculo).get(id)
-
+            veh=vehiculo
             for key, value in data.items():
                 if key == 'FOTO_VEH':
                     value = self.request.POST['FOTO_VEH'].file
@@ -106,4 +109,106 @@ class Bodega_IU(object):
             print(db_err_msg)
             # return Response(db_err_msg, content_type='text/plain', status=500)
             return HTTPFound(location='/vehiculos')
+        return HTTPSeeOther(self.request.route_url('asignarVendedor', id_veh=self.request.POST['ID_VEHICULO']))
+
+    @view_config(route_name='asignarVendedor', renderer='../templates/bodega/asignar_vendedor.jinja2',
+                 request_method='GET')
+    def asignarVendedor(self):
+        id = int(self.request.matchdict['id_veh'])
+        items_detalle_control = self.request.dbsession.query(DetalleControlEmpresa).filter(DetalleControlEmpresa.ID_VEHICULO==id).filter(DetalleControlEmpresa.TIPO_CONTROL_DET=='Venta').first()
+        items_vehiculo = self.request.dbsession.query(Vehiculo).get(id)
+        items_venta= self.request.dbsession.query(Venta).filter(Venta.ID_DET_CONTROL==items_detalle_control.ID_DET_CONTROL).first()
+        items_empleados = self.request.dbsession.query(Empleado).all()
+
+        return {'venta': items_venta, 'user': self.user, 'vehiculo': items_vehiculo, 'empleados': items_empleados}
+
+    @view_config(route_name='actualizarVendedor', request_method='POST')
+    def actualizarVendedor(self):
+        try:
+            data = self.request.POST
+            id = data.get('ID_VENTA')
+            venta = self.request.dbsession.query(Venta).get(id)
+
+            for key, value in data.items():
+                setattr(venta, key, value)
+            transaction.commit()
+
+        except DBAPIError:
+            print('Ocurrio un error al actualizar el registro')
+            print(db_err_msg)
+            # return Response(db_err_msg, content_type='text/plain', status=500)
+            return HTTPFound(location='/vehiculos')
         return HTTPFound(location='/vehiculos')
+
+    @view_config(route_name='vehiculosAsignados', renderer='../templates/bodega/vehiculos_asignados.jinja2',
+                 request_method='GET')
+    def vehiculosAsignados(self):
+        usuario = self.request.dbsession.query(User).filter(User.user_name==self.user).first()
+        items_empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER==usuario.id).first()
+        items_ventas = self.request.dbsession.query(Venta).filter(Venta.ID_EMPLEADO==items_empleado.ID_EMPLEADO).all()
+
+        return {'user': self.user, 'empleado': items_empleado, 'ventas': items_ventas}
+
+    @view_config(route_name='detalleVehiculo', renderer='../templates/bodega/detalle_vehiculo.jinja2',
+                 request_method='GET')
+    def detalleVehiculo(self):
+        id = int(self.request.matchdict['id_veh'])
+        id_ven = int(self.request.matchdict['id_ven'])
+        items_vehiculo = self.request.dbsession.query(Vehiculo).get(id)
+        items_venta = self.request.dbsession.query(Venta).get(id_ven)
+        items_estados = self.request.dbsession.query(EstadoVeh).all()
+        filename='sinvel/static/fotos_vehiculos/Vehiculo'+ items_vehiculo.VIN +'.jpg'
+        with open(filename, 'wb') as f:
+            f.write(items_vehiculo.FOTO_VEH)
+        return {'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
+
+    @view_config(route_name='updateVenta', renderer='../templates/bodega/vender_vehiculo.jinja2',
+                 request_method='GET')
+    def updateVenta(self):
+        id = int(self.request.matchdict['id_veh'])
+        id_ven = int(self.request.matchdict['id_ven'])
+        items_vehiculo = self.request.dbsession.query(Vehiculo).get(id)
+        items_venta = self.request.dbsession.query(Venta).get(id_ven)
+        items_clientes= self.request.dbsession.query(Cliente).all()
+
+        return {'vehiculo': items_vehiculo, 'user': self.user, 'clientes': items_clientes, 'venta': items_venta}
+
+    @view_config(route_name='actualizarVenta', request_method='POST')
+    def actualizarVenta(self):
+        try:
+            data = self.request.POST
+            id_ven = data.get('ID_VENTA')
+            id_veh = data.get('ID_VEHICULO')
+            dato1 = data.get('PRECIO_VENTA')
+            dato2 = data.get('DESCRIP_VENTA')
+            dato3 = datetime.strptime(data.get('FECHA_VENTA'), '%d-%m-%Y')
+            dato4 = data.get('ID_CLIENTE')
+
+            estadoVeh = self.request.dbsession.query(EstadoVeh).filter(EstadoVeh.COD_ESTADO == '006').one()
+            self.request.dbsession.query(Vehiculo).filter(Vehiculo.ID_VEHICULO == id_veh).update(
+                {"ID_ESTADO": estadoVeh.ID_ESTADO})
+
+            self.request.dbsession.query(Venta).filter(Venta.ID_VENTA == id_ven).update(
+                {"PRECIO_VENTA": dato1, "DESCRIP_VENTA": dato2, "FECHA_VENTA":dato3, "ID_CLIENTE": dato4 })
+
+            transaction.commit()
+
+        except DBAPIError:
+            print('Ocurrio un error al actualizar el registro')
+            print(db_err_msg)
+            # return Response(db_err_msg, content_type='text/plain', status=500)
+            return HTTPFound(location='/vehiculos_asignados')
+        return HTTPFound(location='/vehiculos_asignados')
+
+    @view_config(route_name='detalleVehiculoCliente', renderer='../templates/bodega/detalle_vehiculo_cliente.jinja2',
+                 request_method='GET')
+    def detalleVehiculoCliente(self):
+        id = int(self.request.matchdict['id_veh'])
+        id_ven = int(self.request.matchdict['id_ven'])
+        items_vehiculo = self.request.dbsession.query(Vehiculo).get(id)
+        items_venta = self.request.dbsession.query(Venta).get(id_ven)
+        items_estados = self.request.dbsession.query(EstadoVeh).all()
+        filename = 'sinvel/static/fotos_vehiculos/Vehiculo' + items_vehiculo.VIN + '.jpg'
+        with open(filename, 'wb') as f:
+            f.write(items_vehiculo.FOTO_VEH)
+        return {'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}

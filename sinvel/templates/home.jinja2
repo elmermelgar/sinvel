@@ -61,63 +61,41 @@
 				<div class="products-section-grids">
 
 					<div id="portfoliolist">
-					<div class="portfolio card mix_all  data-cat="card" style="display: inline-block; opacity: 1;">
-						<div class="portfolio-wrapper">		
-							<a href="#" class="b-link-stripe b-animate-go  thickbox">
-						     <img src="{{ request.static_url('sinvel:static/images/pic1.jpg') }}" class="img-responsive" alt="" /><div class="b-wrapper"><div class="clearfix"></div><h2 class="b-animate b-from-left    b-delay03 "><img src="{{ request.static_url('sinvel:static/images/icon-eye.png') }}" class="img-responsive go" alt=""/></h2>
-						  	</div></a>
-							<div class="title">
-								<div class="colors">
-								<h4>Lolona Jeans</h4>
-								<p> Colors:
 
-								</p>
-								</div>
-								<div class="main-price">
-									<h3><span>$</span>30</h3>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-		                </div>
-					</div>				
-					<div class="portfolio app mix_all  data-cat="app" style="display: inline-block; opacity: 1;">
-						<div class="portfolio-wrapper">		
-							<a href="#" class="b-link-stripe b-animate-go  thickbox">
-						     <img src="{{ request.static_url('sinvel:static/images/pic2.jpg') }}" class="img-responsive" alt="" /><div class="b-wrapper"><div class="clearfix"></div><h2 class="b-animate b-from-left    b-delay03 "><img src="{{ request.static_url('sinvel:static/images/icon-eye.png') }}" class="img-responsive go" alt=""/></h2>
-						  	</div></a>
-							<div class="title">
-								<div class="colors">
-								<h4>Lolona Jeans</h4>
-								<p> Colors:
 
-								</p>
-								</div>
-								<div class="main-price">
-									<h3><span>$</span>30</h3>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-		                </div>
-					</div>		
-					<div class="portfolio web mix_all  data-cat="web" style="display: inline-block; opacity: 1;">
-						<div class="portfolio-wrapper">		
-							<a href="#" class="b-link-stripe b-animate-go  thickbox">
-						     <img src="{{ request.static_url('sinvel:static/images/pic3.jpg') }}" class="img-responsive" alt="" /><div class="b-wrapper"><div class="clearfix"></div><h2 class="b-animate b-from-left    b-delay03 "><img src="{{ request.static_url('sinvel:static/images/icon-eye.png') }}" class="img-responsive go" alt=""/></h2>
-						  	</div></a>
-							<div class="title">
-								<div class="colors">
-								<h4>Lolona Jeans</h4>
-								<p> Colors:
+                    {% for venta in ventas %}
+                        {% if venta.detalle_control_empresa.vehiculo.estado_veh.COD_ESTADO =='003' %}
+                            <div class="portfolio app mix_all" data-cat="app"
+                                 style="display: inline-block; opacity: 1;">
+                                <div class="portfolio-wrapper">
+                                    <a href="{{ request.route_url('detalleVehiculoCliente', id_veh=venta.detalle_control_empresa.vehiculo.ID_VEHICULO, id_ven=venta.ID_VENTA) }}" class="b-link-stripe b-animate-go  thickbox">
+                                        <img src="{{ request.static_url('sinvel:static/fotos_vehiculos/Vehiculo'+venta.detalle_control_empresa.vehiculo.VIN+'.jpg') }}"
+                                             class="img-responsive" alt=""/>
+                                        <div class="b-wrapper">
+                                            <div class="clearfix"></div>
+                                            <h2 class="b-animate b-from-left    b-delay03 ">
+                                                <img src="{{ request.static_url('sinvel:static/images/icon-eye.png') }}"
+                                                     class="img-responsive go" alt=""/></h2>
+                                        </div>
+                                    </a>
+                                    <div class="title">
+                                        <div class="colors">
+                                            <h4>{{ venta.detalle_control_empresa.vehiculo.modelo.marca.MARCA }}</h4>
+                                            <p> {{ venta.detalle_control_empresa.vehiculo.modelo.MODELO}} -
+                                                {{ venta.detalle_control_empresa.vehiculo.ANO}}
 
-								</p>
-								</div>
-								<div class="main-price">
-									<h3><span>$</span>30</h3>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-		                </div>
-					</div>
+                                            </p>
+                                        </div>
+                                        <div class="main-price">
+                                            <h3><span>$</span>{{ venta.detalle_control_empresa.vehiculo.PRECIO_VEHICULO }}</h3>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
 		</div>
 	</div>
 	</div>

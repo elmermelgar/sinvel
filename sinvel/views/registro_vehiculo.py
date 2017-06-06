@@ -1,5 +1,5 @@
 from pyramid.view import view_config
-from ..models import Importacion,EstadoVeh,Empleado,Vehiculo,DetalleImportacion,Marca,Modelo,DetalleControlEmpresa,Remolque,TipoRemolque,ControlEmpresa
+from ..models import Importacion,EstadoVeh,Empleado,Ubicacion,UbicacionBodega,Nivel,Vehiculo,DetalleImportacion,Marca,Modelo,DetalleControlEmpresa,Remolque,TipoRemolque,ControlEmpresa
 import jsonpickle
 from sqlalchemy.exc import DBAPIError
 import transaction
@@ -91,7 +91,7 @@ class RegistroVehiculo(object):
 
     @view_config(route_name='registro_control_entrada', renderer='../templates/registrar_entrada.jinja2',
                  request_method='GET')
-    def registroControlEntrada(self):
+    def registroControlEntradaPrimeraVez(self):
         remolques = None
         entradas = None
         try:
@@ -106,13 +106,13 @@ class RegistroVehiculo(object):
                 .filter(DetalleControlEmpresa.ID_BODEGA == empleado.ID_BODEGA) \
                 .filter(DetalleControlEmpresa.TIPO_CONTROL_DET =='ENTRA').all()
 
-
         except DBAPIError:
             print('Error al recuperar los remolques')
         return {'entradas': entradas, 'remolques': remolques}
 
     @view_config(route_name='registro_entrada_control_guardar', request_method='POST')
     def registroControlSave(self):
+
         id_user=self.user.id
         settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel_2'}
         engine = get_engine(settings)
@@ -134,16 +134,43 @@ class RegistroVehiculo(object):
         ids_det_control = self.request.params.getall("selected_vehiculos")
         try:
             empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == id_user).one()
+            self.request.dbsession.expunge_all()
+            self.request.dbsession.close()
             for id_det_ctrl_emp in ids_det_control:
                 args = [int(id_det_ctrl_emp), id_ctrl_emp,empleado.ID_EMPLEADO, 0]
                 result_args = cursor.callproc('sp_update_entrada', args)
                 print(result_args[0])
+                transaction.commit()
         except DBAPIError:
             print('Error al realizar la transaccion')
         finally:
             cursor.close()
             connection.commit()
         return HTTPFound(location='/entrada/registro_control_entrada')
+
+
+
+
+    @view_config(route_name='registro_control_entrada_reparacion', renderer='../templates/registrar_entrada_reparacion.jinja2',
+                 request_method='GET')
+    def registroControlEntradaReparacion(self):
+        remolques = None
+        entradas = None
+        try:
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
+            remolques = self.request.dbsession.query(Remolque).filter(Remolque.ID_BODEGA == empleado.ID_BODEGA) \
+                .filter(Remolque.DISPONIBLE == 0)
+            entradas = self.request.dbsession.query(Vehiculo,UbicacionBodega,Ubicacion,Nivel,EstadoVeh)\
+                .join(EstadoVeh).join(UbicacionBodega).join(Ubicacion).join(Nivel)\
+                .filter(EstadoVeh.COD_ESTADO=='005').all()
+
+        except DBAPIError:
+            print('Error al recuperar los remolques')
+        return {'entradas': entradas, 'remolques': remolques}
+
+
+
+
 
     @view_config(route_name='generar_reporte', request_method='GET',renderer='../templates/registrar_vehiculo.jinja2')
     def generarReporte(self):

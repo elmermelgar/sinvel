@@ -1,0 +1,136 @@
+{% extends "../layout.jinja2" %}
+<!-- CSS -->
+{% block styles %}
+
+{% endblock styles %}
+{% block content %}
+    <div class="container">
+
+                <div class="tile" id="profile-main">
+                    <div class="pm-overview c-overflow-dark mCustomScrollbar _mCS_2"><div id="mCSB_2" class="mCustomScrollBox mCS-dark mCSB_vertical mCSB_inside" tabindex="0"><div id="mCSB_2_container" class="mCSB_container" style="position:relative; top:0; left:0;" dir="ltr">
+                        <div class="pmo-pic">
+                            <div class="p-relative">
+                                <a href="">
+                                    <img src="{{ request.static_url('sinvel:static/fotos_vehiculos/Vehiculo'+vehiculo.VIN+'.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
+                                </a>
+
+                                <div class="dropdown pmop-message">
+                                    <a data-toggle="dropdown" href="" class="pmopm-send">
+                                        <i class="zmdi zmdi-money-box"></i>
+                                    </a>
+
+                                    <div class="dropdown-menu">
+                                        <textarea placeholder="Write something..."></textarea>
+
+                                        <button class="btn bg-green btn-icon"><i class="zmdi zmdi-mail-send"></i></button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="pmo-stat">
+                                <h2 class="m-0 c-white">$ {{ vehiculo.PRECIO_VEHICULO }}</h2>
+                                Negociable
+                            </div>
+                        </div>
+
+                        <div class="pmo-block pmo-contact hidden-xs">
+                            <h2>Contacto</h2>
+
+                            <ul>
+                                <li><i class="zmdi zmdi-account m-r-5"></i> {{ venta.empleado.NOMBRE }} {{ venta.empleado.APELLIDO }}</li>
+                                <li><i class="zmdi zmdi-phone"></i> +503 {{ venta.empleado.TEL_EMP }}</li>
+                                <li><i class="zmdi zmdi-email"></i> {{ venta.empleado.user.email }}</li>
+
+                            </ul>
+                        </div>
+
+                    </div><div id="mCSB_2_scrollbar_vertical" class="mCSB_scrollTools mCSB_2_scrollbar mCS-dark mCSB_scrollTools_vertical" style="display: block;"><div class="mCSB_draggerContainer"><div id="mCSB_2_dragger_vertical" class="mCSB_dragger" style="position: absolute; min-height: 30px; display: block; height: 601px; max-height: 683px;" oncontextmenu="return false;"><div class="mCSB_dragger_bar" style="line-height: 30px;"></div></div><div class="mCSB_draggerRail"></div></div></div></div></div>
+                    <a href="{{ request.route_url('home') }}" style="float: right; margin-top: 5px; margin-right: 5px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+                    <div class="pm-body clearfix">
+                        <ul class="tab-nav tn-justified">
+                            <li class="active"><a href="#">Información del Vehículo</a></li>
+                        </ul>
+                        <div class="pmb-block">
+                            <div class="pmbb-header">
+                                <h2><i class="zmdi  zmdi-local-taxi"></i> Información Básica</h2>
+                            </div>
+                            <div class="pmbb-body p-l-30">
+                                <div class="pmbb-view">
+                                    <dl class="dl-horizontal">
+                                        <dt>MARCA : </dt>
+                                        <dd>{{ vehiculo.modelo.marca.MARCA }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>MODELO: </dt>
+                                        <dd>{{ vehiculo.modelo.MODELO }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>AÑO: </dt>
+                                        <dd>{{ vehiculo.ANO }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>LINEA DE ESTILO:</dt>
+                                        <dd>{{ vehiculo.LINEA_ESTILO }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>COLOR:</dt>
+                                        <dd>{{ vehiculo.COLOR }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>CAPACIDAD:</dt>
+                                        <dd>{{ vehiculo.CAPACIDAD }} personas</dd>
+                                    </dl>
+                                     <dl class="dl-horizontal">
+                                        <dt>NUMERO DE PLACA:</dt>
+                                        <dd>{{ vehiculo.PLACA }}</dd>
+                                    </dl>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="pmb-block">
+                            <div class="pmbb-header">
+                                <h2><i class="zmdi zmdi-format-color-fill"></i> Detalles de Vehículo</h2>
+
+                            </div>
+                            <div class="pmbb-body p-l-30">
+                                <div class="pmbb-view">
+                                    <dl class="dl-horizontal">
+                                        <dt>VIN: </dt>
+                                        <dd>{{ vehiculo.VIN }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>CHASIS:</dt>
+                                        <dd>{{ vehiculo.CHASIS }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>NUMERO DE MOTOR: </dt>
+                                        <dd>{{ vehiculo.NUM_MOTOR }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>CLASE:</dt>
+                                        <dd>{{ vehiculo.CLASE }}</dd>
+                                    </dl>
+                                     <dl class="dl-horizontal">
+                                        <dt>TIPO DE COMBUSTIBLE:</dt>
+                                        <dd>{{ vehiculo.TIPO_COMBUSTIBLE}}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>NUMERO DE CILINDROS:</dt>
+                                        <dd>{{ vehiculo.CILINDROS}}</dd>
+                                    </dl>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}
+{% block scripts %}
+
+
+{% endblock scripts %}

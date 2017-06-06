@@ -1,0 +1,75 @@
+{% extends "../layout.jinja2" %}
+<!-- CSS -->
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+    <link href="{{request.static_url('sinvel:static/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css')}}" rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+    <div class="container c-boxed">
+        <div class="text-center">
+            <h2 class="f-400 m-b-15">Vehículos asignados para vender</h2>
+            <h4 class="f-400 m-b-15">EMPLEADO: {{ empleado.NOMBRE }} {{ empleado.APELLIDO }}</h4>
+        </div>
+        <div class="tile">
+            <table class="table i-table m-t-25 m-b-25">
+                            <thead class="t-uppercase">
+                                <tr>
+                                    <th class="c-gray">Vehículo</th>
+                                    <th class="c-gray">Precio Propuesto</th>
+                                    <th class="c-gray">Año</th>
+                                    <th class="highlight">Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for venta in ventas %}
+                                {% if venta.ID_EMPLEADO == empleado.ID_EMPLEADO %}
+                                    {% if venta.detalle_control_empresa.vehiculo.estado_veh.COD_ESTADO =='003' %}
+
+
+                                        <tr>
+                                            <td width="50%">
+                                                <h5 class="t-uppercase f-400">
+                                                    MARCA: {{ venta.detalle_control_empresa.vehiculo.modelo.marca.MARCA }}</h5>
+                                                <p class="text-muted">
+                                                    MODELO: {{ venta.detalle_control_empresa.vehiculo.modelo.MODELO }} -
+                                                    TIPO_COMBUSTIBLE: {{ venta.detalle_control_empresa.vehiculo.TIPO_COMBUSTIBLE }}</p>
+                                            </td>
+
+                                            <td>${{ venta.detalle_control_empresa.vehiculo.PRECIO_VEHICULO }}</td>
+                                            <td>{{ venta.detalle_control_empresa.vehiculo.ANO }}</td>
+                                            <td>
+                                                <a href="{{ request.route_url('detalleVehiculo', id_veh=venta.detalle_control_empresa.vehiculo.ID_VEHICULO, id_ven=venta.ID_VENTA) }}"
+                                                   class="btn bg-lightblue">Ver Detalles</a>
+                                                <a href="{{ request.route_url('updateVenta', id_veh=venta.detalle_control_empresa.vehiculo.ID_VEHICULO, id_ven=venta.ID_VENTA) }}"
+                                                   class="btn bg-green">Vender Vehículo</a>
+                                            </td>
+                                        </tr>
+                                        {% else %}
+                                        <h4 style="color: #96000b">No hay Vehiculos asignados para vender</h4>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+        </div>
+
+    </div>
+{% endblock content %}
+{% block scripts %}
+    <script src="{{request.static_url('sinvel:static/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js') }}"></script>
+    <script src="{{ request.static_url('sinvel:static/vendors/fileinput/fileinput.min.js') }}"></script>
+    <script src="{{ request.static_url('sinvel:static/vendors/input-mask/input-mask.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            // turn the element to select2 select style
+            $(".Municipios").select2({
+                placeholder: "Seleccione un municipio",
+                allowClear: true
+            });
+        });
+    </script>
+
+{% endblock scripts %}
