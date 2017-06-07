@@ -42,7 +42,7 @@
                         </div>
 
                     </div><div id="mCSB_2_scrollbar_vertical" class="mCSB_scrollTools mCSB_2_scrollbar mCS-dark mCSB_scrollTools_vertical" style="display: block;"><div class="mCSB_draggerContainer"><div id="mCSB_2_dragger_vertical" class="mCSB_dragger" style="position: absolute; min-height: 30px; display: block; height: 601px; max-height: 683px;" oncontextmenu="return false;"><div class="mCSB_dragger_bar" style="line-height: 30px;"></div></div><div class="mCSB_draggerRail"></div></div></div></div></div>
-                    <a href="{{ request.route_url('resultado') }}" style="float: right; margin-top: 5px; margin-right: 5px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+                    <a href="{{ request.route_url('resultado', marca=vehiculo.modelo.marca.ID_MARCA, modelo=vehiculo.modelo.ID_MODELO, estado=vehiculo.estado_veh.ID_ESTADO, anio=vehiculo.ANO)}}" style="float: right; margin-top: 5px; margin-right: 5px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
                     <div class="pm-body clearfix">
                         <ul class="tab-nav tn-justified">
                             <li class="active"><a href="#">Detalle de Vehículo</a></li>

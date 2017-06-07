@@ -1,12 +1,6 @@
-import bcrypt
 from pyramid.view import view_config
-from ..models import Costo,User,Vehiculo,Importacion,Importador,TipoCosto,DetalleControlEmpresa,Reparacion
-import jsonpickle
-from sqlalchemy.exc import DBAPIError
-import transaction
-from pyramid.httpexceptions import HTTPFound
+from ..models import Costo,User,Vehiculo,TipoCosto,DetalleControlEmpresa,Reparacion
 
-from pyramid_mailer.message import Message
 
 class costoVehiculo(object):
     def __init__(self,request):
@@ -20,11 +14,11 @@ class costoVehiculo(object):
 
     @view_config(route_name='costo_veh', renderer='../templates/costos/costo_vehiculo.jinja2',request_method='GET')
     def costo_ve (self):
-        id_vehiculo=self.request.matchdict['id_vehiculo']
+        id_vehiculo=int(self.request.matchdict['id_vehiculo'])
         costos = self.query_costos.filter(Costo.ID_VEHICULO==id_vehiculo).all()
-        return {'costos': costos}
+        vehiculo= self.request.dbsession.query(Vehiculo).get(id_vehiculo)
 
-
+        return {'costos': costos, 'veh':vehiculo}
 
     @view_config(route_name='detalle_costo', renderer='../templates/costos/detalle_costo.jinja2', request_method='GET')
     def detalle_costo(self):

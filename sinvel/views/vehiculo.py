@@ -1,4 +1,5 @@
 import jsonpickle
+from pyramid.httpexceptions import HTTPSeeOther
 from pyramid.view import view_config
 from sqlalchemy import text
 
@@ -23,21 +24,26 @@ class Importaciones(object):
 
         return {'mar': marca, 'est': estado, 'ani': anio}
 
-    @view_config(route_name='resultado', renderer='../templates/vehiculo/resultadoVehiculo.jinja2', request_method='POST')
+    @view_config(route_name='aux', request_method='POST')
+    def aux(self):
+
+        return HTTPSeeOther(self.request.route_url('resultado', marca=self.request.POST['marca'], modelo=self.request.POST['modelo'],
+                                                   estado=self.request.POST['estado'], anio=self.request.POST['anio']))
+
+    @view_config(route_name='resultado', renderer='../templates/vehiculo/resultadoVehiculo.jinja2', request_method='GET')
     def resultado(self):
-
         # SQL puro /////////////////////
-
         settings={'sqlalchemy.url': 'mysql://root:bad@localhost:3306/sinvel'}
         engine=get_engine(settings)
         connection=engine.connect()
 
         s=text("SELECT * FROM vehiculos where ID_MARCA=:id_marca and ID_MODELO=:id_modelo and ID_ESTADO=:id_estado and ano=:anio")
 
-        veh=connection.execute(s, id_marca=self.request.POST['marca'], id_modelo=self.request.POST['modelo'], id_estado=self.request.POST['estado'], anio=self.request.POST['anio']).fetchall()
+        veh=connection.execute(s, id_marca=self.request.matchdict['marca'], id_modelo=self.request.matchdict['modelo'],
+                               id_estado=self.request.matchdict['estado'], anio=self.request.matchdict['anio']).fetchall()
         # /////////////////////////////
 
-        return {'veh':veh}
+        return {'veh': veh}
 
     @view_config(route_name='combo', request_method='GET', renderer='json')
     def all_json_models(self):
@@ -53,8 +59,6 @@ class Importaciones(object):
         #
         # print('//////////////////////////////////////')
         # print(models)
-        #
-
 
         current_brand=self.request.matchdict['idmarca']
         models=self.request.dbsession.query(Modelo).filter(Modelo.ID_MARCA == current_brand).all()

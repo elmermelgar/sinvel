@@ -6,5 +6,6 @@ def includeme(config):
     config.add_route('subir', '/subirFotos')
     config.add_route('buscar', '/buscarVehiculo')
     config.add_route('combo', '/fltradoMarca/{idmarca}')
-    config.add_route('resultado', '/resultadoVehiculo')
+    config.add_route('aux', '/aux')
+    config.add_route('resultado', '/resultadoVehiculo/{marca}/{modelo}/{estado}/{anio}')
     config.add_route('detalle', '/detalleVehiculo/{id_veh}')

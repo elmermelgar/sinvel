@@ -137,8 +137,15 @@ class Bodega_IU(object):
             print('Ocurrio un error al actualizar el registro')
             print(db_err_msg)
             # return Response(db_err_msg, content_type='text/plain', status=500)
-            return HTTPFound(location='/vehiculos')
-        return HTTPFound(location='/vehiculos')
+            return HTTPSeeOther(self.request.route_url('resultados', marca=venta.detalle_control_empresa.vehiculo.modelo.marca.ID_MARCA,
+                                       modelo=venta.detalle_control_empresa.vehiculo.modelo.ID_MODELO,
+                                       estado=venta.detalle_control_empresa.vehiculo.estado_veh.ID_ESTADO,
+                                       anio=venta.detalle_control_empresa.vehiculo.ANO))
+
+        return HTTPSeeOther(self.request.route_url('resultados', marca=venta.detalle_control_empresa.vehiculo.modelo.marca.ID_MARCA,
+                                                   modelo=venta.detalle_control_empresa.vehiculo.modelo.ID_MODELO,
+                                                   estado=venta.detalle_control_empresa.vehiculo.estado_veh.ID_ESTADO,
+                                                   anio=venta.detalle_control_empresa.vehiculo.ANO))
 
     @view_config(route_name='vehiculosAsignados', renderer='../templates/bodega/vehiculos_asignados.jinja2',
                  request_method='GET')
