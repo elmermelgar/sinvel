@@ -5,7 +5,7 @@
 {% block content %}
     <div class="container">
 
-            <div class="title">
+            <div class="tile">
                     <div class="t-header">
                         <div class="th-title">Costos <small>Costos del ciclo de vida del auto registrados</small></div>
                     </div>
@@ -27,7 +27,7 @@
                                         <td>{{ Costo1.tipo_costo.TIPO_COSTO}}</td>
                                         <td>{{ Costo1.FECHA_COSTO.strftime("%d/%m/%Y") }}</td>
                                         <td>{{ Costo1.MONTO }}</td>
-                                        <td> <a href="{{  request.route_url('detalle_costo',id_costo=Costo1.ID_COSTO) }}" class="btn btn-primary" ">DETALLE<span style="margin-top: 10px" title="Lista de Detalles"></span></a> </td>
+                                        <td> <a href="{{request.route_url('detalle_costo',id_costo=Costo1.ID_COSTO) }}" class="btn btn-primary" ">DETALLE<span style="margin-top: 10px" title="Lista de Detalles"></span></a> </td>
 
 
                                        </tr>
