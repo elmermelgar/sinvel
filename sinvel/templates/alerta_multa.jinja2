@@ -1,0 +1,143 @@
+{% extends "../templates/layout.jinja2" %}
+{% block styles %}
+<link href="{{request.static_url('sinvel:static/css/wizard.css')}}" rel="stylesheet">
+    <link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+    <div class="container">
+
+
+        <div class="m-b-25">
+
+
+
+        {% if vehiculos %}
+         <div class="tile">
+                    <div class="t-header">
+                        <div class="th-title">Alerta de multas<small>Se muestran los vehiculos candidatos a ser multados por antiguedad  </small></div>
+                    </div>
+
+           {#           <div class="col-md-10">
+                            <div class="form-group">
+                                <label class="col-md-2">Tipo remolque:</label>
+                                <div class="form-group col-md-4">
+                                    <select name="id_tipo_remolque"  class="form-control ">
+                                        <option value="">Seleccione...</option>
+                                       {% for tipo in  items_tipo_remolque %}
+                                            <option value="{{tipo.ID_TIPO_REMOLQUE}}">{{tipo.NOMBRE_TIPO}}</option>
+                                        {% endfor %}
+                                    </select>
+                            </div>
+                                <div class="form-group col-md-3">
+                                     <a href="{{ request.route_url('buscar_tipo_remolque',id_tipo_remolque=id_tipo_remolque) }}" class="btn bg-lightblue" style="float: right; margin-right: 50px"> Buscar <i class="zmdi zmdi-search"></i></a>
+                                </div>
+                         </div>
+                        </div>#}
+
+
+                          <table id="data-table" class="table table-hover table-bordered">
+                            <thead>
+                                <tr align="center">
+                                   <th>Placa</th>
+                                        <th>Marca</th>
+                                        <th>Modelo</th>
+                                        <th>Año</th>
+                                        <th>Estado</th>
+                                        <th>Fecha de ingreso</th>
+                                        <th>Bodega</th>
+                                        <th style="text-align: center">Multa en</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for vehiculo in vehiculos %}
+                                 {% if vehiculo[4].MULTA_EN<5  %}
+                                 <tr style="background-color: #96000b">
+
+                                        <td style="color: white">{{ vehiculo[0].PLACA }}</td>
+                                            <td style="color: white">{{ vehiculo[0].modelo.marca.MARCA }}</td>
+                                            <td style="color: white">{{ vehiculo[0].modelo.MODELO }}</td>
+                                            <td style="color: white">{{ vehiculo[0].ANO }}</td>
+                                            <td style="color: white">{{ vehiculo[0].estado_veh.ESTADO }}</td>
+                                            <td style="color: white">{{ vehiculo[4].FECHAINGRESO.strftime("%d/%m/%Y") }}</td>
+                                            <td style="color: white">{{ vehiculo[6].bodega.NOMBRE_BODEGA }}</td>
+                                             <td style="text-align: center;color: white">{{vehiculo[4].MULTA_EN_STR}}</td>
+
+
+                                 </tr>
+                                {% endif %}
+                                {% if vehiculo[4].MULTA_EN>5 and vehiculo[4].MULTA_EN<10  %}
+                                 <tr style="background-color: darkorange">
+
+                                        <td style="color: white">{{ vehiculo[0].PLACA }}</td>
+                                            <td style="color: white">{{ vehiculo[0].modelo.marca.MARCA }}</td>
+                                            <td style="color: white">{{ vehiculo[0].modelo.MODELO }}</td>
+                                            <td style="color: white">{{ vehiculo[0].ANO }}</td>
+                                            <td style="color: white">{{ vehiculo[0].estado_veh.ESTADO }}</td>
+                                            <td style="color: white">{{ vehiculo[4].FECHAINGRESO.strftime("%d/%m/%Y") }}</td>
+                                            <td style="color: white">{{ vehiculo[6].bodega.NOMBRE_BODEGA }}</td>
+                                             <td style="text-align: center;color: white">{{vehiculo[4].MULTA_EN_STR}}</td>
+
+
+                                 </tr>
+                                {% endif %}
+                                             {% if vehiculo[4].MULTA_EN>10  %}
+                                 <tr style="background-color: green">
+
+                                        <td style="color: white">{{ vehiculo[0].PLACA }}</td>
+                                            <td style="color: white">{{ vehiculo[0].modelo.marca.MARCA }}</td>
+                                            <td style="color: white">{{ vehiculo[0].modelo.MODELO }}</td>
+                                            <td style="color: white">{{ vehiculo[0].ANO }}</td>
+                                            <td style="color: white">{{ vehiculo[0].estado_veh.ESTADO }}</td>
+                                            <td style="color: white">{{ vehiculo[4].FECHAINGRESO.strftime("%d/%m/%Y") }}</td>
+                                            <td style="color: white">{{ vehiculo[6].bodega.NOMBRE_BODEGA }}</td>
+                                             <td style="text-align: center;color: white">{{vehiculo[4].MULTA_EN_STR}}</td>
+
+
+                                 </tr>
+                                {% endif %}
+                             {% endfor %}
+                              </tbody>
+                         </table>
+
+
+            {% else %}
+            No existen Remolques disponibles para mostrar
+        {% endif %}
+        </div>
+        </div>
+
+    </div>
+    <a href="{{ request.route_url('registroImportacion') }}" class="btn bg-lightblue" style="float: right; margin-right: 50px"> Continuar <i class="zmdi zmdi-arrow-forward"></i></a>
+{% endblock content %}
+{% block scripts %}
+      <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/moment.js') }}"></script>
+         <script src="{{request.static_url('sinvel:static/js/wizard.js') }}"></script>
+         <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+
+   {# <!-- Data Table -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                //Basic Example
+
+                $("#data-table").bootgrid({
+                    ajax :true,
+
+                    url: "/salida_reparacion/verificar_remolque",
+                    css: {
+                        icon: 'zmdi icon',
+                        iconColumns: 'zmdi-view-module',
+                        iconDown: 'zmdi-expand-more',
+                        iconRefresh: 'zmdi-refresh',
+                        iconUp: 'zmdi-expand-less',
+                        iconSearch: 'zmdi-search'
+                    },
+                });
+
+
+
+
+            });
+        </script>#}
+
+
+{% endblock scripts %}

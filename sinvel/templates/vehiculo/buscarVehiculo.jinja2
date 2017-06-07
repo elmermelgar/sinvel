@@ -1,0 +1,140 @@
+{% extends "../layout.jinja2" %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
+          rel="stylesheet">
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css') }}"
+          rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+    <div class="container">
+
+        <div class="tile">
+            <div class="t-header">
+                <div class="th-title">Buscar Vehículo
+                    <small>Realizar búsquedas de vehículos por distintos parámetros</small>
+                </div>
+            </div>
+
+            <div class="t-body tb-padding">
+                <div class="row">
+
+                    <form id="formulario" class="form-horizontal" action="{{ request.route_url('resultado') }}"
+                          method="post" enctype="multipart/form-data" name="formulario">
+
+                        <div class="col-md-6">
+                            <div class="m-b-25">
+                                <p class="c-black">MARCA</p>
+                                <select id="ID_MARCA" name="marca" class="form-control js-example-basic-single js-states"
+                                            required>
+                                        <option value="Z">Seleccione una Marca</option>
+                                        {% for marca in mar %}
+                                            <option value="{{ marca.ID_MARCA }}">{{ marca.MARCA }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                            </div>
+
+                            <div class="m-b-25">
+                                <p class="c-black">MODELO</p>
+                                <select id="ID_MODELO" name="modelo" class="form-control js-example-basic-single js-states"
+                                            disabled="true" required>
+                                        <option>Seleccione un Modelo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="m-b-25">
+                                <p class="c-black">ESTADO</p>
+                                <select name="estado" class="selectpicker form-control" data-live-search="true">
+                                    {% for est in est %}
+                                        <option value="{{ est.ID_ESTADO }}">{{ est.ESTADO }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="m-b-25">
+                                <p class="c-black">AÑO</p>
+                                <select name="anio" class="selectpicker form-control" data-live-search="true">
+                                    {% for ani in ani %}
+                                        <option value="{{ ani.ANO }}">{{ ani.ANO }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" style="text-align: center; margin-top: 10px">
+                            <button type="submit" class="btn btn-primary" style="width: 15%;">Buscar</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scripts %}
+
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js') }}"></script>
+
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+
+    <script src="{{ request.static_url('sinvel:static/js/wizard.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            // turn the element to select2 select style
+            $(".js-example-basic-single").select2({
+                placeholder: "Seleccione uno...",
+                allowClear: true
+            });
+        });
+    </script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(
+            function () {
+
+                $("select#ID_MARCA").change(function () {
+
+                    if ($(this).val() == 'Z') {
+
+                        $("select#ID_MODELO").html("<option>Select a Model</option>");
+                        $("select#ID_MODELO").attr('disabled', true);
+                    }
+                    else {
+
+                        var url = "/fltradoMarca/" + $(this).val();
+                        var brand = $(this).val();
+                        $.getJSON(url, function (models) {
+                            var options = '<option value="Z">Seleccione un Modelo</option>';
+
+                            var array = JSON.parse(models.json_models);
+                            for (var i = 0; i < array.length; i++) {
+                                var newValue = array[i].MODELO.replace(new RegExp('\'', 'g'), "");
+
+                                options += '<option value="' + array[i].ID_MODELO + '">' + newValue + '</option>';
+                            }
+                            $("select#ID_MODELO").html(options);
+                            $("select#ID_MODELO option:first").attr('selected', 'selected');
+                            $("select#ID_MODELO").attr('disabled', false);
+                        });
+                    }
+                });
+
+
+                $("select#ID_MODELO").change(function (vent) {
+                    if ($(this).val() == -1) {
+                        return;
+                    }
+                });
+            });
+
+
+    </script>
+
+{% endblock scripts %}

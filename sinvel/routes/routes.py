@@ -45,4 +45,8 @@ def includeme(config):
     config.add_route('registro_entrada_control_guardar','/entrada/registro_entrada_control_guardar')
     config.add_route('registro_control_entrada_reparacion','/entrada/registro_control_entrada_reparacion')
 
+
+    ###############Alertas por multas##############
+    config.add_route('alerta_multa','/alerta_multa')
+
     config.add_route('remolques', '/get_remolques')

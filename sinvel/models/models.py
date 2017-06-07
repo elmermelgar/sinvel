@@ -403,6 +403,8 @@ class UbicacionBodega(Base):
     OBSERVACION = Column(String(100))
     FECHAINGRESO = Column(Date)
     FECHAEGRESO = Column(Date)
+    MULTA_EN=''
+    MULTA_EN_STR=''
     EGRESO = Column(Integer)
 
     ubicacion = relationship('Ubicacion', primaryjoin='UbicacionBodega.ID_UBICACION == Ubicacion.ID_UBICACION', backref='ubicacion_bodegas')
