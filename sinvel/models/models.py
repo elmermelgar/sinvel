@@ -365,6 +365,7 @@ class TipoCosto(Base):
 
     ID_TIPO_COSTO = Column(Integer, primary_key=True)
     TIPO_COSTO = Column(String(50))
+    COD_COSTO=Column(String(50))
 
 
 class TipoRemolque(Base):
