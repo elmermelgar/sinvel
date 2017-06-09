@@ -48,5 +48,6 @@ def includeme(config):
 
     ###############Alertas por multas##############
     config.add_route('alerta_multa','/alerta_multa')
+    config.add_route('alerta_multa_cantidad_vehiculos','/alerta_multa/cantidad')
 
     config.add_route('remolques', '/get_remolques')
