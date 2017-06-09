@@ -38,22 +38,28 @@
                         <span>Subir Fotos</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ request.route_path('buscar')}}">
+                        <i class="zmdi zmdi-search-replace"></i>
+                        <span>Buscar Vehículos</span>
+                    </a>
+                </li>
 {#                <li>#}
 {#                    <a href="widgets.html">#}
 {#                        <i class="zmdi zmdi-widgets"></i>#}
 {#                        <span>Widgets</span>#}
 {#                    </a>#}
 {#                </li>#}
-{#                <li class="sm-sub">#}
-{#                    <a href="">#}
-{#                        <i class="zmdi zmdi zmdi-view-list"></i>#}
-{#                        <span>Tables</span>#}
-{#                    </a>#}
-{#                    <ul>#}
-{#                        <li><a href="normal-tables.html">Normal Tables</a></li>#}
-{#                        <li><a href="data-tables.html">Data Tables</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
+                <li class="sm-sub">
+                    <a href="">
+                        <i class="zmdi zmdi zmdi-view-list"></i>
+                        <span>Vendedor</span>
+                    </a>
+                    <ul>
+                        <li><a href="{{ request.route_path('vehiculosAsignados')  }}">Vehículos Asignados</a></li>
+                        <li><a href="{{ request.route_path('vehiculosVendidos')  }}">Vehículos Vendidos</a></li>
+                    </ul>
+                </li>
                 <li class="sm-sub">
                     <a href="">
                         <i class="zmdi zmdi-collection-text"></i>

@@ -26,7 +26,9 @@ requires = [
     'pyjasper',
     'pyramid_mailer',
     'jsonpickle',
-    'pyramid_storage'
+    'pyramid_storage',
+    'pyzmq',
+    'gevent',
 ]
 
 tests_require = [

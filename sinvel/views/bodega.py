@@ -19,7 +19,10 @@ from ..models import Municipio
 from pyramid.httpexceptions import HTTPSeeOther
 from sqlalchemy.exc import DBAPIError
 from datetime import datetime
+import ctypes
 
+def Mbox(title, text, style):
+    ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
 class Bodega_IU(object):
     def __init__(self,request):
@@ -48,6 +51,8 @@ class Bodega_IU(object):
 
         return {'bodegas': items_bodega, 'niveles': items_nivel, 'ubicaciones': items_ubicacion,'user':self.user}
 
+
+
     @view_config(route_name='detalle_bodega', renderer='../templates/bodega/detalle_bodega.jinja2', request_method='GET')
     def bodega_detalle(self):
         id = int(self.request.matchdict['id_bod'])
@@ -67,7 +72,7 @@ class Bodega_IU(object):
                 setattr(bodega, key, value)
             self.request.dbsession.add(bodega)
             transaction.commit()
-
+            ctypes.windll.user32.MessageBoxW(0, "REGISTRO GUARDADO CORRECTAMENTE!!", "EXITO!!", 1)
         except DBAPIError:
             print('Ocurrio un error al insertar el registro')
             print(db_err_msg)
@@ -137,12 +142,15 @@ class Bodega_IU(object):
             print('Ocurrio un error al actualizar el registro')
             print(db_err_msg)
             # return Response(db_err_msg, content_type='text/plain', status=500)
-            return HTTPSeeOther(self.request.route_url('resultados', marca=venta.detalle_control_empresa.vehiculo.modelo.marca.ID_MARCA,
+            id = self.request.POST.get('ID_VENTA')
+            venta = self.request.dbsession.query(Venta).get(id)
+            return HTTPSeeOther(self.request.route_url('resultado', marca=venta.detalle_control_empresa.vehiculo.modelo.marca.ID_MARCA,
                                        modelo=venta.detalle_control_empresa.vehiculo.modelo.ID_MODELO,
                                        estado=venta.detalle_control_empresa.vehiculo.estado_veh.ID_ESTADO,
                                        anio=venta.detalle_control_empresa.vehiculo.ANO))
-
-        return HTTPSeeOther(self.request.route_url('resultados', marca=venta.detalle_control_empresa.vehiculo.modelo.marca.ID_MARCA,
+        id = self.request.POST.get('ID_VENTA')
+        venta = self.request.dbsession.query(Venta).get(id)
+        return HTTPSeeOther(self.request.route_url('resultado', marca=venta.detalle_control_empresa.vehiculo.modelo.marca.ID_MARCA,
                                                    modelo=venta.detalle_control_empresa.vehiculo.modelo.ID_MODELO,
                                                    estado=venta.detalle_control_empresa.vehiculo.estado_veh.ID_ESTADO,
                                                    anio=venta.detalle_control_empresa.vehiculo.ANO))
@@ -219,3 +227,24 @@ class Bodega_IU(object):
         with open(filename, 'wb') as f:
             f.write(items_vehiculo.FOTO_VEH)
         return {'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
+
+    @view_config(route_name='vehiculosVendidos', renderer='../templates/bodega/vehiculos_vendidos.jinja2',
+                 request_method='GET')
+    def vehiculosVendidos(self):
+        usuario = self.request.dbsession.query(User).filter(User.user_name == self.user).first()
+        items_empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == usuario.id).first()
+        items_ventas = self.request.dbsession.query(Venta).filter(Venta.ID_EMPLEADO == items_empleado.ID_EMPLEADO).all()
+
+        return {'user': self.user, 'empleado': items_empleado, 'ventas': items_ventas}
+
+    @view_config(route_name='detalleVenta', renderer='../templates/bodega/detalle_venta.jinja2',
+                 request_method='GET')
+    def detalleVenta(self):
+        id = int(self.request.matchdict['id_veh'])
+        id_ven = int(self.request.matchdict['id_ven'])
+        items_vehiculo = self.request.dbsession.query(Vehiculo).get(id)
+        items_venta = self.request.dbsession.query(Venta).get(id_ven)
+        filename = 'sinvel/static/fotos_vehiculos/Vehiculo' + items_vehiculo.VIN + '.jpg'
+        with open(filename, 'wb') as f:
+            f.write(items_vehiculo.FOTO_VEH)
+        return {'vehiculo': items_vehiculo, 'user': self.user, 'venta': items_venta}
