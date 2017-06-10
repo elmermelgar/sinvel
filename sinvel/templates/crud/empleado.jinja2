@@ -19,55 +19,54 @@
         <div class="m-b-25">
 
 
+            {% if empleados %}
+                <br/>
+                <div class="tile">
+                    <table id="data-table" class="table table-hover table-bordered">
+                        <thead>
+                        <tr align="center">
+                            <th>Id.</th>
+                            <th>Nombre</th>
+                            <th>DUI</th>
+                            <th>ISSS</th>
+                            <th>AFP</th>
+                            <th>Tipo empleado</th>
+                            <th>Acciones</th>
 
-        {% if empleados %}
-             <br/>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for empleado in empleados %}
+                            <tr>
+                                <td>{{ empleado.ID_EMPLEADO }}</td>
+                                <td>{{ empleado.NOMBRE+" "+empleado.APELLIDO }}</td>
 
-         <div class="tile">
+                                <td>{{ empleado.DUI }}</td>
+                                <td>{{ empleado.ISSS }}</td>
+                                <td>{{ empleado.AFP }}</td>
+                                <td>{{ empleado.TIPO_EMPLEADO }}</td>
+                                <td><a href="{{ request.route_url('empleado_create') }}" class="btn btn-warning"
+                                       role="button">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                                    <a href="{{ request.route_url('empleado_delete',id_empleado=empleado.ID_EMPLEADO) }}"
+                                       class="btn btn-danger" role="button">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </a>
+                                </td>
 
-                          <table id="data-table" class="table table-hover table-bordered">
-                            <thead>
-                                <tr align="center">
-                                    <th >Id.</th>
-                                    <th >Nombre</th>
-                                    <th >DUI</th>
-                                    <th >ISSS</th>
-                                    <th >AFP</th>
-                                    <th >Tipo empleado</th>
-                                    <th >Acciones</th>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for empleado in empleados %}
-                                 <tr>
-                                        <td>{{empleado.ID_EMPLEADO }}</td>
-                                        <td>{{empleado.NOMBRE+" "+empleado.APELLIDO }}</td>
 
-                                        <td>{{empleado.DUI}}</td>
-                                        <td>{{empleado.ISSS}}</td>
-                                        <td>{{empleado.AFP}}</td>
-                                        <td>{{empleado.TIPO_EMPLEADO}}</td>
-                                        <td> <a href="{{ request.route_url('empleado_create') }}" class="btn btn-warning" role="button">
-                                         <i class="glyphicon glyphicon-pencil"></i>
-                                        </a>
-                                         <a href="{{ request.route_url('empleado_create') }}" class="btn btn-danger" role="button">
-                                         <i class="glyphicon glyphicon-remove"></i>
-                                         </a>
-                                        </td>
-
-                                 </tr>
-                             {% endfor %}
-                              </tbody>
-                         </table>
-
+                </div>
 
             {% else %}
-            No existen empleados
-        {% endif %}
-        </div>
-        </div>
-
+                No existen empleados
+            {% endif %}
+         </div>
     </div>
 
 {% endblock content %}
@@ -99,6 +98,4 @@
 
             });
         </script>#}
-
-
 {% endblock scripts %}
