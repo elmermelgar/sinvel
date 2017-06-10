@@ -23,43 +23,27 @@
                 <li>
                     <a href="{{ request.route_path('inicio')  }}">
                         <i class="zmdi zmdi-home"></i>
-                        <span>Home</span>
+                        <span>Inicio</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ request.route_path('bodegas')  }}">
-                        <i class="zmdi zmdi-swap-alt"></i>
-                        <span>Iniciar Proceso</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ request.route_path('list_importadores')}}">
-                        <i class="zmdi zmdi-image"></i>
-                        <span>Subir Fotos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ request.route_path('buscar')}}">
-                        <i class="zmdi zmdi-search-replace"></i>
-                        <span>Buscar Vehículos</span>
-                    </a>
-                </li>
+{#********************MENU ADMINISTRADOR DE BODEGA********************************************#}
+                {% include '../menus/menu_admin.jinja2' %}
+{#*******************************MENU BODEGUERO********************************************#}
+                {% include '../menus/menu_bodeguero.jinja2' %}
+{#*******************************MENU VENDEDOR********************************************#}
+                {% include '../menus/menu_vendedor.jinja2' %}
+{#*******************************MENU IMPORTADOR********************************************#}
+                {% include '../menus/menu_importador.jinja2' %}
+{#*******************************FIN DE MENUSR********************************************#}
+
+
 {#                <li>#}
 {#                    <a href="widgets.html">#}
 {#                        <i class="zmdi zmdi-widgets"></i>#}
 {#                        <span>Widgets</span>#}
 {#                    </a>#}
 {#                </li>#}
-                <li class="sm-sub">
-                    <a href="">
-                        <i class="zmdi zmdi zmdi-view-list"></i>
-                        <span>Vendedor</span>
-                    </a>
-                    <ul>
-                        <li><a href="{{ request.route_path('vehiculosAsignados')  }}">Vehículos Asignados</a></li>
-                        <li><a href="{{ request.route_path('vehiculosVendidos')  }}">Vehículos Vendidos</a></li>
-                    </ul>
-                </li>
+
                 <li class="sm-sub">
                     <a href="">
                         <i class="zmdi zmdi-collection-text"></i>

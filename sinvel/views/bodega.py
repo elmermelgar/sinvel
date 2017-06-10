@@ -48,7 +48,7 @@ class Bodega_IU(object):
         items_bodega = self.request.dbsession.query(Bodega).all()
         items_nivel = self.request.dbsession.query(Nivel).all()
         items_ubicacion = self.request.dbsession.query(Ubicacion).all()
-
+        
         return {'bodegas': items_bodega, 'niveles': items_nivel, 'ubicaciones': items_ubicacion,'user':self.user}
 
 
