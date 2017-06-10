@@ -52,7 +52,7 @@ class RegistroVehiculo(object):
     @view_config(route_name='guardar_registro_vehiculo', request_method='POST')
     def guardarRegistroVehiculo(self):
         try:
-                empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
+                empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
                 data = self.request.POST
                 vehiculo = Vehiculo()
                 detalleImportacion=DetalleImportacion()
@@ -98,7 +98,7 @@ class RegistroVehiculo(object):
         entradas = None
         try:
 
-            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
             remolques = self.request.dbsession.query(Remolque).filter(Remolque.ID_BODEGA == empleado.ID_BODEGA) \
                 .filter(Remolque.DISPONIBLE == 0)
             entradas = self.request.dbsession.query(DetalleControlEmpresa, Vehiculo). \
@@ -135,7 +135,7 @@ class RegistroVehiculo(object):
         id_ctrl_emp = query.id_control_empresa
         ids_det_control = self.request.params.getall("selected_vehiculos")
         try:
-            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == id_user).one()
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == id_user).one()
             self.request.dbsession.expunge_all()
             self.request.dbsession.close()
             for id_det_ctrl_emp in ids_det_control:
@@ -159,7 +159,7 @@ class RegistroVehiculo(object):
         remolques = None
         entradas = None
         try:
-            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
             remolques = self.request.dbsession.query(Remolque).filter(Remolque.ID_BODEGA == empleado.ID_BODEGA) \
                 .filter(Remolque.DISPONIBLE == 0)
             entradas = self.request.dbsession.query(Vehiculo,UbicacionBodega,Ubicacion,Nivel,EstadoVeh)\
