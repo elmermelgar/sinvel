@@ -33,6 +33,7 @@ def includeme(config):
     config.add_route('guardar_importador', '/AgregarImportador/guardar')
     config.add_route('agregar_remolque', '/AgregarRemolque')
     config.add_route('guardar_remolque', '/AgregarRemolque/guardar')
+    config.add_route('remolque_list', '/remolque/list')
 
 
     #################Salida Reparacion#############
@@ -55,6 +56,8 @@ def includeme(config):
 
 
     #############CRUD Empleado######################
+
+
     config.add_route('empleado_list','/empleado/list')
     config.add_route('empleado_create','/empleado/create')
     config.add_route('guardar_empleado','/empleado/save')

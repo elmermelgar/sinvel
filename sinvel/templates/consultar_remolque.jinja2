@@ -1,0 +1,96 @@
+{% extends "layout.jinja2" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="{{request.static_url('sinvel:static/css/wizard.css')}}" rel="stylesheet">
+    <link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+
+    <div class="container">
+
+        <h3  >Remolques</h3>
+
+
+
+        <a href="{{ request.route_url('agregar_remolque') }}" class="btn btn-primary" role="button">Agregar
+         <i class="glyphicon glyphicon-plus"></i>
+        </a>
+
+        <div class="m-b-25">
+
+
+            {% if remolque %}
+                <br/>
+                <div class="tile">
+                    <table id="data-table" class="table table-hover table-bordered">
+                        <thead>
+                        <tr align="center">
+                            <th>Id.</th>
+                            <th>Nombre_Remolque</th>
+                            <th>Disponible</th>
+                            <th>Descripcion</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for remolques in remolque %}
+                            <tr>
+                                <td>{{ remolques.ID_REMOLQUE }}</td>
+                                <td>{{ remolques.NOMBRE_REMOLQUE }}</td>
+
+                                <td>{{ remolques.DISPONIBLE }}</td>
+                                <td>{{ remolques.DESCRIP_REMOLQUE }}</td>
+                                <td><a href="{{ request.route_url('agregar_remolque') }}" class="btn btn-warning"
+                                       role="button">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                                    <a href="{{ request.route_url('eliminar_remolque',id_empleado=empleado.ID_EMPLEADO) }}"
+                                       class="btn btn-danger" role="button">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+            {% else %}
+                No existen Remolques
+            {% endif %}
+         </div>
+    </div>
+
+{% endblock content %}
+{% block scripts %}
+         <script src="{{request.static_url('sinvel:static/js/wizard.js') }}"></script>
+         <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+
+   {# <!-- Data Table -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                //Basic Example
+
+                $("#data-table").bootgrid({
+                    ajax :true,
+
+                    url: "/salida_reparacion/verificar_remolque",
+                    css: {
+                        icon: 'zmdi icon',
+                        iconColumns: 'zmdi-view-module',
+                        iconDown: 'zmdi-expand-more',
+                        iconRefresh: 'zmdi-refresh',
+                        iconUp: 'zmdi-expand-less',
+                        iconSearch: 'zmdi-search'
+                    },
+                });
+
+
+
+
+            });
+        </script>#}
+{% endblock scripts %}

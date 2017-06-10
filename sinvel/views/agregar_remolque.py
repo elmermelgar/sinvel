@@ -16,6 +16,14 @@ class AgregarRemolque(object):
         self.request = request
         self.user = User()
 
+    @view_config(route_name='remolque_list', request_method='GET', renderer='../templates/consultar_remolque.jinja2')
+    def remolque_list(self):
+
+
+        remolque = self.request.dbsession.query(Remolque)
+
+        return {'remolque': remolque}
+
     @view_config(route_name='agregar_remolque', request_method='GET',renderer='../templates/agregar_remolque.jinja2')
     def createRegistroRemolques(self):
         try:
