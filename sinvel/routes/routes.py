@@ -57,6 +57,7 @@ def includeme(config):
     #############CRUD Empleado######################
     config.add_route('empleado_list','/empleado/list')
     config.add_route('empleado_create','/empleado/create')
+    config.add_route('guardar_empleado','/empleado/save')
     config.add_route('empleado_edit','/empleado/edit/{id_empleado}')
     config.add_route('empleado_delete','/empleado/delete/{id_empleado}')
 
