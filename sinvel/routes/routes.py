@@ -31,6 +31,9 @@ def includeme(config):
     config.add_route('costo_veh', '/costo_vehiculo/{id_vehiculo}')
     config.add_route('detalle_costo', '/detalle_costo/{id_costo}')
     config.add_route('guardar_importador', '/AgregarImportador/guardar')
+    config.add_route('agregar_remolque', '/AgregarRemolque')
+    config.add_route('guardar_remolque', '/AgregarRemolque/guardar')
+
 
     #################Salida Reparacion#############
     config.add_route('verificar_remolque', '/salida_reparacion/verificar_remolque')

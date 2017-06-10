@@ -1,0 +1,139 @@
+{% extends "layout.jinja2" %}
+
+<!-- CSS -->
+{% block styles %}
+    <link href="{{ request.static_url('sinvel:static/css/wizard.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ request.static_url('sinvel:static/css/bootstrap-datetimepicker.min.css') }}">
+{% endblock styles %}
+
+
+{% block content %}
+    {% from '_helpers.jinja2' import input,label %}
+ <div class="col-12 col-lg-12 col-sm-9 ">
+         <div class="panel panel-primary">
+            <div class="panel-heading">
+                 <h2 class="panel-title">Agregar Remolque</h2>
+            </div>
+             </br>
+             </br>
+             <div class="panel">
+                 <h3 class="panel-title">Datos Remolque</h3>
+            </div>
+             </br>
+            <div class="panel-body">
+                <form class="form-horizontal" action="{{request.route_url('guardar_remolque')}}" method="post">
+                    <div class="row">
+
+                         <div class="col-md-6">
+                                <label class="col-sm-2 control-label">Tipo Remolque:</label>
+                                <div class="form-group col-md-10 ">
+                                    <select name="ID_TIPO_REMOLQUE1" class="form-control js-example-basic-single js-states"
+                                            required>
+                                        <option value="">Seleccione un Tipo Remolque</option>
+                                        {% for aremolques in remolques %}
+                                            <option value="{{ aremolques.ID_REMOLQUE}}">{{aremolques.ID_TIPO_REMOLQUE }}
+                                                - {{ aremolques.tipo_remolque.NOMBRE_TIPO }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+
+                         <div class="col-md-6">
+                                <label class="col-sm-2 control-label">Bodega:</label>
+                                <div class="form-group col-md-10 ">
+                                    <select name="ID_TIPO_REMOLQUE2" class="form-control js-example-basic-single js-states"
+                                            required>
+                                        <option value="">Seleccione la bodega</option>
+                                        {% for aremolques in remolques %}
+                                            <option value="{{ aremolques.ID_REMOLQUE}}">{{aremolques.ID_BODEGA }}
+                                                - {{ aremolques.bodega.NOMBRE_BODEGA }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <label class="col-sm-2 control-label">Empleado:</label>
+                                <div class="form-group col-md-10 ">
+                                    <select name="ID_TIPO_REMOLQUE3" class="form-control js-example-basic-single js-states"
+                                            required>
+                                        <option value="">Seleccione al Empleado</option>
+                                        {% for aremolques in remolques %}
+                                            <option value="{{ aremolques.ID_REMOLQUE}}">{{aremolques.ID_EMPLEADO }}
+                                                - {{ aremolques.empleado.NOMBRE }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Descripcion Remolque','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                    <input name="D_remolque" type="text" maxlength="30" class="form-control" placeholder="eg: 3 ejes, 12 llantas" required>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Nombre Remolque','col-sm-2 control-label') }}
+                             <div class="form-group col-md-10">
+                                <input name="n_remolque" type="text" maxlength="15" class="form-control"  required>
+
+                             </div>
+                             </div>
+                         </div>
+
+                       <div class="col-md-6">
+                           <div class="form-group">
+                                {{ label('Disponible','col-sm-2 control-label') }}
+                              <div class="form-group col-md-10">
+                                <input name="Disponible" type="text" maxlength="1" class="form-control" >
+                              </div>
+                            </div>
+                         </div>
+
+
+
+
+                   
+
+                  <input id="Aimportador" type="hidden" name="ID_IMPORTACION" class="form-control" value=""/>
+                 <div class="col-sm-2">
+                        {{ input('submit','form-control btn btn-primary', type='submit',value='Agregar') }}
+                 </div>
+                 <div class="col-sm-2">
+                 <input  type="reset" class="form-control">
+                </div>
+                </form>
+
+         </div>
+         </div>
+
+
+
+ </div>
+ {% endblock content %}
+
+{% block scripts %}
+
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/moment.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ request.static_url('sinvel:static/js/bootstrap-datetimepicker.min.js') }}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $(".form_datetime").datetimepicker({format: 'YYYY-MM-DD'});
+        });
+    </script>
+    <script src="{{ request.static_url('sinvel:static/js/wizard.js') }}"></script>
+
+{% endblock scripts %}
