@@ -1,6 +1,6 @@
 import bcrypt
 from pyramid.view import view_config
-from ..models import Importador,User
+from ..models import Importador,User,Group,UsersGroup
 import jsonpickle
 from sqlalchemy.exc import DBAPIError
 import transaction
@@ -20,7 +20,7 @@ class AgregarImportador(object):
     @view_config(route_name='guardar_importador', request_method='POST')
     def guardarImportador(self):
         try:
-
+            grupo = UsersGroup()
             data = self.request.POST
             importador = Importador()
             username=''
@@ -40,9 +40,15 @@ class AgregarImportador(object):
                     password=value
 
             self.request.dbsession.add(user)
-            transaction.commit()
+            #transaction.commit()
             query = self.request.dbsession.query(func.max(User.id).label('id')).one()
+
             id = query.id
+            grupoUser = self.request.dbsession.query(Group).filter(Group.description == 'IMPORTADOR').first()
+            grupo.group_id = grupoUser.id
+            grupo.user_id = id
+
+            self.request.dbsession.add(grupo)
 
             for key, value in data.items():
                 print(key, value)

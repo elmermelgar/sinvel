@@ -66,6 +66,7 @@ class EmpleadoClase(object):
                         password = value
                 self.request.dbsession.add(user)
                 query = self.request.dbsession.query(func.max(User.id).label('id')).one()
+
                 id = query.id
                 grupoUser=self.request.dbsession.query(Group).filter(Group.description==data['TIPO_EMPLEADO']).first()
                 nameGroup=grupoUser.group_name
@@ -73,6 +74,7 @@ class EmpleadoClase(object):
                 grupo.user_id=id
                 idUser=id
                 self.request.dbsession.add(grupo)
+
             if (data['TIPO_EMPLEADO'] != 'MOTORISTA'):
              for key, value in data.items():
                 print(key, value)

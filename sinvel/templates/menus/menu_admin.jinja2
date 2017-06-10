@@ -1,6 +1,31 @@
-<li>
-    <a href="{{ request.route_path('bodegas') }}">
-        <i class="zmdi zmdi-swap-alt"></i>
-        <span>Iniciar Proceso</span>
+<li class="sm-sub">
+    <a href="">
+        <i class="zmdi zmdi zmdi-view-list"></i>
+        <span>Registrar entradas</span>
     </a>
+    <ul>
+        <li><a href="{{ request.route_path('bodegas') }}">Nuevo vehiculo</a></li>
+        <li><a href="#">Reparacion</a></li>
+    </ul>
+</li>
+<li class="sm-sub">
+    <a href="">
+        <i class="zmdi zmdi zmdi-view-list"></i>
+        <span>Registrar salidas</span>
+    </a>
+    <ul>
+        <li><a href="{{ request.route_path('bodegas') }}">Venta</a></li>
+        <li><a href="#">Reparacion</a></li>
+    </ul>
+</li>
+<li class="sm-sub">
+    <a href="">
+        <i class="zmdi zmdi zmdi-view-list"></i>
+        <span>Mantenimientos</span>
+    </a>
+    <ul>
+        <li><a href="{{ request.route_path('empleado_list') }}">Empleados</a></li>
+
+    </ul>
+
 </li>
