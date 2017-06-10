@@ -23,12 +23,13 @@ class EmpleadoClase(object):
         return {'empleados': empleados}
 
     @view_config(route_name='empleado_create', request_method='GET', renderer='../templates/crud/empleado_create.jinja2')
-    def listEmpleado(self):
+    def createEmpleado(self):
         empleados = None
         empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).first()
         try:
             empleados = self.request.dbsession.query(Empleado).filter(Empleado.ID_BODEGA == empleado.ID_BODEGA).all()
         except:
             print('Error')
+        return {'value':''}
 
 
