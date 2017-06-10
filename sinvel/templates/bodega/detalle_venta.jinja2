@@ -1,0 +1,111 @@
+{% extends "../layout.jinja2" %}
+<!-- CSS -->
+{% block styles %}
+
+{% endblock styles %}
+{% block content %}
+    <div class="container c-boxed invoice">
+                <header class="page-header row">
+                    <div class="col-xs-8">
+                        <h3>Detalle de la Venta <small>Puede imprimir su reporte para tenerlo como comprobante.</small></h3>
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        <button class="btn btn-danger btn-sm btn-icon-text" data-action="print"><i class="zmdi zmdi-print"></i> Imprimir Comprobante</button>
+                    </div>
+                </header>
+
+                <div class="tile">
+                    <div class="t-header text-center bg-ace">
+                        <img class="i-logo" src="{{ request.static_url('sinvel:static/fotos_vehiculos/Vehiculo'+vehiculo.VIN+'.jpg') }}" alt="">
+                    </div>
+
+                    <div class="t-body tb-padding">
+                        <div class="row m-b-25">
+                            <div class="col-xs-6">
+                                <div class="text-right">
+                                    <p class="c-gray">Marca: </p>
+                                    <p class="c-gray">Modelo: </p>
+                                    <p class="c-gray">Año: </p>
+                                    <p class="c-gray">VIN: </p>
+                                    <h4>Cliente: </h4>
+
+                                    <div class="text-muted">
+                                        <p class="c-gray">Bodega:</p>
+                                        <address>
+                                            Dirección de Bodega:
+                                        <br><br>
+                                        </address>
+
+                                        <h4>Vendedor: </h4>
+                                        <p class="c-gray">Descripción de la Venta: </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-6">
+                                <div class="i-to">
+                                    <p class="c-gray">{{ venta.detalle_control_empresa.vehiculo.modelo.marca.MARCA }}</p>
+                                    <p class="c-gray">{{ venta.detalle_control_empresa.vehiculo.modelo.MODELO}}</p>
+                                    <p class="c-gray">{{ venta.detalle_control_empresa.vehiculo.ANO}}</p>
+                                    <p class="c-gray">{{ venta.detalle_control_empresa.vehiculo.VIN}}</p>
+                                    <h4>{{ venta.cliente.NOMBRE_CLIENTE }} {{ venta.cliente.APELLIDO_CLIENTE }}</h4>
+
+                                    <div class="text-muted">
+                                        <p class="c-gray">{{ venta.empleado.bodega.NOMBRE_BODEGA }}</p>
+                                        <address>
+                                           {{ venta.empleado.bodega.DIRECCION_BODEGA }}<br>
+                                            {{ venta.empleado.bodega.municipio.MUNICIPIO }},
+                                            {{ venta.empleado.bodega.municipio.departamento.DEPARTAMENTO }}
+                                        </address>
+
+                                        <h4>{{ venta.empleado.NOMBRE }} {{ venta.empleado.APELLIDO }}</h4>
+                                        <p class="c-gray">{{ venta.DESCRIP_VENTA }} </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="row m-t-25 p-0 m-b-25">
+                            <div class="col-xs-3">
+                                <div class="bg-amber brd-2 p-15">
+                                    <div class="c-white m-b-5">#PLACA</div>
+                                    <h2 class="m-0 c-white f-300">{{ venta.detalle_control_empresa.vehiculo.PLACA }}</h2>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <div class="bg-blue brd-2 p-15">
+                                    <div class="c-white m-b-5">FECHA DE VENTA</div>
+                                    <h2 class="m-0 c-white f-300">{{ venta.FECHA_VENTA }}</h2>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <div class="bg-gray brd-2 p-15">
+                                    <div class="c-white m-b-5">PRECIO PROPUESTO</div>
+                                    <h2 class="m-0 c-white f-300">${{ venta.detalle_control_empresa.vehiculo.PRECIO_VEHICULO }}</h2>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <div class="bg-green brd-2 p-15">
+                                    <div class="c-white m-b-5">PRECIO EN QUE FUÉ VENDIDO</div>
+                                    <h2 class="m-0 c-white f-300">${{ venta.PRECIO_VENTA }}</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                    </div>
+                </div>
+
+            </div>
+{% endblock content %}
+{% block scripts %}
+
+
+{% endblock scripts %}

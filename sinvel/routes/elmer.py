@@ -13,6 +13,9 @@ def includeme(config):
     config.add_route('vehiculosAsignados', '/vehiculos_asignados')
     config.add_route('updateVenta', '/vehiculo/{id_veh}/{id_ven}/vender')
     config.add_route('actualizarVenta', '/actualizar_venta')
+    config.add_route('vehiculosVendidos', '/vehiculos_vendidos')
+    config.add_route('detalleVenta', '/venta/{id_veh}/{id_ven}/detalle')
+
     #################################3###
     config.add_route('wizard', '/wizard')
     config.add_route('vehiculos', '/vehiculos')

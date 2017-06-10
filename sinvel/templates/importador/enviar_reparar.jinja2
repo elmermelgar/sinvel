@@ -16,7 +16,7 @@
                     <div class="th-title">
                         ENVIAR VEHICULO A REPARAR
                     </div>
-                    <a href="{{ request.route_url('resultado') }}" style="float: right; margin-top: -35px"
+                    <a href="{{ request.route_url('resultado', marca=veh.modelo.marca.ID_MARCA, modelo=veh.modelo.ID_MODELO, estado=veh.estado_veh.ID_ESTADO, anio=veh.ANO) }}" style="float: right; margin-top: -35px"
                        class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px"
                                                                   class="zmdi zmdi-arrow-back"></i></a>
                     <br/>

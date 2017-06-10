@@ -7,7 +7,7 @@
 {% block content %}
     <div class="container c-boxed">
         <div class="text-center">
-            <h2 class="f-400 m-b-15">Vehículos asignados para vender</h2>
+            <h2 class="f-400 m-b-15">Vehículos vendidos</h2>
             <h4 class="f-400 m-b-15">EMPLEADO: {{ empleado.NOMBRE }} {{ empleado.APELLIDO }}</h4>
         </div>
         <div class="tile">
@@ -24,7 +24,7 @@
                             <tbody>
                             {% for venta in ventas %}
                                 {% if venta.ID_EMPLEADO == empleado.ID_EMPLEADO %}
-                                    {% if venta.detalle_control_empresa.vehiculo.estado_veh.COD_ESTADO =='003' %}
+                                    {% if venta.detalle_control_empresa.vehiculo.estado_veh.COD_ESTADO =='006' %}
 
 
                                         <tr>
@@ -39,13 +39,12 @@
                                             <td>${{ venta.detalle_control_empresa.vehiculo.PRECIO_VEHICULO }}</td>
                                             <td>{{ venta.detalle_control_empresa.vehiculo.ANO }}</td>
                                             <td>
-                                                <a href="{{ request.route_url('detalleVehiculo', id_veh=venta.detalle_control_empresa.vehiculo.ID_VEHICULO, id_ven=venta.ID_VENTA) }}"
-                                                   class="btn bg-lightblue">Ver Detalles</a>
-                                                <a href="{{ request.route_url('updateVenta', id_veh=venta.detalle_control_empresa.vehiculo.ID_VEHICULO, id_ven=venta.ID_VENTA) }}"
-                                                   class="btn bg-green">Vender Vehículo</a>
+                                                <a href="{{ request.route_url('detalleVenta', id_veh=venta.detalle_control_empresa.vehiculo.ID_VEHICULO, id_ven=venta.ID_VENTA) }}"
+                                                   class="btn bg-lightblue">Detalle de Venta</a>
                                             </td>
                                         </tr>
-                                        {% else %}
+                                    {% else %}
+{#                                        <h4 style="color: #96000b">No hay Vehiculos vendidos</h4>#}
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}

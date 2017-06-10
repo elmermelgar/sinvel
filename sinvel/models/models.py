@@ -136,6 +136,7 @@ class Empleado(Base):
     AFP = Column(String(18))
     ISSS = Column(String(18))
     TEL_EMP = Column(String(9))
+    TIPO_EMPLEADO=Column(String(30))
 
     bodega = relationship('Bodega', primaryjoin='Empleado.ID_BODEGA == Bodega.ID_BODEGA', backref='empleadoes')
     user = relationship('User', primaryjoin='Empleado.ID_USER == User.id', backref='empleadoes')

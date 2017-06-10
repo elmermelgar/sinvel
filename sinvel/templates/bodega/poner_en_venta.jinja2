@@ -13,7 +13,7 @@
     <div class="tile">
                     <div class="t-header">
                         <div class="th-title">Año: {{ vehiculo.ANO }} - VIN: {{ vehiculo.VIN }} </div>
-                        <a href="{{ request.route_url('vehiculos') }}" style="float: right; margin-top: -25px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+                        <a href="{{ request.route_url('resultado',  marca=vehiculo.modelo.marca.ID_MARCA, modelo=vehiculo.modelo.ID_MODELO, estado=vehiculo.estado_veh.ID_ESTADO, anio=vehiculo.ANO) }}" style="float: right; margin-top: -25px" class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
                     </div>
         <form class="form-horizontal" enctype="multipart/form-data" action="{{ request.route_url('ventaVehiculoActualizar') }}" method="post">
             <div class="t-body tb-padding">
