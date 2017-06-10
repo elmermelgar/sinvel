@@ -7,26 +7,51 @@
 
             <div class="tile">
                     <div class="t-header">
-                        <div class="th-title">Importaciones <small>Importaciones que se tienen registradas</small></div>
+                        <div class="th-title">Importaciones -- Subida de Fotos a Cargo de: {{ emp.NOMBRE }} <small>Importaciones que se tienen registradas para la bodega: {{ bod.NOMBRE_BODEGA }}</small></div>
                     </div>
 
                     <table class="table table-bordered table-vmiddle">
                         <thead>
                             <tr>
-                                <th data-column-id="id" data-type="numeric">Numero de Registro</th>
-                                <th data-column-id="sender">Fecha de Importación</th>
-                                <th data-column-id="received">Vehículos</th>
-                                <th data-column-id="commands">Acciones</th>
+                                <th style="text-align: center">Registro</th>
+                                <th style="text-align: center">Fecha</th>
+                                <th style="text-align: center">Importador</th>
+                                <th style="text-align: center">Origen</th>
+                                <th style="text-align: center">Marca</th>
+                                <th style="text-align: center">Modelo</th>
+                                <th style="text-align: center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
+                        {% for bods in bods %}
+                        {% if bods.ID_BODEGA == bod.ID_BODEGA %}
                             {% for impor in impor %}
-                                    <tr>
-                                        <td>{{ impor.NUM_REGISTRO }}</td>
-                                        <td>{{ impor.FECHA_IMP.strftime("%d/%m/%Y") }}</td>
-                                        <td>{{ impor.CANTIDAD }}</td>
-                                        <td> <a href="{{ request.route_url('list_vehiculos', id_imp=impor.ID_IMPORTACION) }}" class="btn btn-icon btn-warning command-edit"><span style="margin-top: 10px" class="zmdi zmdi-directions-car" title="Lista de Vehiculos"></span></a> </td>
-                                    </tr>
+                                {% for veh in veh %}
+                                    {% if impor.ID_IMPORTACION == veh.ID_IMPORTACION %}
+                                        {% for detImp in detImp %}
+                                        {% if impor.ID_IMPORTACION == detImp.ID_IMPORTACION %}
+
+                                                <tr>
+                                                    <td style="text-align: center">{{ impor.NUM_REGISTRO }}</td>
+                                                    <td style="text-align: center">{{ impor.FECHA_IMP.strftime("%d/%m/%Y") }}</td>
+                                                    <td style="text-align: center">{{ impor.importador.NOMBRE }}</td>
+                                                    <td style="text-align: center">{{ impor.PAIS_ORIGEN }}</td>
+                                                    <td style="text-align: center">{{ veh.modelo.marca.MARCA }}</td>
+                                                    <td style="text-align: center">{{ veh.modelo.MODELO }}</td>
+                                                    <td style="text-align: center"><a
+                                                            href="{{ request.route_url('vehiculo', id_detImp=detImp.ID_DETALLE_IMPORT) }}"
+                                                            class="btn btn-icon btn-success command-edit"><span
+                                                            style="margin-top: 10px" class="zmdi zmdi-upload"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            data-original-title="Subir Fotos"></span></a></td>
+                                                </tr>
+                                        {% endif %}
+
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                        {% endfor %}
+                            {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>

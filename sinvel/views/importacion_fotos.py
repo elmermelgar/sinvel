@@ -1,28 +1,34 @@
 from pyramid.view import view_config
-from ..models.models import DetalleImportacion, Importacion, FotosDesperfecto
+from ..models.models import User, Empleado, Bodega, DetalleControlEmpresa, \
+    Vehiculo, DetalleImportacion, Importacion, FotosDesperfecto
 from pyramid.httpexceptions import HTTPSeeOther
 from pyramid_storage.exceptions import FileNotAllowed
 class Importaciones(object):
     def __init__(self,request):
         self.request=request
-        self.user=request.user
-        self.item = DetalleImportacion()
+        self.user=request.user.id
+        self.query_emp=request.dbsession.query(Empleado)
+        self.query_bodega=request.dbsession.query(Bodega)
+        self.query_detalleCtl=request.dbsession.query(DetalleControlEmpresa)
+        self.query_veh=request.dbsession.query(Vehiculo)
         self.query_detalleImp = request.dbsession.query(DetalleImportacion)
         self.query_importacion = request.dbsession.query(Importacion)
-
+        self.query_foto=request.dbsession.query(FotosDesperfecto)
 
     @view_config(route_name='list_importadores', renderer='../templates/importacionFotos/importadores.jinja2', request_method='GET')
     def importaciones(self):
+            emp=self.query_emp.get(int(self.user))
+            bodega=self.query_bodega.all()
+            bod=self.query_bodega.get(emp.ID_BODEGA)
+            clt=self.query_detalleCtl.get(emp.ID_BODEGA)
+            veh=self.query_veh.all()
+            detImp=self.query_detalleImp.all()
+            foto=self.query_foto.all()
+
             importacion = self.query_importacion.all()
 
-            return {'impor': importacion}
+            return {'user':self.user, 'emp':emp, 'bods':bodega, 'bod':bod, 'clt':clt, 'veh':veh, 'detImp':detImp, 'impor': importacion, 'foto':foto}
 
-    @view_config(route_name='list_vehiculos', renderer='../templates/importacionFotos/vehiculos.jinja2', request_method='GET')
-    def vehiculos(self):
-        id_imp=self.request.matchdict['id_imp']
-        vehiculos=self.query_detalleImp.filter_by(ID_IMPORTACION =id_imp)
-
-        return {'veh': vehiculos}
 
     @view_config(route_name='vehiculo', renderer='../templates/importacionFotos/fotosVehiculos.jinja2', request_method='GET')
     def fotos(self):
@@ -63,5 +69,5 @@ class Importaciones(object):
         except FileNotAllowed:
             self.request.session.flash('Lo sentimos, este archivo no esta Permitido!!!')
 
-        return HTTPSeeOther(self.request.route_url('list_vehiculos', id_imp=ob_detImp.ID_IMPORTACION))
+        return HTTPSeeOther(self.request.route_url('list_importadores'))
 
