@@ -44,7 +44,7 @@
                          <div class="col-md-6">
                                 <label class="col-sm-2 control-label">Bodega:</label>
                                 <div class="form-group col-md-10 ">
-                                    <select name="ID_TIPO_REMOLQUE2" class="form-control js-example-basic-single js-states"
+                                    <select name="ID_BODEGA" class="form-control js-example-basic-single js-states"
                                             required>
                                         <option value="">Seleccione la bodega</option>
                                         {% for aremolques in remolques %}
@@ -59,7 +59,7 @@
                             <div class="col-md-6">
                                 <label class="col-sm-2 control-label">Empleado:</label>
                                 <div class="form-group col-md-10 ">
-                                    <select name="ID_TIPO_REMOLQUE3" class="form-control js-example-basic-single js-states"
+                                    <select name="ID_EMPLEADO" class="form-control js-example-basic-single js-states"
                                             required>
                                         <option value="">Seleccione al Empleado</option>
                                         {% for aremolques in remolques %}
@@ -69,13 +69,13 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
+
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 {{ label('Descripcion Remolque','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    <input name="D_remolque" type="text" maxlength="30" class="form-control" placeholder="eg: 3 ejes, 12 llantas" required>
+                                    <input name="DESCRIP_REMOLQUE" type="text" maxlength="30" class="form-control" placeholder="eg: 3 ejes, 12 llantas" required>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                             <div class="form-group">
                                 {{ label('Nombre Remolque','col-sm-2 control-label') }}
                              <div class="form-group col-md-10">
-                                <input name="n_remolque" type="text" maxlength="15" class="form-control"  required>
+                                <input name="NOMBRE_REMOLQUE" type="text" maxlength="15" class="form-control"  required>
 
                              </div>
                              </div>
@@ -95,7 +95,7 @@
                            <div class="form-group">
                                 {{ label('Disponible','col-sm-2 control-label') }}
                               <div class="form-group col-md-10">
-                                <input name="Disponible" type="text" maxlength="1" class="form-control" >
+                                <input name="DISPONIBLE" type="text" maxlength="1" class="form-control" >
                               </div>
                             </div>
                          </div>
@@ -105,7 +105,7 @@
 
 
 
-                  <input id="Aimportador" type="hidden" name="ID_IMPORTACION" class="form-control" value=""/>
+                   <input id="Aremolque" type="hidden" name="ID_REMOLQUE" class="form-control" value=""/>
                  <div class="col-sm-2">
                         {{ input('submit','form-control btn btn-primary', type='submit',value='Agregar') }}
                  </div>

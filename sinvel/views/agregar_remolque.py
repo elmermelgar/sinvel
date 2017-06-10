@@ -4,8 +4,12 @@ from ..models import Remolque,User
 from sinvel.views.user import db_err_msg
 from sqlalchemy.exc import DBAPIError
 import transaction
-from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
+from pyramid.view import view_config
+
+from pyramid.httpexceptions import HTTPFound
+from sqlalchemy.sql import func
+
 
 class AgregarRemolque(object):
     def __init__(self,request):
@@ -21,22 +25,21 @@ class AgregarRemolque(object):
         return {'remolques': remolque}
 
 
-        @view_config(route_name='guardar_remolque', request_method='POST')
-        def guardarRegistroImportacion(self):
+
+    @view_config(route_name='guardar_remolque', request_method='POST')
+    def guardarRegistroRemolque(self):
             try:
                 data = self.request.POST
                 remolque = Remolque()
-
-                setattr(remolque)
+                remolque.DESCRIP_REMOLQUE=data['DESCRIP_REMOLQUE']
                 self.request.dbsession.add(remolque)
                 transaction.commit()
 
             except DBAPIError:
                 print('Ocurrio un error al insertar el registro')
                 print(db_err_msg)
-                # return Response(db_err_msg, content_type='text/plain', status=500)
                 return HTTPFound(location='/registro_importacion')
-            return HTTPFound(location='/RegistrarVehiculo')
+            return HTTPFound(location='/inicio')
 
 
 
