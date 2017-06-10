@@ -50,4 +50,11 @@ def includeme(config):
     config.add_route('alerta_multa','/alerta_multa')
     config.add_route('alerta_multa_cantidad_vehiculos','/alerta_multa/cantidad')
 
+
+    #############CRUD Empleado######################
+    config.add_route('empleado_list','/empleado/list')
+    config.add_route('empleado_create','/empleado/create')
+    config.add_route('empleado_edit','/empleado/edit/{id_empleado}')
+    config.add_route('empleado_delete','/empleado/delete/{id_empleado}')
+
     config.add_route('remolques', '/get_remolques')

@@ -1,0 +1,162 @@
+{% extends "layout.jinja2" %}
+
+<!-- CSS -->
+{% block styles %}
+    <link href="{{ request.static_url('sinvel:static/css/wizard.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ request.static_url('sinvel:static/css/bootstrap-datetimepicker.min.css') }}">
+{% endblock styles %}
+
+
+{% block content %}
+    {% from '_helpers.jinja2' import input,label %}
+ <div class="col-12 col-lg-12 col-sm-9 ">
+         <div class="panel panel-primary">
+            <div class="panel-heading">
+                 <h2 class="panel-title">Agregar Empleado</h2>
+            </div>
+             </br>
+             </br>
+             <div class="panel">
+                 <h3 class="panel-title">Datos Importador</h3>
+            </div>
+             </br>
+            <div class="panel-body">
+                <form class="form-horizontal" action="{{request.route_url('guardar_importador')}}" method="post">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Nombre','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                 <input name="NOMBRE" type="text" maxlength="30" class="form-control" placeholder="eg: Juan Jose" required>
+                                 </div>
+                            </div>
+                       </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Apellido','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                    <input name="APELLIDO" type="text" maxlength="30" class="form-control" placeholder="eg: Pèrez Prado" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Genero','col-sm-2 control-label') }}
+                           <div class="form-group col-md-10">
+                                <select name="GENERO" class="form-control ">
+                                <option value=""> </option>
+                                 <option value="M">Masculino</option>
+                                  <option value="F">Femenino</option>
+
+                            </select>
+                            </div>
+                         </div>
+                      </div>
+                               <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ label('Fecha Nacimiento','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                   <input class="form-control form_datetime" name="FECHA_NACIMIENTO" type="text"   placeholder="yyyy-mm-dd"  required>
+                                </div>
+                                </div>
+                     </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ label('Responsable','col-sm-2 control-label') }}
+                             <div class="form-group col-md-10">
+                                <input name="RESPONSABLE" type="text" maxlength="15" class="form-control"  required>
+
+                             </div>
+                             </div>
+                         </div>
+
+                       <div class="col-md-6">
+                           <div class="form-group">
+                                {{ label('Apellido Casada','col-sm-2 control-label') }}
+                              <div class="form-group col-md-10">
+                                <input name="APELLIDO_CASADA" type="text" maxlength="15" class="form-control" >
+                              </div>
+                            </div>
+                         </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                                {{ label('Telefono Casa','col-sm-2 control-label') }}
+                              <div class="form-group col-md-10">
+                                 <input name="TELEFONO_CASA" type="text" maxlength="9" class="form-control" placeholder="eg: 2250-5555" required>
+                              </div>
+                           </div>
+                          </div>
+
+
+                        <div class="col-md-6">
+                           <div class="form-group">
+                                {{ label('Celular','col-sm-2 control-label') }}
+                             <div class="form-group col-md-10">
+                                <input name="TELEFONO_CELULAR" type="text" maxlength="9" input type="text" class="form-control input-mask" data-mask="0000-0000"   placeholder="eg:0000-0000" >
+                              </div>
+                            </div>
+                         </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                    {{ label('DUI','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                <input name="DUI" type="text" maxlength="10" class="form-control" placeholder="eg: 00002132-9" required>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                    {{ label('Correo ','col-sm-2 control-label') }}
+                                <div class="form-group col-md-10">
+                                   <input name="CORREO_IMPORTADOR" type="email"  class="form-control" placeholder="eg: BD1152017@GMAIL.COM" required>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                            {{ label('NIT ','col-sm-2 control-label') }}
+                             <div class="form-group col-md-10 ">
+                               <input name="NIT" type="text" maxlength="17" class="form-control" placeholder="eg: 0515-260593-111-8" required>
+                            </div>
+                          </div>
+                        </div>
+
+
+                  <input id="Aimportador" type="hidden" name="ID_IMPORTACION" class="form-control" value=""/>
+                 <div class="col-sm-2">
+                        {{ input('submit','form-control btn btn-primary', type='submit',value='Agregar') }}
+                 </div>
+                 <div class="col-sm-2">
+                 <input  type="reset" class="form-control">
+                </div>
+                </form>
+
+         </div>
+         </div>
+
+
+
+ </div>
+ {% endblock content %}
+
+{% block scripts %}
+
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/moment.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ request.static_url('sinvel:static/js/bootstrap-datetimepicker.min.js') }}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $(".form_datetime").datetimepicker({format: 'YYYY-MM-DD'});
+        });
+    </script>
+    <script src="{{ request.static_url('sinvel:static/js/wizard.js') }}"></script>
+
+{% endblock scripts %}
