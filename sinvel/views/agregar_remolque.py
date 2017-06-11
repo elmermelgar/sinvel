@@ -1,6 +1,6 @@
 import bcrypt
 from pyramid.view import view_config
-from ..models import Remolque,User
+from ..models import Remolque,User,ControlEmpresa,Bodega,Empleado,TipoRemolque
 from sinvel.views.user import db_err_msg
 from sqlalchemy.exc import DBAPIError
 import transaction
@@ -28,9 +28,13 @@ class AgregarRemolque(object):
     def createRegistroRemolques(self):
         try:
             remolque = self.request.dbsession.query(Remolque).all()
+            bodega = self.request.dbsession.query(Bodega).all()
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.TIPO_EMPLEADO=='MOTORISTA').all()
+            tipo_remolque = self.request.dbsession.query(TipoRemolque).all()
+
         except DBAPIError:
             return Response(db_err_msg, content_type='text/plain', status=500)
-        return {'remolques': remolque}
+        return {'remolque1':remolque,'bodega1': bodega,'empleado1':empleado,'tipo_remolque1':tipo_remolque}
 
 
 
@@ -40,6 +44,11 @@ class AgregarRemolque(object):
                 data = self.request.POST
                 remolque = Remolque()
                 remolque.DESCRIP_REMOLQUE=data['DESCRIP_REMOLQUE']
+                remolque.ID_TIPO_REMOLQUE = data['ID_TIPO_REMOLQUE']
+                remolque.ID_BODEGA = data['ID_BODEGA']
+                remolque.ID_EMPLEADO = data['ID_EMPLEADO']
+                remolque.NOMBRE_REMOLQUE = data['NOMBRE_REMOLQUE']
+                remolque.DISPONIBLE = data['DISPONIBLE']
                 self.request.dbsession.add(remolque)
                 transaction.commit()
 
@@ -49,5 +58,17 @@ class AgregarRemolque(object):
                 return HTTPFound(location='/registro_importacion')
             return HTTPFound(location='/inicio')
 
+    @view_config(route_name='delete_remolque', request_method='GET')
+    def deleteRemolque(self):
+        id_remolque = self.request.matchdict['id_remolque']
+        print(id_remolque)
+        control=self.request.dbsession.query(ControlEmpresa).filter(ControlEmpresa.ID_REMOLQUE==id_remolque).first()
+        if(control.ID_REMOLQUE ==None):
+            self.request.dbsession.query(Remolque).filter(Remolque.ID_REMOLQUE == id_remolque).delete()
+            transaction.commit()
+        else:
+            print('no se pudo borrar ')
+
+        return HTTPFound(location='/remolque/list')
 
 
