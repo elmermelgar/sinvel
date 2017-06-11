@@ -20,6 +20,7 @@ from pyramid.httpexceptions import HTTPSeeOther
 from sqlalchemy.exc import DBAPIError
 from datetime import datetime
 import ctypes
+from ..models import get_engine
 
 def Mbox(title, text, style):
     ctypes.windll.user32.MessageBoxW(0, text, title, style)
@@ -48,7 +49,7 @@ class Bodega_IU(object):
         items_bodega = self.request.dbsession.query(Bodega).all()
         items_nivel = self.request.dbsession.query(Nivel).all()
         items_ubicacion = self.request.dbsession.query(Ubicacion).all()
-        
+
         return {'bodegas': items_bodega, 'niveles': items_nivel, 'ubicaciones': items_ubicacion,'user':self.user}
 
 
@@ -248,3 +249,50 @@ class Bodega_IU(object):
         with open(filename, 'wb') as f:
             f.write(items_vehiculo.FOTO_VEH)
         return {'vehiculo': items_vehiculo, 'user': self.user, 'venta': items_venta}
+
+    @view_config(route_name='guardarNiveles', request_method='POST')
+    def guardarNiveles(self):
+
+        settings = {'sqlalchemy.url': 'mysql://root:root@localhost:3306/sinvel'}
+        engine = get_engine(settings)
+        connection = engine.raw_connection()
+        cursor = connection.cursor()
+
+        try:
+            data = self.request.POST
+            id_bodega = {data.get('ID_BODEGA'),}
+            cursor.callproc('sp_crear_niveles', id_bodega)
+
+        except DBAPIError:
+            print('Ocurrio un error al insertar el registro')
+            print(db_err_msg)
+            # return Response(db_err_msg, content_type='text/plain', status=500)
+            return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))
+        finally:
+            cursor.close()
+            connection.commit()
+        return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))
+
+    @view_config(route_name='guardarUbicaciones', request_method='POST')
+    def guardarUbicaciones(self):
+
+        settings = {'sqlalchemy.url': 'mysql://root:root@localhost:3306/sinvel'}
+        engine = get_engine(settings)
+        connection = engine.raw_connection()
+        cursor = connection.cursor()
+
+        try:
+            data = self.request.POST
+            id_bodega = {data.get('ID_BODEGA'), }
+            id_nivel = {data.get('ID_NIVEL'), }
+            cursor.callproc('sp_crear_ubicacion', id_nivel)
+
+        except DBAPIError:
+            print('Ocurrio un error al insertar el registro')
+            print(db_err_msg)
+            # return Response(db_err_msg, content_type='text/plain', status=500)
+            return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))
+        finally:
+            cursor.close()
+            connection.commit()
+        return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))

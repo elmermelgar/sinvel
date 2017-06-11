@@ -15,6 +15,8 @@ def includeme(config):
     config.add_route('actualizarVenta', '/actualizar_venta')
     config.add_route('vehiculosVendidos', '/vehiculos_vendidos')
     config.add_route('detalleVenta', '/venta/{id_veh}/{id_ven}/detalle')
+    config.add_route('guardarNiveles', '/guardar_niveles')
+    config.add_route('guardarUbicaciones', '/guardar_ubicaciones')
 
     #################################3###
     config.add_route('wizard', '/wizard')

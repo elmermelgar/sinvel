@@ -35,18 +35,35 @@
                         <br>
                         <div class="row">
                             <div class="col-sm-12 m-b-25">
+                             <form class="form-horizontal" action="{{ request.route_url('guardarNiveles') }}" method="post">
+                                 <input type="hidden" name="ID_BODEGA" value="{{ bodega.ID_BODEGA }}">
+                                 <input  type="submit" style="height: 35px; float: right; margin-top: -35px" class="btn bg-deeporange"  value="Crear Niveles">
+                             </form>
+{#                            <a href="{{ request.route_url('bodegas') }}" style="float: right; margin-top: -35px" class="btn  bg-black"> Crear Niveles</a>#}
                                 <div class="panel-group" data-collapse-color="cyan" id="accordionRed" role="tablist" aria-multiselectable="true">
                                     {% if niveles %}
                                     {% for nivel in niveles %}
                                     <div class="panel panel-collapse">
                                         <div class="panel-heading active" role="tab">
                                             <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordionRed" href="#accordionRed-{{ nivel.ID_NIVEL }}" aria-expanded="true">
-                                                   {{ nivel.DESCRIPCION_NIVEL }} {# <div style="float: right"><a style="margin-top: -60px" href="#" class="btn btn-alt btn-primary"><i class="zmdi zmdi-border-color"></i></a></div>#}
+                                                <a data-toggle="collapse" data-parent="#accordionRed"
+                                                   href="#accordionRed-{{ nivel.ID_NIVEL }}" aria-expanded="true">
+                                                    {{ nivel.DESCRIPCION_NIVEL }}
+                                                    {# <div style="float: right"><a style="margin-top: -60px" href="#" class="btn btn-alt btn-primary"><i class="zmdi zmdi-border-color"></i></a></div>#}
                                                 </a>
 
                                             </h4>
+
                                         </div>
+                                        <form class="form-horizontal"
+                                              action="{{ request.route_url('guardarUbicaciones') }}" method="post">
+                                            <input type="hidden" name="ID_BODEGA"
+                                                   value="{{ bodega.ID_BODEGA }}">
+                                            <input type="hidden" name="ID_NIVEL"
+                                                   value="{{ nivel.ID_NIVEL }}">
+                                            <input type="submit" style="height: 35px; float: right; margin-top: -2px"
+                                                   class="btn bg-cyan" value="[+]">
+                                        </form>
                                         <div id="accordionRed-{{ nivel.ID_NIVEL }}" class="collapse in" role="tabpanel">
                                             <div class="panel-body">
                                             {% if ubicaciones %}
