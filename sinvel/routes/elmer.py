@@ -18,6 +18,8 @@ def includeme(config):
     config.add_route('guardarNiveles', '/guardar_niveles')
     config.add_route('guardarUbicaciones', '/guardar_ubicaciones')
 
+    config.add_route('updateRemolque', '/update_remolque')
+
     #################################3###
     config.add_route('wizard', '/wizard')
     config.add_route('vehiculos', '/vehiculos')

@@ -34,7 +34,7 @@ class SalidaReparacion(object):
         remolques=None
         try:
             items_tipo_remolque=self.request.dbsession.query(TipoRemolque).all()
-            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
             remolques = self.request.dbsession.query(Remolque).filter(Remolque.ID_BODEGA == empleado.ID_BODEGA).filter(Remolque.DISPONIBLE==1).all()
         except DBAPIError:
             print('Error al recuperar los remolques')
@@ -167,5 +167,22 @@ class SalidaReparacion(object):
             print('Error al recuperar los remolques')
 
         return {'grupo':self.emp, 'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
+
+    @view_config(route_name='updateRemolque', request_method='POST')
+    def updateRemolque(self):
+        try:
+            data = self.request.POST
+            id_remolque = data.get('ID_REMOLQUE')
+
+            self.request.dbsession.query(Remolque).filter(Remolque.ID_REMOLQUE == id_remolque).update(
+                {"DISPONIBLE": 0})
+            transaction.commit()
+
+        except DBAPIError:
+            print('Ocurrio un error al actualizar el registro')
+
+            # return Response(db_err_msg, content_type='text/plain', status=500)
+            return HTTPFound(location='/salida_reparacion/verificar_remolque')
+        return HTTPFound(location='/salida_reparacion/verificar_remolque')
 
 
