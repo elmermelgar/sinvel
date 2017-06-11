@@ -1,0 +1,127 @@
+{% extends "../layout.jinja2" %}
+{% block styles %}
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
+          rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+    <br/>
+    <div class="container">
+        <form class="form-horizontal" action="{{ request.route_url('costoReparacionGuardar') }}" method="post">
+            <input id="idVeh" name="idVeh" type="hidden" value="{{ veh.ID_VEHICULO }}">
+            <input id="id_dce" name="id_dce" type="hidden" value="{{ reparacion.ID_DET_CONTROL }}">
+            <div class="tile">
+                <div class="t-header">
+                    <div class="th-title">
+                        GESTION DEL COSTO DE LA REPARACION
+                    </div>
+                    <a href="{{ request.route_url('registro_control_entrada_reparacion') }}"
+                       style="float: right; margin-top: -35px"
+                       class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px"
+                                                                  class="zmdi zmdi-arrow-back"></i></a>
+                    <br/>
+                    <div class="col-md-2">
+                        <p class="th-title">VEHICULO:</p>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="c-black f-500 m-b-5">ID:</p>
+                        <small>{{ veh.ID_VEHICULO }} </small>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="c-black f-500 m-b-5">Marca:</p>
+                        <small>{{ veh.modelo.marca.MARCA }} </small>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="c-black f-500 m-b-5">Modelo:</p>
+                        <small>{{ veh.modelo.MODELO }} </small>
+                    </div>
+                    <br/><br/>
+                </div>
+
+                <div class="t-body tb-padding">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label c-black">Taller: </label>
+                                <div class="form-group col-md-9">
+                                    <p>{{ reparacion.taller.NOMBRE_TALLER }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label c-black">Descripcion de la reparacion: </label>
+                                <div class="form-group col-md-9">
+                                    <p>{{ reparacion.DESCRIP_REPARACION }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Costo de reparacion: </label>
+                                <div class="form-group col-md-9">
+                                    <input id="COSTO" type="number" class="form-control" name="COSTO" min="0.01" step="0.01" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Estado de la reparacion: </label>
+                                <div class="form-group col-md-9">
+                                    <select id="ESTADO_REP" name="ESTADO_REP" class="form-control" required>
+                                        <option>Completa</option>
+                                        <option>Parcial</option>
+                                        <option>Sin reparar</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Estado del vehiculo: </label>
+                                <div class="form-group col-md-9">
+                                    <select id="ID_ESTADO" name="ID_ESTADO" class="form-control" required>
+                                        {% for estado in estados_veh %}
+                                            {% if estado.ID_ESTADO == veh.ID_ESTADO %}
+                                                <option value="{{ estado.ID_ESTADO }}"
+                                                        selected>{{ estado.ESTADO }}</option>
+                                            {% else %}
+                                                <option value="{{ estado.ID_ESTADO }}">{{ estado.ESTADO }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="form-group col-md-10">
+                                    <button class="form-control btn bg-lightblue" type="submit"
+                                            style="margin: 5px 50px; width: auto;">
+                                        Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}

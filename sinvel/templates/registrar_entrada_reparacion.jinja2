@@ -1,64 +1,24 @@
 {% extends "../templates/layout.jinja2" %}
 {% block styles %}
-     <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
-<link href="{{request.static_url('sinvel:static/css/wizard.css')}}" rel="stylesheet">
-    <link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
+          rel="stylesheet">
 {% endblock styles %}
 {% block content %}
-    {#    Inicio del Wizard #}
-    <div class="wizard">
-            <div class="wizard-inner">
-                <div class="connecting-line"></div>
-                <ul class="nav nav-tabs" role="tablist">
 
-                    <li role="presentation" class="disabled">
-                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Verificar Remolque">
-                            <span class="round-tab">
-                                <i class="zmdi zmdi-search-for"></i>
-                            </span>
-                        </a>
-                    </li>
+    <div class="container">
+        <div class="col-12 col-lg-12 col-sm-9 " xmlns="http://www.w3.org/1999/html">
+            <form class="form-horizontal" action="{{ request.route_url('registro_entrada_control_guardar') }}"
+                  method="post">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Registrar entrada de reparacion</h2>
+                    </div>
+                    </br>
 
-                    <li role="presentation" class="active">
-                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Ingresar control salida">
-                            <span class="round-tab">
-                                <i class="zmdi zmdi-boat"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li role="presentation" class="disabled">
-                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Aprobar salidas">
-                            <span class="round-tab">
-                                <i class="zmdi zmdi-car"></i>
-                            </span>
-                        </a>
-                    </li>
-
-
-
-                    <li role="presentation" class="disabled">
-                        <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Finalizar">
-                            <span class="round-tab">
-                                <i class="zmdi zmdi-check-circle-u"></i>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-{#    Fin del Wizard #}
-    <div class="container" >
-      <div class="col-12 col-lg-12 col-sm-9 " xmlns="http://www.w3.org/1999/html">
-        <form class="form-horizontal" action="{{ request.route_url('registro_entrada_control_guardar') }}" method="post">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h2 class="panel-title">Registrar entrada de reparacion</h2>
-                </div>
-                </br>
-
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
                                 <label class="col-sm-4 control-label">Remolque:</label>
                                 <div class="form-group col-md-8 ">
                                     <select name="ID_REMOLQUE" class="form-control js-example-basic-single js-states"
@@ -70,78 +30,89 @@
                                         {% endfor %}
                                     </select>
                                 </div>
+                            </div>
                         </div>
-                    </div>
-                              <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">Descripción entrada:</label>
-                                        <div class="form-group col-md-8">
-                                            <textarea class="form-control" name="DESCRIPCION_CONTROL" ></textarea>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Descripción entrada:</label>
+                                    <div class="form-group col-md-8">
+                                        <textarea class="form-control" name="DESCRIPCION_CONTROL"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {% if entradas %}
+                                    <div class="tile">
+                                    <div class="t-header">
+                                        <div class="th-title">
+                                            Vehiculos a ingresar de reparacion
                                         </div>
                                     </div>
+                                    <table id="data-table" class="table table-hover table-bordered">
+                                        <thead>
+                                        <tr align="center">
+                                            <th></th>
+                                            <th>Placa</th>
+                                            <th>Marca</th>
+                                            <th>Modelo</th>
+                                            <th>Año</th>
+                                            <th>Estado</th>
+                                            <th>Gestionar</th>
+
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for entrada in entradas %}
+                                            <tr>
+                                                <td><input type="checkbox" name="selected_vehiculos"
+                                                           value="{{ entrada[1].ID_DET_CONTROL }}">
+                                                </td>
+                                                <td>{{ entrada[0].PLACA|default('',true) }}</td>
+                                                <td>{{ entrada[0].modelo.marca.MARCA }}</td>
+                                                <td>{{ entrada[0].modelo.MODELO }}</td>
+                                                <td>{{ entrada[0].ANO }}</td>
+                                                <td>{{ entrada[0].estado_veh.ESTADO }}</td>
+                                                <td>
+                                                    <a href="{{ request.route_url('costoReparacion',id_dce=entrada[1].ID_DET_CONTROL) }}"
+                                                       class="btn btn-icon btn-success command-edit"><span
+                                                            style="margin-top: 10px"
+                                                            class="zmdi zmdi-edit"
+                                                            title="Gestionar"></span></a>
+                                                </td>
+
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% else %}
+                                    <hr/>
+                                    No existen vehiculos en reparacion disponibles para mostrar
+                                {% endif %}
                                 </div>
                             </div>
                         </div>
-
-                            {% if entradas %}
-                                <div class="tile">
-                                <div class="t-header">
-                                    <div class="th-title">
-                                        Vehiculos a ingresar de reparacion
-                                    </div>
-                                </div>
-                                <table id="data-table" class="table table-hover table-bordered">
-                                    <thead>
-                                    <tr align="center">
-                                        <th></th>
-                                        <th>Placa</th>
-                                        <th>Marca</th>
-                                        <th>Modelo</th>
-                                        <th>Año</th>
-                                        <th>Estado</th>
-                                        <th>Gestionar</th>
-
-
-
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for entrada in entradas %}
-                                        <tr>
-                                            <td><input type="checkbox" name="selected_vehiculos"
-                                                       value="{{ entrada[0].ID_VEHICULO }}"></td>
-                                            <td>{{ entrada[0].PLACA }}</td>
-                                            <td>{{ entrada[0].modelo.marca.MARCA }}</td>
-                                            <td>{{ entrada[0].modelo.MODELO }}</td>
-                                            <td>{{ entrada[0].ANO }}</td>
-                                            <td>{{ entrada[0].estado_veh.ESTADO }}</td>
-                                            <td> <a href="" class="btn btn-icon btn-success command-edit"><span style="margin-top: 10px" class="zmdi zmdi-edit" title="Gestionar"></span></a> </td>
-
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            {% else %}
-                                No existen vehiculos en reparacion disponibles para mostrar
-                            {% endif %}
-                            </div>
 
                         <div class="row">
                             <div class="col-sm-12">
-
-                                 <a href="{{ request.route_url('registroImportacion') }}" class="btn bg-lightblue" style="float: right; margin-right: 50px"> Continuar <i class="zmdi zmdi-arrow-forward"></i></a>
-                                 <button class="form-control btn bg-lightblue" type="submit"
-                                        style="float: right; margin-right: 50px; width: auto;">
-                                    Guardar <i class="zmdi zmdi-save"></i>
-                                </button>
+                                <br/><br/>
+                                <div class="form-group">
+                                    <button class="form-control btn bg-lightblue" type="submit"
+                                            style="float: right; margin-right: 50px; width: auto;">
+                                        Guardar <i class="zmdi zmdi-save"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
+                    </div>
                 </div>
 
-        </form>
-    </div>
+            </form>
+        </div>
     </div>
 
 {% endblock content %}
@@ -156,7 +127,12 @@
             // turn the element to select2 select style
             $(".js-example-basic-single").select2({
                 placeholder: "Seleccione un remolque",
-                allowClear: true
+                allowClear: true,
+                "language": {
+                    "noResults": function () {
+                        return "No se encontró registros";
+                    }
+                }
             });
         });
     </script>
@@ -165,6 +141,5 @@
             $(".form_datetime").datetimepicker({format: 'DD-MM-YYYY'});
         });
     </script>
-    <script src="{{ request.static_url('sinvel:static/js/wizard.js') }}"></script>
 
 {% endblock scripts %}

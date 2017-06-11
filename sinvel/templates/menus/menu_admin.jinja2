@@ -4,8 +4,8 @@
         <span>Registrar entradas</span>
     </a>
     <ul>
-        <li><a href="{{request.route_path('bodegas') }}">Nuevo vehiculo</a></li>
-        <li><a href="#">Reparacion</a></li>
+        <li><a href="{{request.route_path('registro_control_entrada') }}">Nuevo vehiculo</a></li>
+        <li><a href="{{request.route_path('registro_control_entrada_reparacion') }}">Reparacion</a></li>
     </ul>
 </li>
 <li class="sm-sub">
@@ -45,5 +45,8 @@
     <ul>
         <li><a href="{{ request.route_path('empleado_list') }}">Empleados</a></li>
         <li><a href="{{ request.route_path('remolque_list') }}">Remolques</a></li>
+        <li><a href="{{ request.route_path('clienteLista') }}">Clientes</a></li>
+        <li><a href="{{ request.route_path('marcaLista') }}">Marcas</a></li>
+        <li><a href="{{ request.route_path('modeloLista') }}">Modelos</a></li>
     </ul>
 </li>
