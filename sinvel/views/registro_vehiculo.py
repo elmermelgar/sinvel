@@ -20,6 +20,7 @@ from pyramid.response import FileResponse
 class RegistroVehiculo(object):
     def __init__(self,request):
         self.request=request
+        self.emp = request.session['grupo']
         self.user=request.user
         self.importacion=Importacion()
 
@@ -27,7 +28,7 @@ class RegistroVehiculo(object):
     def createRegistro(self):
         items_estado_vehiculo=self.request.dbsession.query(EstadoVeh).all()
         items_marcas=self.request.dbsession.query(Marca).all()
-        return {'items_estado_vehiculo': items_estado_vehiculo,'importacion':self.importacion,'items_marcas':items_marcas}
+        return {'grupo':self.emp, 'items_estado_vehiculo': items_estado_vehiculo,'importacion':self.importacion,'items_marcas':items_marcas}
 
 
     @view_config(route_name='buscar_importacion', renderer='json')
@@ -89,7 +90,7 @@ class RegistroVehiculo(object):
         current_brand = self.request.matchdict['id_marca']
         models = self.request.dbsession.query(Modelo).filter(Modelo.ID_MARCA==current_brand).all()
         json_models = jsonpickle.encode(models,max_depth=2)
-        return {'json_models': json_models}
+        return {'grupo':self.emp, 'json_models': json_models}
 
     @view_config(route_name='registro_control_entrada', renderer='../templates/registrar_entrada.jinja2',
                  request_method='GET')
@@ -110,7 +111,7 @@ class RegistroVehiculo(object):
 
         except DBAPIError:
             print('Error al recuperar los remolques')
-        return {'entradas': entradas, 'remolques': remolques}
+        return {'grupo':self.emp, 'entradas': entradas, 'remolques': remolques}
 
     @view_config(route_name='registro_entrada_control_guardar', request_method='POST')
     def registroControlSave(self):
@@ -168,7 +169,7 @@ class RegistroVehiculo(object):
 
         except DBAPIError:
             print('Error al recuperar los remolques')
-        return {'entradas': entradas, 'remolques': remolques}
+        return {'grupo':self.emp, 'entradas': entradas, 'remolques': remolques}
 
     @view_config(route_name='alerta_multa', renderer='../templates/alerta_multa.jinja2',
                  request_method='GET')
@@ -194,7 +195,7 @@ class RegistroVehiculo(object):
                 i[4].MULTA_EN_STR=str(15-(d1 - d2).days)+' días'
         except DBAPIError:
                 print('Error al recuperar los remolques')
-        return {'vehiculos': vehiculos}
+        return {'grupo':self.emp, 'vehiculos': vehiculos}
 
 
 
@@ -215,7 +216,7 @@ class RegistroVehiculo(object):
 
         except DBAPIError:
             print('Error al recuperar los remolques')
-        return {'vehiculos': vehiculos}
+        return {'grupo':self.emp, 'vehiculos': vehiculos}
 
 
 

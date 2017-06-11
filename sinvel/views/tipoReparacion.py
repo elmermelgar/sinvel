@@ -10,6 +10,8 @@ from pyramid_mailer.message import Message
 
 class TipoReparacionClase(object):
     def __init__(self,request):
+        self.user = self.request.user.user_name
+        self.emp = request.session['grupo']
         self.request = request
 
     @view_config(route_name='tipoReparacion_list', renderer='../templates/crud/tipoReparacion.jinja2',request_method='GET')
@@ -17,19 +19,19 @@ class TipoReparacionClase(object):
 
         tipoReparacion = self.request.dbsession.query(TipoReparacion).all()
 
-        return {'tipoRep': tipoReparacion}
+        return {'grupo':self.emp, 'tipoRep': tipoReparacion}
 
     @view_config(route_name='tipoReparacion_create', request_method='GET', renderer='../templates/crud/tipoReparacion_create.jinja2')
     def createtipoReparacion(self):
 
-        return {}
+        return {'grupo':self.emp, }
 
     @view_config(route_name='tipoReparacion_update', request_method='GET', renderer='../templates/crud/tipoReparacion_update.jinja2')
     def updatetipoReparacion(self):
 
         tipoReparacion=self.request.dbsession.query(TipoReparacion).get(self.request.matchdict['id_tipoRep'])
 
-        return {'tipoRep': tipoReparacion}
+        return {'grupo':self.emp, 'tipoRep': tipoReparacion}
 
 
     @view_config(route_name='tipoReparacion_save', request_method='POST')

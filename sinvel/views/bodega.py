@@ -1,4 +1,4 @@
-
+import _mysql_exceptions
 from pyramid.view import view_config
 import transaction
 from pyramid.response import Response
@@ -29,6 +29,7 @@ class Bodega_IU(object):
     def __init__(self,request):
         self.request=request
         self.user=request.user.user_name
+        self.emp = request.session['grupo']
         self.bodega = Bodega()
         self.nivel = Nivel()
         self.ubicacion = Ubicacion()
@@ -42,7 +43,7 @@ class Bodega_IU(object):
 
         except DBAPIError:
             return Response(db_err_msg, content_type='text/plain', status=500)
-        return {'departamentos': departamentos, 'municipios': municipios}
+        return {'grupo':self.emp, 'departamentos': departamentos, 'municipios': municipios}
 
     @view_config(route_name='bodegas', renderer='../templates/bodega/bodegas.jinja2', request_method='GET')
     def bodegas(self):
@@ -50,7 +51,7 @@ class Bodega_IU(object):
         items_nivel = self.request.dbsession.query(Nivel).all()
         items_ubicacion = self.request.dbsession.query(Ubicacion).all()
 
-        return {'bodegas': items_bodega, 'niveles': items_nivel, 'ubicaciones': items_ubicacion,'user':self.user}
+        return {'grupo':self.emp, 'bodegas': items_bodega, 'niveles': items_nivel, 'ubicaciones': items_ubicacion,'user':self.user}
 
 
 
@@ -62,7 +63,7 @@ class Bodega_IU(object):
         items_ubicacion = self.request.dbsession.query(Ubicacion).all()
 
 
-        return {'bodega': items_bodega, 'user': self.user, 'niveles': items_nivel, 'ubicaciones': items_ubicacion}
+        return {'grupo':self.emp, 'bodega': items_bodega, 'user': self.user, 'niveles': items_nivel, 'ubicaciones': items_ubicacion}
 
     @view_config(route_name='registroBodegaGuardar', request_method='POST')
     def guardarRegistroBodega(self):
@@ -85,7 +86,7 @@ class Bodega_IU(object):
     def vehiculos(self):
         items_vehiculos = self.request.dbsession.query(Vehiculo).all()
 
-        return {'vehiculos': items_vehiculos, 'user': self.user}
+        return {'grupo':self.emp, 'vehiculos': items_vehiculos, 'user': self.user}
 
     @view_config(route_name='ponerEnVenta', renderer='../templates/bodega/poner_en_venta.jinja2',
                  request_method='GET')
@@ -94,7 +95,7 @@ class Bodega_IU(object):
         items_vehiculo = self.request.dbsession.query(Vehiculo).get(id)
         items_estados = self.request.dbsession.query(EstadoVeh).all()
 
-        return {'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados}
+        return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados}
 
     @view_config(route_name='ventaVehiculoActualizar', request_method='POST')
     def actualizarVehiculo(self):
@@ -126,7 +127,7 @@ class Bodega_IU(object):
         items_venta= self.request.dbsession.query(Venta).filter(Venta.ID_DET_CONTROL==items_detalle_control.ID_DET_CONTROL).first()
         items_empleados = self.request.dbsession.query(Empleado).all()
 
-        return {'venta': items_venta, 'user': self.user, 'vehiculo': items_vehiculo, 'empleados': items_empleados}
+        return {'grupo':self.emp, 'venta': items_venta, 'user': self.user, 'vehiculo': items_vehiculo, 'empleados': items_empleados}
 
     @view_config(route_name='actualizarVendedor', request_method='POST')
     def actualizarVendedor(self):
@@ -163,7 +164,7 @@ class Bodega_IU(object):
         items_empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER==usuario.id).first()
         items_ventas = self.request.dbsession.query(Venta).filter(Venta.ID_EMPLEADO==items_empleado.ID_EMPLEADO).all()
 
-        return {'user': self.user, 'empleado': items_empleado, 'ventas': items_ventas}
+        return {'grupo':self.emp, 'user': self.user, 'empleado': items_empleado, 'ventas': items_ventas}
 
     @view_config(route_name='detalleVehiculo', renderer='../templates/bodega/detalle_vehiculo.jinja2',
                  request_method='GET')
@@ -176,7 +177,7 @@ class Bodega_IU(object):
         filename='sinvel/static/fotos_vehiculos/Vehiculo'+ items_vehiculo.VIN +'.jpg'
         with open(filename, 'wb') as f:
             f.write(items_vehiculo.FOTO_VEH)
-        return {'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
+        return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
 
     @view_config(route_name='updateVenta', renderer='../templates/bodega/vender_vehiculo.jinja2',
                  request_method='GET')
@@ -187,7 +188,7 @@ class Bodega_IU(object):
         items_venta = self.request.dbsession.query(Venta).get(id_ven)
         items_clientes= self.request.dbsession.query(Cliente).all()
 
-        return {'vehiculo': items_vehiculo, 'user': self.user, 'clientes': items_clientes, 'venta': items_venta}
+        return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'clientes': items_clientes, 'venta': items_venta}
 
     @view_config(route_name='actualizarVenta', request_method='POST')
     def actualizarVenta(self):
@@ -227,7 +228,7 @@ class Bodega_IU(object):
         filename = 'sinvel/static/fotos_vehiculos/Vehiculo' + items_vehiculo.VIN + '.jpg'
         with open(filename, 'wb') as f:
             f.write(items_vehiculo.FOTO_VEH)
-        return {'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
+        return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
 
     @view_config(route_name='vehiculosVendidos', renderer='../templates/bodega/vehiculos_vendidos.jinja2',
                  request_method='GET')
@@ -236,7 +237,7 @@ class Bodega_IU(object):
         items_empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == usuario.id).first()
         items_ventas = self.request.dbsession.query(Venta).filter(Venta.ID_EMPLEADO == items_empleado.ID_EMPLEADO).all()
 
-        return {'user': self.user, 'empleado': items_empleado, 'ventas': items_ventas}
+        return {'grupo':self.emp, 'user': self.user, 'empleado': items_empleado, 'ventas': items_ventas}
 
     @view_config(route_name='detalleVenta', renderer='../templates/bodega/detalle_venta.jinja2',
                  request_method='GET')
@@ -248,7 +249,7 @@ class Bodega_IU(object):
         filename = 'sinvel/static/fotos_vehiculos/Vehiculo' + items_vehiculo.VIN + '.jpg'
         with open(filename, 'wb') as f:
             f.write(items_vehiculo.FOTO_VEH)
-        return {'vehiculo': items_vehiculo, 'user': self.user, 'venta': items_venta}
+        return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'venta': items_venta}
 
     @view_config(route_name='guardarNiveles', request_method='POST')
     def guardarNiveles(self):
@@ -263,9 +264,9 @@ class Bodega_IU(object):
             id_bodega = {data.get('ID_BODEGA'),}
             cursor.callproc('sp_crear_niveles', id_bodega)
 
-        except DBAPIError:
+        except _mysql_exceptions.OperationalError:
             print('Ocurrio un error al insertar el registro')
-            print(db_err_msg)
+            ctypes.windll.user32.MessageBoxW(0, "NO PUEDE INGRESAR MAS NIVELES!!", "ERROR!!", 1)
             # return Response(db_err_msg, content_type='text/plain', status=500)
             return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))
         finally:
@@ -287,9 +288,9 @@ class Bodega_IU(object):
             id_nivel = {data.get('ID_NIVEL'), }
             cursor.callproc('sp_crear_ubicacion', id_nivel)
 
-        except DBAPIError:
+        except _mysql_exceptions.OperationalError:
             print('Ocurrio un error al insertar el registro')
-            print(db_err_msg)
+            ctypes.windll.user32.MessageBoxW(0, "NO PUEDE INGRESAR MAS UBICACIONES!!", "ERROR!!", 1)
             # return Response(db_err_msg, content_type='text/plain', status=500)
             return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))
         finally:

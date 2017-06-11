@@ -15,6 +15,8 @@ view_defaults(route_name='registroImportacion')
 
 class RegistroImportacion(object):
     def __init__(self, request):
+        self.user = self.request.user.user_name
+        self.emp = request.session['grupo']
         self.request = request
         self.user = request.user
 
@@ -25,7 +27,7 @@ class RegistroImportacion(object):
 
         except DBAPIError:
             return Response(db_err_msg, content_type='text/plain', status=500)
-        return {'importadores':importadores}
+        return {'grupo':self.emp, 'importadores':importadores}
 
     @view_config(route_name='registroImportacionGuardar', request_method='POST')
     def guardarRegistroImportacion(self):
