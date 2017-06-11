@@ -5,48 +5,7 @@
     <link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
 {% endblock styles %}
 {% block content %}
-    {#    Inicio del Wizard #}
-    <div class="wizard">
-            <div class="wizard-inner">
-                <div class="connecting-line"></div>
-                <ul class="nav nav-tabs" role="tablist">
 
-                    <li role="presentation" class="disabled">
-                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Verificar Remolque">
-                            <span class="round-tab">
-                                <i class="zmdi zmdi-search-for"></i>
-                            </span>
-                        </a>
-                    </li>
-
-                    <li role="presentation" class="active">
-                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Ingresar control salida">
-                            <span class="round-tab">
-                                <i class="zmdi zmdi-boat"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li role="presentation" class="disabled">
-                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Aprobar salidas">
-                            <span class="round-tab">
-                                <i class="zmdi zmdi-car"></i>
-                            </span>
-                        </a>
-                    </li>
-
-
-
-                    <li role="presentation" class="disabled">
-                        <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Finalizar">
-                            <span class="round-tab">
-                                <i class="zmdi zmdi-check-circle-u"></i>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-{#    Fin del Wizard #}
     <div class="container" >
       <div class="col-12 col-lg-12 col-sm-9 " xmlns="http://www.w3.org/1999/html">
         <form class="form-horizontal" action="{{ request.route_url('registro_entrada_control_guardar') }}" method="post">
@@ -126,7 +85,7 @@
                         <div class="row">
                             <div class="col-sm-12">
 
-                                 <a href="{{ request.route_url('registroImportacion') }}" class="btn bg-lightblue" style="float: right; margin-right: 50px"> Continuar <i class="zmdi zmdi-arrow-forward"></i></a>
+
                                  <button class="form-control btn bg-lightblue" type="submit"
                                         style="float: right; margin-right: 50px; width: auto;">
                                     Guardar <i class="zmdi zmdi-save"></i>

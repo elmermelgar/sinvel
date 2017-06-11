@@ -62,7 +62,7 @@ class RegistroVehiculo(object):
                         print(key,value)
                         setattr(vehiculo, key, value)
                 self.request.dbsession.add(vehiculo)
-                transaction.commit()
+                #transaction.commit()
                 query=self.request.dbsession.query(func.max(Vehiculo.ID_VEHICULO).label('id_vehiculo')).one()
                 id_vehiculo=query.id_vehiculo
                 #Guardando DetalleImportacion
@@ -71,7 +71,7 @@ class RegistroVehiculo(object):
                         setattr(detalleImportacion, key, value)
                 detalleImportacion.ID_VEHICULO=id_vehiculo
                 self.request.dbsession.add(detalleImportacion)
-                transaction.commit()
+                #transaction.commit()
                 #Guardando DetalleControlEmpresa
                 detalleControlEmpresa.TIPO_CONTROL_DET='ENTRA'
                 detalleControlEmpresa.ID_VEHICULO=id_vehiculo

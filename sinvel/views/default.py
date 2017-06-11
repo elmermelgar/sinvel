@@ -16,13 +16,13 @@ class Vista(object):
     def __init__(self, request):
         self.request = request
         #emp=Empleado()
-        #self.user=request.user.user_name
+        self.user=self.request.user.user_name
         #print(request.authenticated_userid)
         #request.session.expunge('empleado')
-        #emp=request.session['empleado']
+        self.emp=request.session['grupo']
         #empl=Empleado()
         #empl=emp
-        #print(empl.NOMBRE)
+
 
     @view_config(route_name='home', renderer='../templates/home.jinja2', permission=NO_PERMISSION_REQUIRED)
     def my_view(self):
@@ -32,8 +32,8 @@ class Vista(object):
 
 
     @view_config(route_name='inicio', renderer='../templates/examples/inicio.jinja2',  permission='view')
-    def inicio(request):
-        return {'one': 'one', 'user': 'sinvel'}
+    def inicio(self):
+        return {'one': 'one', 'user': self.user }
 
     @view_config(route_name='forms', renderer='../templates/examples/forms.jinja2', permission='view')
     def forms(request):

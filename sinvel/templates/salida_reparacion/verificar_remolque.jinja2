@@ -25,23 +25,11 @@
                             </span>
                         </a>
                     </li>
-                    <li role="presentation" class="disabled">
-                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Aprobar salidas">
-                            <span class="round-tab">
-                                <i class="zmdi zmdi-car"></i>
-                            </span>
-                        </a>
-                    </li>
 
 
 
-                    <li role="presentation" class="disabled">
-                        <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Finalizar">
-                            <span class="round-tab">
-                                <i class="zmdi zmdi-check-circle-u"></i>
-                            </span>
-                        </a>
-                    </li>
+
+
                 </ul>
             </div>
         </div>
@@ -113,7 +101,7 @@
         </div>
 
     </div>
-    <a href="{{ request.route_url('registroImportacion') }}" class="btn bg-lightblue" style="float: right; margin-right: 50px"> Continuar <i class="zmdi zmdi-arrow-forward"></i></a>
+    <a href="{{ request.route_url('registro_control') }}" class="btn bg-lightblue" style="float: right; margin-right: 50px"> Continuar <i class="zmdi zmdi-arrow-forward"></i></a>
 {% endblock content %}
 {% block scripts %}
          <script src="{{request.static_url('sinvel:static/js/wizard.js') }}"></script>

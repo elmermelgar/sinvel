@@ -34,12 +34,12 @@
                                         <a href="{{ request.route_url('costo_veh', id_vehiculo=veh.ID_VEHICULO)}}" class="btn btn-icon btn-primary command-edit"><span style="margin-top: 10px" class="zmdi zmdi-money" data-toggle="tooltip" data-placement="top" data-original-title="Ver Costos"></span></a>
 
 
-                                        {% if veh.ESTADO == 'DAÑADO' %}
+                                        {% if veh.ESTADO == 'Dañado' %}
                                          <a href="{{ request.route_url('enviarVehReparar', idv=veh.ID_VEHICULO)}}" class="btn btn-icon btn-warning command-edit"><span style="margin-top: 10px" class="zmdi zmdi-wrench" data-toggle="tooltip" data-placement="top" data-original-title="Enviar a Reparación"></span></a>
                                         {% endif %}
 
 
-                                    {% if veh.ESTADO == 'REPARADO' %}
+                                    {% if veh.ESTADO == 'Reparado' %}
                                          <a href="{{ request.route_url('ponerEnVenta', id_veh=veh.ID_VEHICULO)}}" class="btn btn-icon btn-success command-edit"><span style="margin-top: 10px" class="zmdi zmdi-mall" data-toggle="tooltip" data-placement="top" data-original-title="Poner en Venta"></span></a> </td>
                                     {% endif %}
                                     </tr>

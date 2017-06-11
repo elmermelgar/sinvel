@@ -7,7 +7,7 @@
 
             <div class="tile">
                     <div class="t-header">
-                        <div class="th-title">Importaciones -- Subida de Fotos a Cargo de: {{ emp.NOMBRE }} <small>Importaciones que se tienen registradas para la bodega: {{ bod.NOMBRE_BODEGA }}</small></div>
+                        <div class="th-title">Gestión de vehiculos <small>Importaciones que se tienen registradas para la bodega: {{ bod.NOMBRE_BODEGA }}</small></div>
                     </div>
 
                     <table class="table table-bordered table-vmiddle">
@@ -43,7 +43,16 @@
                                                             class="btn btn-icon btn-success command-edit"><span
                                                             style="margin-top: 10px" class="zmdi zmdi-upload"
                                                             data-toggle="tooltip" data-placement="top"
-                                                            data-original-title="Subir Fotos"></span></a></td>
+                                                            data-original-title="Subir Fotos"></span></a>
+
+                                                    <a
+                                                            href="{{ request.route_url('ubiVehSeleccionar', idv=veh.ID_VEHICULO) }}"
+                                                            class="btn btn-icon btn-primary command-edit"><span
+                                                            style="margin-top: 10px" class="zmdi zmdi-pin-drop"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            data-original-title="Ubicar"></span></a>
+
+                                                    </td>
                                                 </tr>
                                         {% endif %}
 

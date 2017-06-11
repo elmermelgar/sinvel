@@ -33,7 +33,7 @@ class Importaciones(object):
     @view_config(route_name='resultado', renderer='../templates/vehiculo/resultadoVehiculo.jinja2', request_method='GET')
     def resultado(self):
         # SQL puro /////////////////////
-        settings={'sqlalchemy.url': 'mysql://root:bad@localhost:3306/sinvel'}
+        settings={'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel_2'}
         engine=get_engine(settings)
         connection=engine.connect()
 
