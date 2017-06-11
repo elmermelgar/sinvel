@@ -19,18 +19,15 @@ class AgregarRemolque(object):
         self.user = self.request.user.user_name
         self.emp = request.session['grupo']
 
-
-        #self.user = User()
-
-
-
-    @view_config(route_name='remolque_list', request_method='GET', renderer='../templates/consultar_remolque.jinja2')
+    @view_config(route_name='remolque_list', request_method='GET', renderer='../templates/consultar_remolque.jinja2'
+                 ,permission='administrador')
     def remolque_list(self):
 
         remolque = self.request.dbsession.query(Remolque)
         return {'grupo':self.emp, 'user': self.user, 'remolque': remolque}
 
-    @view_config(route_name='agregar_remolque', request_method='GET',renderer='../templates/agregar_remolque.jinja2')
+    @view_config(route_name='agregar_remolque', request_method='GET',renderer='../templates/agregar_remolque.jinja2',
+                 permission='administrador')
     def createRegistroRemolques(self):
 
         try:
@@ -45,7 +42,7 @@ class AgregarRemolque(object):
 
 
 
-    @view_config(route_name='guardar_remolque', request_method='POST')
+    @view_config(route_name='guardar_remolque', request_method='POST', permission='administrador')
     def guardarRegistroRemolque(self):
             try:
                 data = self.request.POST
@@ -65,7 +62,7 @@ class AgregarRemolque(object):
                 return HTTPFound(location='/registro_importacion')
             return HTTPFound(location='/remolque/list')
 
-    @view_config(route_name='delete_remolque', request_method='GET')
+    @view_config(route_name='delete_remolque', request_method='GET', permission='administrador')
     def deleteRemolque(self):
         id_remolque = self.request.matchdict['id_remolque']
         control=ControlEmpresa()
@@ -75,8 +72,8 @@ class AgregarRemolque(object):
             transaction.commit()
             self.request.flash_message.add('Remolque eliminado', message_type='success')
         else:
-            print('no se pudo borrar ')
-
+            self.request.flash_message.add('Error al eliminar', message_type='danger')
+            print('no se pudo borrar')
         return HTTPFound(location='/remolque/list')
 
 

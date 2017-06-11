@@ -7,6 +7,19 @@ from pyramid_mailer import mailer_factory_from_settings
 from pyramid_mailer.mailer import Mailer
 from .models.root_factory import RootFactory
 from .models.resource_factory import ResourceFactory
+from pyramid.view import forbidden_view_config
+from pyramid.response import Response
+from pyramid.httpexceptions import HTTPFound
+from pyramid.renderers import render_to_response
+from pyramid.renderers import render
+@forbidden_view_config()
+def forbidden(request):
+    if request.user is None:
+        return HTTPFound(location='/login')
+    else:
+        #return Response('You are not allowed', status='403 Forbidden')
+        result=render('/templates/errors/403.jinja2', {'foo':1},request=request)
+        return Response(result, status='403 Forbidden')
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """

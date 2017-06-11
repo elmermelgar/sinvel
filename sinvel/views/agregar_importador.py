@@ -15,11 +15,11 @@ class AgregarImportador(object):
         self.emp = request.session['grupo']
         self.user = User()
 
-    @view_config(route_name='agregar_importador', request_method='GET',renderer='../templates/agregar_importador.jinja2')
+    @view_config(route_name='agregar_importador', request_method='GET',renderer='../templates/agregar_importador.jinja2',permission="administrador")
     def createimportador(self):
         return {'grupo':self.emp, 'user': self.user, 'valor':'0'}
 
-    @view_config(route_name='guardar_importador', request_method='POST')
+    @view_config(route_name='guardar_importador', request_method='POST',permission="administrador")
     def guardarImportador(self):
         try:
             grupo = UsersGroup()

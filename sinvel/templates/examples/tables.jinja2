@@ -398,7 +398,9 @@
                     },
                     formatters: {
                         "commands": function(column, row) {
-                            return "<button type=\"button\" class=\"btn btn-icon btn-info command-edit\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-edit\"></span></button> " +
+                            return
+
+                            "<button type=\"button\" class=\"btn btn-icon btn-info command-edit\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-edit\"></span></button> " +
                                 "<button type=\"button\" class=\"btn btn-icon btn-info command-delete\" data-row-id=\"" + row.id + "\"><span class=\"zmdi zmdi-delete\"></span></button>";
                         }
                     }

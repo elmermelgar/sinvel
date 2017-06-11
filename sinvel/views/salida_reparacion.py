@@ -28,7 +28,8 @@ class SalidaReparacion(object):
         self.emp = request.session['grupo']
         self.user=request.user
 
-    @view_config(route_name='verificar_remolque', renderer='../templates/salida_reparacion/verificar_remolque.jinja2', request_method='GET')
+    @view_config(route_name='verificar_remolque', renderer='../templates/salida_reparacion/verificar_remolque.jinja2',
+                 request_method='GET',permission='bodeguero')
     def verificarRemolque(self):
         items_tipo_remolque=None
         remolques=None
@@ -41,7 +42,7 @@ class SalidaReparacion(object):
 
         return {'grupo':self.emp, 'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
 
-    @view_config(route_name='remolques', request_method='GET', renderer='json')
+    @view_config(route_name='remolques', request_method='GET', renderer='json',permission='bodeguero')
     def all_json_models(self):
         remolques = self.request.dbsession.query(Remolque).all()
 
@@ -50,7 +51,7 @@ class SalidaReparacion(object):
         return {'grupo':self.emp, 'json_models': json_models}
 
     @view_config(route_name='registro_control', renderer='../templates/salida_reparacion/registro_control.jinja2',
-                 request_method='GET')
+                 request_method='GET',permission='bodeguero')
     def registroControl(self):
         remolques = None
         salidas = None
@@ -73,7 +74,7 @@ class SalidaReparacion(object):
             print('Error al recuperar los remolques')
         return {'grupo':self.emp, 'salidas': salidas, 'remolques': remolques}
 
-    @view_config(route_name='registro_control_guardar',request_method='POST')
+    @view_config(route_name='registro_control_guardar',request_method='POST',permission='bodeguero')
     def registroControlSave(self):
         settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel_2'}
         engine = get_engine(settings)
@@ -106,7 +107,7 @@ class SalidaReparacion(object):
         return HTTPFound(location='/salida_reparacion/registro_control')
 
     @view_config(route_name='aprobar_salidas', renderer='../templates/salida_reparacion/aprobar_salidas.jinja2',
-                 request_method='GET')
+                 request_method='GET',permission='administrador')
     def aprobarSalidas(self):
         remolques = None
         salidas = None
@@ -130,7 +131,7 @@ class SalidaReparacion(object):
             print('Error al recuperar los remolques')
         return {'grupo':self.emp, 'salidas': salidas}
 
-    @view_config(route_name='aprobar_salidas_guardar', request_method='POST')
+    @view_config(route_name='aprobar_salidas_guardar', request_method='POST',permission='administrador')
     def aprobarSalidasSave(self):
         settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel_2'}
         engine = get_engine(settings)
@@ -152,7 +153,7 @@ class SalidaReparacion(object):
         return HTTPFound(location='/salida_reparacion/aprobar_salidas')
 
 
-    @view_config(route_name='buscar_tipo_remolque', renderer='../templates/salida_reparacion/verificar_remolque.jinja2',request_method='GET')
+    @view_config(route_name='buscar_tipo_remolque', renderer='../templates/salida_reparacion/verificar_remolque.jinja2',request_method='GET',permission='bodeguero')
     def buscarRemolque(self):
         id_tipo_remolque = self.request.matchdict['id_tipo_remolque']
         print('test'+id_tipo_remolque)
@@ -168,7 +169,7 @@ class SalidaReparacion(object):
 
         return {'grupo':self.emp, 'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
 
-    @view_config(route_name='updateRemolque', request_method='POST')
+    @view_config(route_name='updateRemolque', request_method='POST',permission='bodeguero')
     def updateRemolque(self):
         try:
             data = self.request.POST

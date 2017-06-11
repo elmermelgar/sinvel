@@ -3,7 +3,8 @@ from pyramid.security import Allow
 from pyramid.security import Authenticated
 class RootFactory(object):
     def __init__(self, request):
-        self.__acl__ = [(Allow, Authenticated,u'view'), (Allow, Authenticated, u'admin'),]
+        #self.__acl__ = [(Allow, Authenticated,u'view'), (Allow, Authenticated, u'admin'),]
+        self.__acl__ = [(Allow,Authenticated, u'Vendedores'), ]
         # general page factory - append custom non resource permissions
         # request.user object from cookbook recipie
         if request.user:

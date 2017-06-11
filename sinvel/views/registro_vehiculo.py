@@ -24,7 +24,7 @@ class RegistroVehiculo(object):
         self.user=request.user
         self.importacion=Importacion()
 
-    @view_config(route_name='registrar_vehiculo',request_method='GET', renderer='../templates/registrar_vehiculo.jinja2')
+    @view_config(route_name='registrar_vehiculo',request_method='GET', renderer='../templates/registrar_vehiculo.jinja2',permission='administrador')
     def createRegistro(self):
         items_estado_vehiculo=self.request.dbsession.query(EstadoVeh).all()
         items_marcas=self.request.dbsession.query(Marca).all()
@@ -50,7 +50,7 @@ class RegistroVehiculo(object):
         #return {jsonpickle.encode(self.importacion,unpicklable=False)}
         return importacion
 
-    @view_config(route_name='guardar_registro_vehiculo', request_method='POST')
+    @view_config(route_name='guardar_registro_vehiculo', request_method='POST',permission='administrador')
     def guardarRegistroVehiculo(self):
         try:
                 empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
@@ -85,7 +85,7 @@ class RegistroVehiculo(object):
 
 
 
-    @view_config(route_name='models', request_method='GET', renderer='json')
+    @view_config(route_name='models', request_method='GET', renderer='json',permission='administrador')
     def all_json_models(self):
         current_brand = self.request.matchdict['id_marca']
         models = self.request.dbsession.query(Modelo).filter(Modelo.ID_MARCA==current_brand).all()
@@ -93,7 +93,7 @@ class RegistroVehiculo(object):
         return {'grupo':self.emp, 'json_models': json_models}
 
     @view_config(route_name='registro_control_entrada', renderer='../templates/registrar_entrada.jinja2',
-                 request_method='GET')
+                 request_method='GET',permission='administrador')
     def registroControlEntradaPrimeraVez(self):
         remolques = None
         entradas = None
@@ -113,7 +113,7 @@ class RegistroVehiculo(object):
             print('Error al recuperar los remolques')
         return {'grupo':self.emp, 'entradas': entradas, 'remolques': remolques}
 
-    @view_config(route_name='registro_entrada_control_guardar', request_method='POST')
+    @view_config(route_name='registro_entrada_control_guardar', request_method='POST',permission='administrador')
     def registroControlSave(self):
 
         id_user=self.user.id
@@ -155,7 +155,7 @@ class RegistroVehiculo(object):
 
 
     @view_config(route_name='registro_control_entrada_reparacion', renderer='../templates/registrar_entrada_reparacion.jinja2',
-                 request_method='GET')
+                 request_method='GET',permission='administrador')
     def registroControlEntradaReparacion(self):
         remolques = None
         entradas = None
@@ -172,7 +172,7 @@ class RegistroVehiculo(object):
         return {'grupo':self.emp, 'entradas': entradas, 'remolques': remolques}
 
     @view_config(route_name='alerta_multa', renderer='../templates/alerta_multa.jinja2',
-                 request_method='GET')
+                 request_method='GET',permission='importador')
     def alertaMulta(self):
 
         vehiculos = None
@@ -200,7 +200,7 @@ class RegistroVehiculo(object):
 
 
     @view_config(route_name='alerta_multa_cantidad_vehiculos', renderer='../templates/alerta_multa_cantidad_vehiculos.jinja2',
-                     request_method='GET')
+                     request_method='GET',permission='importador')
     def alertaMultaCantidadVehiculos(self):
         vehiculos = None
         try:

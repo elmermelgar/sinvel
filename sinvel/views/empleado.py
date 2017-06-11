@@ -7,15 +7,25 @@ import transaction
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.sql import func
 from pyramid_mailer.message import Message
+from pyramid.view import forbidden_view_config
+from pyramid.response import Response
+from pyramid.security import (
+    ALL_PERMISSIONS,
+    Allow,
+    unauthenticated_userid,
+    Everyone,
+    Authenticated
+    )
 
 class EmpleadoClase(object):
     def __init__(self,request):
-        self.user = self.request.user.user_name
+
         self.emp = request.session['grupo']
         self.request = request
         self.user = request.user
 
-    @view_config(route_name='empleado_list', renderer='../templates/crud/empleado.jinja2',request_method='GET')
+    @view_config(route_name='empleado_list', renderer='../templates/crud/empleado.jinja2',
+                 request_method='GET',permission='administrador')
     def listEmpleado(self):
 
         usuario = self.request.dbsession.query(User).filter(User.user_name == self.user.user_name).first()
@@ -24,7 +34,7 @@ class EmpleadoClase(object):
 
         return {'grupo':self.emp, 'empleados': empleados}
 
-    @view_config(route_name='empleado_create', request_method='GET', renderer='../templates/crud/empleado_create.jinja2')
+    @view_config(route_name='empleado_create', request_method='GET', renderer='../templates/crud/empleado_create.jinja2',permission='administrador')
     def createEmpleado(self):
         bodegas = None
         try:
@@ -91,6 +101,7 @@ class EmpleadoClase(object):
             self.request.dbsession.add(empleado)
             transaction.commit()
             self.request.dbsession.close()
+            self.request.flash_message.add('Empleado guardado', message_type='success')
             if (data['TIPO_EMPLEADO'] != 'MOTORISTA'):
                 mailer = self.request.registry['mailer']
                 message = Message(subject="Creacion de Usuario",
@@ -107,7 +118,7 @@ class EmpleadoClase(object):
         return HTTPFound(location='/empleado/list')
 
 
-    @view_config(route_name='empleado_delete', request_method='GET')
+    @view_config(route_name='empleado_delete', request_method='GET',permission='administrador')
     def deleteEmpleado(self):
 
 
@@ -120,7 +131,7 @@ class EmpleadoClase(object):
             transaction.commit()
             self.request.dbsession.query(User).filter(User.id == empleado.ID_USER).delete()
             transaction.commit()
-
+            self.request.flash_message.add('Empleado elminado', message_type='success')
             return HTTPFound(location='/empleado/list')
 
 
