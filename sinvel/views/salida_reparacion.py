@@ -168,4 +168,21 @@ class SalidaReparacion(object):
 
         return {'grupo':self.emp, 'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
 
+    @view_config(route_name='updateRemolque', request_method='POST')
+    def updateRemolque(self):
+        try:
+            data = self.request.POST
+            id_remolque = data.get('ID_REMOLQUE')
+
+            self.request.dbsession.query(Remolque).filter(Remolque.ID_REMOLQUE == id_remolque).update(
+                {"DISPONIBLE": 0})
+            transaction.commit()
+
+        except DBAPIError:
+            print('Ocurrio un error al actualizar el registro')
+
+            # return Response(db_err_msg, content_type='text/plain', status=500)
+            return HTTPFound(location='/salida_reparacion/verificar_remolque')
+        return HTTPFound(location='/salida_reparacion/verificar_remolque')
+
 

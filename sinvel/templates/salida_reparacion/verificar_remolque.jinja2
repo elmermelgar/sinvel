@@ -73,6 +73,7 @@
                                     <th data-column-id="empleado.NOMBRE">Motorista</th>
                                     <th data-column-id="empleado.TEL_EMP" data-type="numeric">Celular</th>
                                     <th data-column-id="DISPONIBLE" >Disponible</th>
+                                    <th data-column-id="ACCIONES" >Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,12 +83,24 @@
                                         <td>{{remolque.tipo_remolque.NOMBRE_TIPO}}</td>
                                         <td>{{remolque.empleado.NOMBRE+" "+remolque.empleado.APELLIDO }}</td>
                                         <td>{{remolque.empleado.TEL_EMP}}</td>
-                                        <td>{% if remolque.DISPONIBLE==1 %}
-                                            SI
+                                        <td style="text-align: center">{% if remolque.DISPONIBLE==1 %}
+                                            <button class="btn btn-xs bg-green"> SI</button>
                                             {% else %}
                                             NO
                                             {% endif %}
                                         </td>
+                                     <td style="text-align: center">
+                                         {% if remolque.DISPONIBLE==1 %}
+                                             <form class="form-horizontal"
+                                                   action="{{ request.route_url('updateRemolque') }}" method="post">
+                                                 <input type="hidden" name="ID_REMOLQUE" value="{{ remolque.ID_REMOLQUE }}">
+                                                 <input type="submit"
+
+                                                        class="btn btn-success bg-deeporange"
+                                                        value="Poner como No Disponible">
+                                             </form>
+                                         {% endif %}
+                                     </td>
                                  </tr>
                              {% endfor %}
                               </tbody>

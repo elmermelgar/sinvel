@@ -24,7 +24,7 @@
                         <span>Inicio</span>
                     </a>
                 </li>
-{#            {% if grupo %}#}
+            {% if grupo %}
 {#********************MENU ADMINISTRADOR DE BODEGA********************************************#}
                 {% if grupo=='Administradores' %}
                     {% include '../menus/menu_admin.jinja2' %}
@@ -42,7 +42,7 @@
                     {% include '../menus/menu_importador.jinja2' %}
                 {% endif %}
 {#*******************************FIN DE MENUSR********************************************#}
-{#            {% endif %}#}
+            {% endif %}
 
 {#                <li>#}
 {#                    <a href="widgets.html">#}
