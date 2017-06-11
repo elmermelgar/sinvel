@@ -1,3 +1,4 @@
+from flask import app
 from pyramid.security import NO_PERMISSION_REQUIRED,Authenticated,DENY_ALL
 from ziggurat_foundations.ext.pyramid.sign_in import ZigguratSignInSuccess
 from ziggurat_foundations.ext.pyramid.sign_in import ZigguratSignInBadAuth
@@ -44,11 +45,10 @@ def bad_auth(request):
     return HTTPFound(location=request.route_url('login'),
                      headers=request.context.headers)
     # This view would return the user back to a custom view
-    return HTTPFound(location=request.route_url('home'),
-                     headers=request.context.headers)
+    return HTTPFound(location=request.route_url('home'), headers=request.context.headers)
 
 
-@view_config(context=ZigguratSignOut, permission=NO_PERMISSION_REQUIRED)
+@view_config(route_name='logout', context=ZigguratSignOut, permission=NO_PERMISSION_REQUIRED )
 def sign_out(request):
     return HTTPFound(location=request.route_url('login'),
                      headers=request.context.headers)
