@@ -1,7 +1,7 @@
 from pyramid.response import Response
 from pyramid.renderers import render_to_response
 from pyramid.view import view_config
-from pyramid.security import NO_PERMISSION_REQUIRED,Authenticated
+from pyramid.security import NO_PERMISSION_REQUIRED,Authenticated, ALL_PERMISSIONS
 from ziggurat_foundations.ext.pyramid.sign_in import ZigguratSignInSuccess
 from sqlalchemy.exc import DBAPIError
 from ..models.models import Empleado
@@ -32,7 +32,7 @@ class Vista(object):
         return {'one': 'one', 'ventas': items_ventas}
 
 
-    @view_config(route_name='inicio', renderer='../templates/examples/inicio.jinja2',  permission='administrador,vendedor,bodeguero,importador')
+    @view_config(route_name='inicio', renderer='../templates/examples/inicio.jinja2',  permission=NO_PERMISSION_REQUIRED )
     def inicio(self):
         self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
         self.request.flash_message.add('Registro Guardado Parcialmente!!', message_type='warning')

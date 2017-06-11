@@ -1,5 +1,4 @@
-import bcrypt
-from pyramid.view import view_config
+
 from ..models import Remolque,User,ControlEmpresa,Bodega,Empleado,TipoRemolque
 from sinvel.views.user import db_err_msg
 from sqlalchemy.exc import DBAPIError
