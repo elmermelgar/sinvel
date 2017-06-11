@@ -34,7 +34,7 @@ class SalidaReparacion(object):
         remolques=None
         try:
             items_tipo_remolque=self.request.dbsession.query(TipoRemolque).all()
-            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
             remolques = self.request.dbsession.query(Remolque).filter(Remolque.ID_BODEGA == empleado.ID_BODEGA).filter(Remolque.DISPONIBLE==1).all()
         except DBAPIError:
             print('Error al recuperar los remolques')

@@ -30,6 +30,7 @@ def main(global_config, **settings):
     config.include('pyramid_jinja2')
     config.include('pyramid_mailer')
     config.include('pyramid_storage')
+    config.include('pyramid_flash_message')
 
     config.include('.models')
     config.include('.routes')

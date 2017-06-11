@@ -3,14 +3,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link href="{{request.static_url('sinvel:static/css/wizard.css')}}" rel="stylesheet">
     <link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+
 {% endblock styles %}
 {% block content %}
 
     <div class="container">
-
-        <h3  >Remolques</h3>
-
-
+   {{ panel('flash_message', per_page=20, read=True) }}
+        <h3>Remolques</h3>
+</div>
 
         <a href="{{ request.route_url('agregar_remolque') }}" class="btn btn-primary" role="button">Agregar
          <i class="glyphicon glyphicon-plus"></i>
@@ -29,6 +29,7 @@
                             <th>Nombre_Remolque</th>
                             <th>Disponible</th>
                             <th>Descripcion</th>
+                            <th>Acciones</th>
 
                         </tr>
                         </thead>
@@ -44,7 +45,7 @@
                                        role="button">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </a>
-                                    <a href="{{ request.route_url('delete_remolque',id_remolque=remolque.ID_REMOLQUE) }}"
+                                    <a href="{{ request.route_url('delete_remolque',id_remolque=remolques.ID_REMOLQUE) }}"
                                        class="btn btn-danger" role="button">
                                         <i class="glyphicon glyphicon-remove"></i>
                                     </a>

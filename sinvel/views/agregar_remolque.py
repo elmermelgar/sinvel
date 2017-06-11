@@ -1,15 +1,16 @@
 import bcrypt
-
+import js2py
 from pyramid.view import view_config
 from ..models import Remolque,User,ControlEmpresa,Bodega,Empleado,TipoRemolque
 from sinvel.views.user import db_err_msg
 from sqlalchemy.exc import DBAPIError
+
 import transaction
 from pyramid.response import Response
 from pyramid.view import view_config
-
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.sql import func
+from pyramid_flash_message import MessageQueue
 
 
 class AgregarRemolque(object):
@@ -17,14 +18,16 @@ class AgregarRemolque(object):
         self.request = request
         self.user = self.request.user.user_name
         self.emp = request.session['grupo']
-        self.user = User()
+
+
+        #self.user = User()
+
+
 
     @view_config(route_name='remolque_list', request_method='GET', renderer='../templates/consultar_remolque.jinja2')
     def remolque_list(self):
 
-
         remolque = self.request.dbsession.query(Remolque)
-
         return {'grupo':self.emp, 'user': self.user, 'remolque': remolque}
 
     @view_config(route_name='agregar_remolque', request_method='GET',renderer='../templates/agregar_remolque.jinja2')
@@ -55,7 +58,7 @@ class AgregarRemolque(object):
                 remolque.DISPONIBLE = data['DISPONIBLE']
                 self.request.dbsession.add(remolque)
                 transaction.commit()
-
+                self.request.flash_message.add('Remolque guardado', message_type='success')
             except DBAPIError:
                 print('Ocurrio un error al insertar el registro')
                 print(db_err_msg)
@@ -70,6 +73,7 @@ class AgregarRemolque(object):
         if(control==0):
             self.request.dbsession.query(Remolque).filter(Remolque.ID_REMOLQUE == id_remolque).delete()
             transaction.commit()
+            self.request.flash_message.add('Remolque eliminado', message_type='success')
         else:
             print('no se pudo borrar ')
 
