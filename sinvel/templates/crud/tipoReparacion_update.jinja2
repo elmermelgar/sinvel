@@ -1,0 +1,56 @@
+{% extends "../layout.jinja2" %}
+
+<!-- CSS -->
+{% block styles %}
+    <link href="{{ request.static_url('sinvel:static/css/wizard.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ request.static_url('sinvel:static/css/bootstrap-datetimepicker.min.css') }}">
+{% endblock styles %}
+
+{% block content %}
+    {% from '../_helpers.jinja2' import input,label %}
+ <div class="col-12 col-lg-12 col-sm-9 ">
+         <div class="panel panel-primary">
+            <div class="panel-heading">
+                 <h2 class="panel-title">Editar Tipo de Reparación</h2>
+            </div>
+
+            <div class="panel-body">
+                <form class="form-horizontal" action="{{request.route_url('tipoReparacion_save')}}" method="post">
+                    <div class="row">
+
+                         <div class="col-md-12">
+                            <div class="form-group">
+
+                                <input value="{{ tipoRep.ID_TIPO_REPARACION }}" type="hidden" name="ID_TIPO_REPARACION" type="text" maxlength="30" class="form-control"  required>
+
+                                {{ label('Tipo de Reparacion','col-sm-3  control-label') }}
+                                <div class="form-group col-md-8">
+                                 <input value="{{ tipoRep.TIPO_REPARACION }}" name="TIPO_REPARACION" type="text" maxlength="30" class="form-control"  required>
+                                 </div>
+                            </div>
+                       </div>
+                        </div>
+
+                 <div style="text-align: center" class="col-sm-2 col-lg-offset-4">
+                        {{ input('submit','form-control btn btn-primary', type='submit',value='Guardar') }}
+                 </div>
+                    <div style="text-align: center" class="col-sm-2">
+                     <input  type="reset" class="form-control"> {{ input('create', type='hidden', value='false') }}
+                 </div>
+
+                </form>
+
+         </div>
+         </div>
+
+ </div>
+ {% endblock content %}
+
+{% block scripts %}
+
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/moment.js') }}"></script>
+
+{% endblock scripts %}
