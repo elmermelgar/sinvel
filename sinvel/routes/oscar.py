@@ -6,3 +6,5 @@ def includeme(config):
     config.add_route('enviarVehReparar', '/enviar_veh_reparar/{idv}')
     config.add_route('filterTalleres', '/tipoRep/{idtrep}/busqtalleres')
     config.add_route('enviarVehRepararGuardar','/enviar_veh_reparar_save')
+    config.add_route('costoReparacion','/entrada/costo_reparacion/{id_dce}')
+    config.add_route('costoReparacionGuardar','/entrada/costo_reparacion_guardar')

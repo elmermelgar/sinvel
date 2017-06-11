@@ -86,7 +86,7 @@ class SalidaReparacion(object):
         control.DESCRIPCION_CONTROL=descripcion_control
         control.ID_REMOLQUE=id_remolque
         control.TIPO_CONTROL='SALREP'
-        control.FECHA_CONTROL=time.strftime("%x")
+        control.FECHA_CONTROL=time.strftime("%Y-%m-%d")
         control.HORA_CONTROL=time.strftime("%H:%M:%S")
         self.request.dbsession.add(control)
         transaction.commit()
