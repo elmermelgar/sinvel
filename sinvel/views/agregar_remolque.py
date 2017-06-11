@@ -14,6 +14,8 @@ from sqlalchemy.sql import func
 class AgregarRemolque(object):
     def __init__(self,request):
         self.request = request
+        self.user = self.request.user.user_name
+        self.emp = request.session['grupo']
         self.user = User()
 
     @view_config(route_name='remolque_list', request_method='GET', renderer='../templates/consultar_remolque.jinja2')
@@ -22,7 +24,7 @@ class AgregarRemolque(object):
 
         remolque = self.request.dbsession.query(Remolque)
 
-        return {'remolque': remolque}
+        return {'grupo':self.emp, 'user': self.user, 'remolque': remolque}
 
     @view_config(route_name='agregar_remolque', request_method='GET',renderer='../templates/agregar_remolque.jinja2')
     def createRegistroRemolques(self):
@@ -34,7 +36,7 @@ class AgregarRemolque(object):
 
         except DBAPIError:
             return Response(db_err_msg, content_type='text/plain', status=500)
-        return {'remolque1':remolque,'bodega1': bodega,'empleado1':empleado,'tipo_remolque1':tipo_remolque}
+        return {'grupo':self.emp, 'user': self.user, 'remolque1':remolque,'bodega1': bodega,'empleado1':empleado,'tipo_remolque1':tipo_remolque}
 
 
 

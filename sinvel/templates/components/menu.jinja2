@@ -24,16 +24,25 @@
                         <span>Inicio</span>
                     </a>
                 </li>
+{#            {% if grupo %}#}
 {#********************MENU ADMINISTRADOR DE BODEGA********************************************#}
-                {% include '../menus/menu_admin.jinja2' %}
+                {% if grupo=='Administradores' %}
+                    {% include '../menus/menu_admin.jinja2' %}
+                {% endif %}
 {#*******************************MENU BODEGUERO********************************************#}
-                {% include '../menus/menu_bodeguero.jinja2' %}
+                {% if grupo=='Bodegueros' %}
+                    {% include '../menus/menu_bodeguero.jinja2' %}
+                {% endif %}
 {#*******************************MENU VENDEDOR********************************************#}
-                {% include '../menus/menu_vendedor.jinja2' %}
+                {% if grupo=='Vendedores' %}
+                    {% include '../menus/menu_vendedor.jinja2' %}
+                {% endif %}
 {#*******************************MENU IMPORTADOR********************************************#}
-                {% include '../menus/menu_importador.jinja2' %}
+                {% if grupo=='Importadores' %}
+                    {% include '../menus/menu_importador.jinja2' %}
+                {% endif %}
 {#*******************************FIN DE MENUSR********************************************#}
-
+{#            {% endif %}#}
 
 {#                <li>#}
 {#                    <a href="widgets.html">#}

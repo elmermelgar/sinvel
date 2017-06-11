@@ -11,11 +11,13 @@ from pyramid_mailer.message import Message
 class AgregarImportador(object):
     def __init__(self,request):
         self.request = request
+        self.user = self.request.user.user_name
+        self.emp = request.session['grupo']
         self.user = User()
 
     @view_config(route_name='agregar_importador', request_method='GET',renderer='../templates/agregar_importador.jinja2')
     def createimportador(self):
-        return {'valor':'0'}
+        return {'grupo':self.emp, 'user': self.user, 'valor':'0'}
 
     @view_config(route_name='guardar_importador', request_method='POST')
     def guardarImportador(self):

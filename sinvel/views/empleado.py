@@ -10,6 +10,8 @@ from pyramid_mailer.message import Message
 
 class EmpleadoClase(object):
     def __init__(self,request):
+        self.user = self.request.user.user_name
+        self.emp = request.session['grupo']
         self.request = request
         self.user = request.user
 
@@ -20,7 +22,7 @@ class EmpleadoClase(object):
         empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == usuario.id).first()
         empleados = self.request.dbsession.query(Empleado).filter(Empleado.ID_BODEGA == empleado.ID_BODEGA).all()
 
-        return {'empleados': empleados}
+        return {'grupo':self.emp, 'empleados': empleados}
 
     @view_config(route_name='empleado_create', request_method='GET', renderer='../templates/crud/empleado_create.jinja2')
     def createEmpleado(self):
@@ -29,7 +31,7 @@ class EmpleadoClase(object):
             bodegas = self.request.dbsession.query(Bodega).all()
         except:
             print('Error')
-        return {'bodegas':bodegas}
+        return {'grupo':self.emp, 'bodegas':bodegas}
 
 
 

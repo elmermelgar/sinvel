@@ -25,6 +25,7 @@ from pyramid.response import FileResponse
 class SalidaReparacion(object):
     def __init__(self,request):
         self.request=request
+        self.emp = request.session['grupo']
         self.user=request.user
 
     @view_config(route_name='verificar_remolque', renderer='../templates/salida_reparacion/verificar_remolque.jinja2', request_method='GET')
@@ -38,7 +39,7 @@ class SalidaReparacion(object):
         except DBAPIError:
             print('Error al recuperar los remolques')
 
-        return {'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
+        return {'grupo':self.emp, 'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
 
     @view_config(route_name='remolques', request_method='GET', renderer='json')
     def all_json_models(self):
@@ -46,7 +47,7 @@ class SalidaReparacion(object):
 
         json_models = jsonpickle.encode(remolques,max_depth=4)
         print(json_models)
-        return {'json_models': json_models}
+        return {'grupo':self.emp, 'json_models': json_models}
 
     @view_config(route_name='registro_control', renderer='../templates/salida_reparacion/registro_control.jinja2',
                  request_method='GET')
@@ -70,7 +71,7 @@ class SalidaReparacion(object):
 
         except DBAPIError:
             print('Error al recuperar los remolques')
-        return {'salidas': salidas, 'remolques': remolques}
+        return {'grupo':self.emp, 'salidas': salidas, 'remolques': remolques}
 
     @view_config(route_name='registro_control_guardar',request_method='POST')
     def registroControlSave(self):
@@ -127,7 +128,7 @@ class SalidaReparacion(object):
 
         except DBAPIError:
             print('Error al recuperar los remolques')
-        return {'salidas': salidas}
+        return {'grupo':self.emp, 'salidas': salidas}
 
     @view_config(route_name='aprobar_salidas_guardar', request_method='POST')
     def aprobarSalidasSave(self):
@@ -165,6 +166,6 @@ class SalidaReparacion(object):
         except DBAPIError:
             print('Error al recuperar los remolques')
 
-        return {'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
+        return {'grupo':self.emp, 'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
 
 

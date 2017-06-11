@@ -14,6 +14,8 @@ from sinvel.views.user import db_err_msg
 
 class RegistroVehiculo(object):
     def __init__(self, request):
+        self.user = self.request.user.user_name
+        self.emp = request.session['grupo']
         self.request = request
         self.user = request.user
 
@@ -24,7 +26,7 @@ class RegistroVehiculo(object):
         veh = self.request.dbsession.query(Vehiculo).filter_by(ID_VEHICULO=idVeh).first()
         items_trep = self.request.dbsession.query(TipoReparacion).all()
 
-        return {'items_trep': items_trep, 'veh': veh}
+        return {'grupo':self.emp, 'items_trep': items_trep, 'veh': veh}
 
     @view_config(route_name='filterTalleres', request_method='GET', renderer='json')
     def tRepfilterTalleres(self):
@@ -32,7 +34,7 @@ class RegistroVehiculo(object):
 
         talleres = self.request.dbsession.query(Taller).filter(Taller.ID_TIPO_REPARACION == idtrep).all()
         json_talleres = jsonpickle.encode(talleres, max_depth=2)
-        return {'json_talleres': json_talleres}
+        return {'grupo':self.emp, 'json_talleres': json_talleres}
 
     @view_config(route_name='enviarVehRepararGuardar', request_method='POST')
     def enviarVehRepSave(self):

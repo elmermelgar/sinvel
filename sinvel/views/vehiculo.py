@@ -11,6 +11,7 @@ class Importaciones(object):
     def __init__(self, request):
         self.request=request
         self.user=request.user
+        self.emp = request.session['grupo']
         self.query_marca=request.dbsession.query(Marca)
         self.query_estado=request.dbsession.query(EstadoVeh)
         self.query_anio=request.dbsession.query(Vehiculo)
@@ -22,7 +23,7 @@ class Importaciones(object):
         estado=self.query_estado.all()
         anio=self.request.dbsession.execute("select distinct ANO from Vehiculo ORDER BY ANO DESC")
 
-        return {'mar': marca, 'est': estado, 'ani': anio}
+        return {'grupo':self.emp, 'mar': marca, 'est': estado, 'ani': anio}
 
     @view_config(route_name='aux', request_method='POST')
     def aux(self):
@@ -43,7 +44,7 @@ class Importaciones(object):
                                id_estado=self.request.matchdict['estado'], anio=self.request.matchdict['anio']).fetchall()
         # /////////////////////////////
 
-        return {'veh': veh}
+        return {'grupo':self.emp, 'veh': veh}
 
     @view_config(route_name='combo', request_method='GET', renderer='json')
     def all_json_models(self):
@@ -63,11 +64,11 @@ class Importaciones(object):
         current_brand=self.request.matchdict['idmarca']
         models=self.request.dbsession.query(Modelo).filter(Modelo.ID_MARCA == current_brand).all()
         json_models=jsonpickle.encode(models, max_depth=2)
-        return {'json_models': json_models}
+        return {'grupo':self.emp, 'json_models': json_models}
 
     @view_config(route_name='detalle', renderer='../templates/vehiculo/detalleVehiculo.jinja2',request_method='GET')
     def detalle(self):
         id=int(self.request.matchdict['id_veh'])
         veh=self.request.dbsession.query(Vehiculo).get(id)
 
-        return {'vehiculo': veh}
+        return {'grupo':self.emp, 'vehiculo': veh}

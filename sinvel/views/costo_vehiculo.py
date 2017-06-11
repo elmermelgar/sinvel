@@ -5,7 +5,8 @@ from ..models import Costo,User,Vehiculo,TipoCosto,DetalleControlEmpresa,Reparac
 class costoVehiculo(object):
     def __init__(self,request):
         self.request = request
-        self.user = User()
+        self.user = self.request.user.user_name
+        self.emp = request.session['grupo']
         self.item = Costo()
         self.query_costos = request.dbsession.query(Costo)
         self.query_tcostos = request.dbsession.query(TipoCosto)
@@ -18,7 +19,7 @@ class costoVehiculo(object):
         costos = self.query_costos.filter(Costo.ID_VEHICULO==id_vehiculo).all()
         vehiculo= self.request.dbsession.query(Vehiculo).get(id_vehiculo)
 
-        return {'costos': costos, 'veh':vehiculo}
+        return {'grupo':self.emp, 'costos': costos, 'veh':vehiculo}
 
     @view_config(route_name='detalle_costo', renderer='../templates/costos/detalle_costo.jinja2', request_method='GET')
     def detalle_costo(self):
@@ -34,9 +35,9 @@ class costoVehiculo(object):
             filter(Costo.ID_VEHICULO==DetalleControlEmpresa.ID_VEHICULO)\
             .filter(DetalleControlEmpresa.ID_DET_CONTROL==Reparacion.ID_DET_CONTROL)\
              .filter(Costo.ID_COSTO==id_costo).one()
-            return {'det_cos': det_cos, 'id_vehicu': costo.ID_VEHICULO}
+            return {'grupo':self.emp, 'det_cos': det_cos, 'id_vehicu': costo.ID_VEHICULO}
         else:
-            return {'det_cos': cod_tipo_costo, 'id_vehicu': costo.ID_VEHICULO}
+            return {'grupo':self.emp, 'det_cos': cod_tipo_costo, 'id_vehicu': costo.ID_VEHICULO}
 
 
 

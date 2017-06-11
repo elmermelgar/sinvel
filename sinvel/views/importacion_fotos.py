@@ -6,6 +6,8 @@ from pyramid_storage.exceptions import FileNotAllowed
 class Importaciones(object):
     def __init__(self,request):
         self.request=request
+        self.user = self.request.user.user_name
+        self.emp = request.session['grupo']
         self.user=request.user.id
         self.query_emp=request.dbsession.query(Empleado)
         self.query_bodega=request.dbsession.query(Bodega)
@@ -27,7 +29,7 @@ class Importaciones(object):
 
             importacion = self.query_importacion.all()
 
-            return {'user':self.user, 'emp':emp, 'bods':bodega, 'bod':bod, 'clt':clt, 'veh':veh, 'detImp':detImp, 'impor': importacion, 'foto':foto}
+            return {'grupo':self.emp, 'user':self.user, 'emp':emp, 'bods':bodega, 'bod':bod, 'clt':clt, 'veh':veh, 'detImp':detImp, 'impor': importacion, 'foto':foto}
 
 
     @view_config(route_name='vehiculo', renderer='../templates/importacionFotos/fotosVehiculos.jinja2', request_method='GET')
@@ -35,7 +37,7 @@ class Importaciones(object):
         id_detImp=self.request.matchdict['id_detImp']
         detImp = self.query_detalleImp.get(id_detImp)
 
-        return {'detImp': detImp }
+        return {'grupo':self.emp, 'detImp': detImp }
 
     @view_config(route_name='subir', request_method='POST')
     def upload(self):
