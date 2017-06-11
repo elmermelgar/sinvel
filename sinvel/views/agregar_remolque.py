@@ -1,4 +1,5 @@
 import bcrypt
+
 from pyramid.view import view_config
 from ..models import Remolque,User,ControlEmpresa,Bodega,Empleado,TipoRemolque
 from sinvel.views.user import db_err_msg
@@ -26,6 +27,7 @@ class AgregarRemolque(object):
 
     @view_config(route_name='agregar_remolque', request_method='GET',renderer='../templates/agregar_remolque.jinja2')
     def createRegistroRemolques(self):
+
         try:
             remolque = self.request.dbsession.query(Remolque).all()
             bodega = self.request.dbsession.query(Bodega).all()
@@ -56,14 +58,14 @@ class AgregarRemolque(object):
                 print('Ocurrio un error al insertar el registro')
                 print(db_err_msg)
                 return HTTPFound(location='/registro_importacion')
-            return HTTPFound(location='/inicio')
+            return HTTPFound(location='/remolque/list')
 
     @view_config(route_name='delete_remolque', request_method='GET')
     def deleteRemolque(self):
         id_remolque = self.request.matchdict['id_remolque']
-        print(id_remolque)
-        control=self.request.dbsession.query(ControlEmpresa).filter(ControlEmpresa.ID_REMOLQUE==id_remolque).first()
-        if(control.ID_REMOLQUE ==None):
+        control=ControlEmpresa()
+        control=self.request.dbsession.query(ControlEmpresa).filter(ControlEmpresa.ID_REMOLQUE==id_remolque).count()
+        if(control==0):
             self.request.dbsession.query(Remolque).filter(Remolque.ID_REMOLQUE == id_remolque).delete()
             transaction.commit()
         else:
