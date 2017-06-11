@@ -52,7 +52,7 @@ class AgregarRemolque(object):
                 remolque.ID_BODEGA = data['ID_BODEGA']
                 remolque.ID_EMPLEADO = data['ID_EMPLEADO']
                 remolque.NOMBRE_REMOLQUE = data['NOMBRE_REMOLQUE']
-                remolque.DISPONIBLE = data['DISPONIBLE']
+               
                 self.request.dbsession.add(remolque)
                 transaction.commit()
                 self.request.flash_message.add('Remolque guardado', message_type='success')
