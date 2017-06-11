@@ -127,7 +127,12 @@
             // turn the element to select2 select style
             $(".js-example-basic-single").select2({
                 placeholder: "Seleccione un remolque",
-                allowClear: true
+                allowClear: true,
+                "language": {
+                    "noResults": function () {
+                        return "No se encontró registros";
+                    }
+                }
             });
         });
     </script>

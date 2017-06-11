@@ -8,3 +8,6 @@ def includeme(config):
     config.add_route('enviarVehRepararGuardar','/enviar_veh_reparar_save')
     config.add_route('costoReparacion','/entrada/costo_reparacion/{id_dce}')
     config.add_route('costoReparacionGuardar','/entrada/costo_reparacion_guardar')
+    config.add_route('clienteLista','/cliente/admon/all')
+    config.add_route('marcaLista','/marca/admon/all')
+    config.add_route('modeloLista','/modelo/admon/all')
