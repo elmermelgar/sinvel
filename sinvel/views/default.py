@@ -32,7 +32,7 @@ class Vista(object):
         return {'one': 'one', 'ventas': items_ventas}
 
 
-    @view_config(route_name='inicio', renderer='../templates/examples/inicio.jinja2',  permission='view')
+    @view_config(route_name='inicio', renderer='../templates/examples/inicio.jinja2',  permission='administrador,vendedor,bodeguero,importador')
     def inicio(self):
         return {'one': 'one', 'user': self.user, 'grupo':self.emp}
 
