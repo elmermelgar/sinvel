@@ -5,17 +5,23 @@
 
                         <span class="f-11">
                             <span class="d-block">
-                                {% if user == 'admin' %}
+                                {% if grupo == 'Administradores' %}
                                     Administrador
+                                    {% elif grupo == 'Vededores' %}
+                                    Vendedor
+                                    {% elif grupo == 'Importadores' %}
+                                    Importador
+                                    {% else %}
+                                    Bodeguero
                                 {% endif %}
                             </span>
                             <small class="text-lowercase">@{{ user }}</small>
                         </span>
                     </a>
                     <ul>
-                        <li><a href="">Perfil</a></li>
-                        <li><a href="">Configuraciones</a></li>
-                        <li><a href="{{ request.route_path('logout')  }}">Cerrar Sesión</a></li>
+{#                        <li><a href="">Perfil</a></li>#}
+{#                        <li><a href="">Configuraciones</a></li>#}
+                        <li><a href="{{ request.route_path('sign_out')  }}">Cerrar Sesión</a></li>
                     </ul>
                 </li>
                 <li>

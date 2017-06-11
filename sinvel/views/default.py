@@ -34,6 +34,11 @@ class Vista(object):
 
     @view_config(route_name='inicio', renderer='../templates/examples/inicio.jinja2',  permission='administrador,vendedor,bodeguero,importador')
     def inicio(self):
+        self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
+        self.request.flash_message.add('Registro Guardado Parcialmente!!', message_type='warning')
+        self.request.flash_message.add('Error no se pudo guardar el registro!!', message_type='danger')
+        self.request.flash_message.add('Notificacion normal!!', message_type='inverse')
+
         return {'one': 'one', 'user': self.user, 'grupo':self.emp}
 
     @view_config(route_name='forms', renderer='../templates/examples/forms.jinja2', permission='view')

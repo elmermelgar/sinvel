@@ -29,6 +29,7 @@ requires = [
     'pyramid_storage',
     'pyzmq',
     'gevent',
+    'pyramid_flash_message',
 ]
 
 tests_require = [

@@ -6,7 +6,7 @@ $(document).ready(function(){
     function notify(from, align, icon, type, animIn, animOut, title, message){
        $.growl({
            icon: icon,
-           title: title || 'Bootstrap Growl ',
+           title: title || 'HOLA MUNDO ',
            message: message || 'Turning standard Bootstrap alerts into awesome notifications',
            url: ''
        },{
@@ -48,8 +48,8 @@ $(document).ready(function(){
     /* --------------------------------------------------------
         Welcome Message
     -----------------------------------------------------------*/
-    notify('top', 'right', '', 'inverse', 'animated fadeIn', 'animated fadeOut', 'Bienvenido al ', 'Sistema de Inventario de Vehículos!');
-    
+    // notify('top', 'right', '', 'success', 'animated fadeIn', 'animated fadeOut', '', 'Algo');
+
     /* --------------------------------------------------------
         Animations
     -----------------------------------------------------------*/
