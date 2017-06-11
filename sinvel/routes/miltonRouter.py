@@ -15,3 +15,10 @@ def includeme(config):
     config.add_route('tipoReparacion_update', '/tipoReparacion/update/{id_tipoRep}')
     config.add_route('tipoReparacion_save', '/tipoReparacion/save')
     config.add_route('tipoReparacion_del', '/tipoReparacion/del/{id_tipoRep}')
+
+    #############CRUD Taller######################
+    config.add_route('taller_list', '/taller/list')
+    config.add_route('taller_create', '/taller/create')
+    config.add_route('taller_update', '/taller/update/{id_taller}')
+    config.add_route('taller_save', '/taller/save')
+    config.add_route('taller_del', '/taller/del/{id_taller}')

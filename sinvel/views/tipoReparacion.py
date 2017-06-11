@@ -1,18 +1,22 @@
-import bcrypt
+import ctypes
+import _mysql_exceptions
 from pyramid.view import view_config
-from pyramid.renderers import render_to_response
-from sinvel.models import TipoReparacion,User,Empleado,Group,UsersGroup,Bodega
-from sqlalchemy.exc import DBAPIError
 import transaction
+from pyramid.response import Response
+import sqlalchemy
+from pyramid.view import view_config
+from sinvel.models import TipoReparacion
+from sqlalchemy.exc import DBAPIError
 from pyramid.httpexceptions import HTTPFound
-from sqlalchemy.sql import func
-from pyramid_mailer.message import Message
+
+def Mbox(title, text, style):
+    ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
 class TipoReparacionClase(object):
     def __init__(self,request):
+        self.request=request
         self.user = self.request.user.user_name
         self.emp = request.session['grupo']
-        self.request = request
 
     @view_config(route_name='tipoReparacion_list', renderer='../templates/crud/tipoReparacion.jinja2',request_method='GET')
     def listtipoReparacion(self):
@@ -58,8 +62,11 @@ class TipoReparacionClase(object):
 
     @view_config(route_name='tipoReparacion_del', request_method='GET')
     def deletetipoReparacion(self):
+        try:
+            self.request.dbsession.query(TipoReparacion).filter(TipoReparacion.ID_TIPO_REPARACION == self.request.matchdict['id_tipoRep']).delete()
+            transaction.commit()
+        except sqlalchemy.exc.IntegrityError:
+            ctypes.windll.user32.MessageBoxW(0, "NO PUEDE ELIMINAR TIPO DE REPARACION!!", "ERROR!!", 1)
 
-        self.request.dbsession.query(TipoReparacion).filter(TipoReparacion.ID_TIPO_REPARACION == self.request.matchdict['id_tipoRep']).delete()
-        transaction.commit()
 
         return HTTPFound(location='/tipoReparacion/list')
