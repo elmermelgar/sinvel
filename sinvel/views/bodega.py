@@ -34,7 +34,7 @@ class Bodega_IU(object):
         self.nivel = Nivel()
         self.ubicacion = Ubicacion()
 
-    @view_config(route_name='registrarBodega', renderer='../templates/bodega/registrar_bodegas.jinja2',
+    @view_config(route_name='registrarBodega', renderer='../templates/bodega/registrar_bodegas.jinja2', permission='administrador',
                  request_method='GET')
     def createRegistroBodega(self):
         try:
@@ -45,7 +45,7 @@ class Bodega_IU(object):
             return Response(db_err_msg, content_type='text/plain', status=500)
         return {'grupo':self.emp, 'departamentos': departamentos, 'municipios': municipios}
 
-    @view_config(route_name='bodegas', renderer='../templates/bodega/bodegas.jinja2', request_method='GET')
+    @view_config(route_name='bodegas', renderer='../templates/bodega/bodegas.jinja2', request_method='GET', permission='administrador')
     def bodegas(self):
         items_bodega = self.request.dbsession.query(Bodega).all()
         items_nivel = self.request.dbsession.query(Nivel).all()
@@ -55,7 +55,7 @@ class Bodega_IU(object):
 
 
 
-    @view_config(route_name='detalle_bodega', renderer='../templates/bodega/detalle_bodega.jinja2', request_method='GET')
+    @view_config(route_name='detalle_bodega', renderer='../templates/bodega/detalle_bodega.jinja2', request_method='GET', permission='administrador')
     def bodega_detalle(self):
         id = int(self.request.matchdict['id_bod'])
         items_bodega = self.request.dbsession.query(Bodega).get(id)
@@ -65,7 +65,7 @@ class Bodega_IU(object):
 
         return {'grupo':self.emp, 'bodega': items_bodega, 'user': self.user, 'niveles': items_nivel, 'ubicaciones': items_ubicacion}
 
-    @view_config(route_name='registroBodegaGuardar', request_method='POST')
+    @view_config(route_name='registroBodegaGuardar', request_method='POST', permission='administrador')
     def guardarRegistroBodega(self):
         try:
             data = self.request.POST
@@ -74,22 +74,16 @@ class Bodega_IU(object):
                 setattr(bodega, key, value)
             self.request.dbsession.add(bodega)
             transaction.commit()
-            ctypes.windll.user32.MessageBoxW(0, "REGISTRO GUARDADO CORRECTAMENTE!!", "EXITO!!", 1)
+            self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
         except DBAPIError:
             print('Ocurrio un error al insertar el registro')
-            print(db_err_msg)
+            self.request.flash_message.add('Ocurrió un error, por favor intentelo de nuevo!!', message_type='danger')
             # return Response(db_err_msg, content_type='text/plain', status=500)
             return HTTPFound(location='/registro_bodega')
         return HTTPFound(location='/bodegas')
 
-    @view_config(route_name='vehiculos', renderer='../templates/bodega/vehiculos.jinja2', request_method='GET')
-    def vehiculos(self):
-        items_vehiculos = self.request.dbsession.query(Vehiculo).all()
-
-        return {'grupo':self.emp, 'vehiculos': items_vehiculos, 'user': self.user}
-
     @view_config(route_name='ponerEnVenta', renderer='../templates/bodega/poner_en_venta.jinja2',
-                 request_method='GET')
+                 request_method='GET', permission='importador')
     def poner_en_venta(self):
         id = int(self.request.matchdict['id_veh'])
         items_vehiculo = self.request.dbsession.query(Vehiculo).get(id)
@@ -97,7 +91,7 @@ class Bodega_IU(object):
 
         return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados}
 
-    @view_config(route_name='ventaVehiculoActualizar', request_method='POST')
+    @view_config(route_name='ventaVehiculoActualizar', request_method='POST' , permission='importador')
     def actualizarVehiculo(self):
         try:
             data = self.request.POST
@@ -110,16 +104,16 @@ class Bodega_IU(object):
                     value = value.read()
                 setattr(vehiculo, key, value)
             transaction.commit()
-
+            self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
         except DBAPIError:
             print('Ocurrio un error al actualizar el registro')
-            print(db_err_msg)
+            self.request.flash_message.add('Ocurrió un error, por favor intentelo de nuevo!!', message_type='danger')
             # return Response(db_err_msg, content_type='text/plain', status=500)
             return HTTPFound(location='/vehiculos')
         return HTTPSeeOther(self.request.route_url('asignarVendedor', id_veh=self.request.POST['ID_VEHICULO']))
 
     @view_config(route_name='asignarVendedor', renderer='../templates/bodega/asignar_vendedor.jinja2',
-                 request_method='GET')
+                 request_method='GET', permission='importador')
     def asignarVendedor(self):
         id = int(self.request.matchdict['id_veh'])
         items_detalle_control = self.request.dbsession.query(DetalleControlEmpresa).filter(DetalleControlEmpresa.ID_VEHICULO==id).filter(DetalleControlEmpresa.TIPO_CONTROL_DET=='Venta').first()
@@ -129,7 +123,7 @@ class Bodega_IU(object):
 
         return {'grupo':self.emp, 'venta': items_venta, 'user': self.user, 'vehiculo': items_vehiculo, 'empleados': items_empleados}
 
-    @view_config(route_name='actualizarVendedor', request_method='POST')
+    @view_config(route_name='actualizarVendedor', request_method='POST', permission='importador')
     def actualizarVendedor(self):
         try:
             data = self.request.POST
@@ -139,10 +133,10 @@ class Bodega_IU(object):
             for key, value in data.items():
                 setattr(venta, key, value)
             transaction.commit()
-
+            self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
         except DBAPIError:
             print('Ocurrio un error al actualizar el registro')
-            print(db_err_msg)
+            self.request.flash_message.add('Ocurrió un error, por favor intentelo de nuevo!!', message_type='danger')
             # return Response(db_err_msg, content_type='text/plain', status=500)
             id = self.request.POST.get('ID_VENTA')
             venta = self.request.dbsession.query(Venta).get(id)
@@ -158,7 +152,7 @@ class Bodega_IU(object):
                                                    anio=venta.detalle_control_empresa.vehiculo.ANO))
 
     @view_config(route_name='vehiculosAsignados', renderer='../templates/bodega/vehiculos_asignados.jinja2',
-                 request_method='GET')
+                 request_method='GET',  permission='vendedor')
     def vehiculosAsignados(self):
         usuario = self.request.dbsession.query(User).filter(User.user_name==self.user).first()
         items_empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER==usuario.id).first()
@@ -167,7 +161,7 @@ class Bodega_IU(object):
         return {'grupo':self.emp, 'user': self.user, 'empleado': items_empleado, 'ventas': items_ventas}
 
     @view_config(route_name='detalleVehiculo', renderer='../templates/bodega/detalle_vehiculo.jinja2',
-                 request_method='GET')
+                 request_method='GET', permission='vendedor')
     def detalleVehiculo(self):
         id = int(self.request.matchdict['id_veh'])
         id_ven = int(self.request.matchdict['id_ven'])
@@ -180,7 +174,7 @@ class Bodega_IU(object):
         return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
 
     @view_config(route_name='updateVenta', renderer='../templates/bodega/vender_vehiculo.jinja2',
-                 request_method='GET')
+                 request_method='GET', permission='vendedor')
     def updateVenta(self):
         id = int(self.request.matchdict['id_veh'])
         id_ven = int(self.request.matchdict['id_ven'])
@@ -190,7 +184,7 @@ class Bodega_IU(object):
 
         return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'clientes': items_clientes, 'venta': items_venta}
 
-    @view_config(route_name='actualizarVenta', request_method='POST')
+    @view_config(route_name='actualizarVenta', request_method='POST', permission='vendedor')
     def actualizarVenta(self):
         try:
             data = self.request.POST
@@ -207,12 +201,11 @@ class Bodega_IU(object):
 
             self.request.dbsession.query(Venta).filter(Venta.ID_VENTA == id_ven).update(
                 {"PRECIO_VENTA": dato1, "DESCRIP_VENTA": dato2, "FECHA_VENTA":dato3, "ID_CLIENTE": dato4 })
-
             transaction.commit()
-
+            self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
         except DBAPIError:
             print('Ocurrio un error al actualizar el registro')
-            print(db_err_msg)
+            self.request.flash_message.add('Ocurrió un error, por favor intentelo de nuevo!!', message_type='danger')
             # return Response(db_err_msg, content_type='text/plain', status=500)
             return HTTPFound(location='/vehiculos_asignados')
         return HTTPFound(location='/vehiculos_asignados')
@@ -231,7 +224,7 @@ class Bodega_IU(object):
         return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
 
     @view_config(route_name='vehiculosVendidos', renderer='../templates/bodega/vehiculos_vendidos.jinja2',
-                 request_method='GET')
+                 request_method='GET', permission='vendedor')
     def vehiculosVendidos(self):
         usuario = self.request.dbsession.query(User).filter(User.user_name == self.user).first()
         items_empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == usuario.id).first()
@@ -240,7 +233,7 @@ class Bodega_IU(object):
         return {'grupo':self.emp, 'user': self.user, 'empleado': items_empleado, 'ventas': items_ventas}
 
     @view_config(route_name='detalleVenta', renderer='../templates/bodega/detalle_venta.jinja2',
-                 request_method='GET')
+                 request_method='GET', permission='vendedor')
     def detalleVenta(self):
         id = int(self.request.matchdict['id_veh'])
         id_ven = int(self.request.matchdict['id_ven'])
@@ -251,7 +244,7 @@ class Bodega_IU(object):
             f.write(items_vehiculo.FOTO_VEH)
         return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'venta': items_venta}
 
-    @view_config(route_name='guardarNiveles', request_method='POST')
+    @view_config(route_name='guardarNiveles', request_method='POST', permission='administrador')
     def guardarNiveles(self):
 
         settings = {'sqlalchemy.url': 'mysql://root:root@localhost:3306/sinvel'}
@@ -263,10 +256,10 @@ class Bodega_IU(object):
             data = self.request.POST
             id_bodega = {data.get('ID_BODEGA'),}
             cursor.callproc('sp_crear_niveles', id_bodega)
-
+            self.request.flash_message.add('Registros Guardados Correctamente!!', message_type='success')
         except _mysql_exceptions.OperationalError:
             print('Ocurrio un error al insertar el registro')
-            ctypes.windll.user32.MessageBoxW(0, "NO PUEDE INGRESAR MAS NIVELES!!", "ERROR!!", 1)
+            self.request.flash_message.add('ERROR!!, NO PUEDE INGRESAR MAS NIVELES!!', message_type='danger')
             # return Response(db_err_msg, content_type='text/plain', status=500)
             return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))
         finally:
@@ -274,7 +267,7 @@ class Bodega_IU(object):
             connection.commit()
         return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))
 
-    @view_config(route_name='guardarUbicaciones', request_method='POST')
+    @view_config(route_name='guardarUbicaciones', request_method='POST', permission='administrador')
     def guardarUbicaciones(self):
 
         settings = {'sqlalchemy.url': 'mysql://root:root@localhost:3306/sinvel'}
@@ -287,10 +280,10 @@ class Bodega_IU(object):
             id_bodega = {data.get('ID_BODEGA'), }
             id_nivel = {data.get('ID_NIVEL'), }
             cursor.callproc('sp_crear_ubicacion', id_nivel)
-
+            self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
         except _mysql_exceptions.OperationalError:
             print('Ocurrio un error al insertar el registro')
-            ctypes.windll.user32.MessageBoxW(0, "NO PUEDE INGRESAR MAS UBICACIONES!!", "ERROR!!", 1)
+            self.request.flash_message.add('ERROR!!, NO PUEDE INGRESAR MAS UBICACIONES!!', message_type='danger')
             # return Response(db_err_msg, content_type='text/plain', status=500)
             return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))
         finally:

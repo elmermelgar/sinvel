@@ -106,7 +106,7 @@ class RegistroVehiculo(object):
 
             empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
             remolques = self.request.dbsession.query(Remolque).filter(Remolque.ID_BODEGA == empleado.ID_BODEGA) \
-                .filter(Remolque.DISPONIBLE == 0)
+                .filter(Remolque.DISPONIBLE == 1)
             entradas = self.request.dbsession.query(DetalleControlEmpresa, Vehiculo). \
                 join(Vehiculo) \
                 .filter(DetalleControlEmpresa.ID_CONTROL == None) \
@@ -122,7 +122,7 @@ class RegistroVehiculo(object):
     def registroControlSave(self):
 
         id_user=self.user.id
-        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel_2'}
+        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
         engine = get_engine(settings)
         connection = engine.raw_connection()
         cursor = connection.cursor()
