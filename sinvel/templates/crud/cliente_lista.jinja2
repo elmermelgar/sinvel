@@ -1,0 +1,75 @@
+{% extends "../layout.jinja2" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
+          rel="stylesheet">
+
+{% endblock styles %}
+{% block content %}
+
+    <div class="container">
+        {{ panel('flash_message', per_page=20, read=True) }}
+        <h3>Administración de Clientes</h3>
+    </div>
+
+    <a href="{{ request.route_url('clienteCrear') }}" class="btn btn-primary" role="button">Agregar
+        <i class="glyphicon glyphicon-plus"></i>
+    </a>
+
+    <div class="m-b-25">
+
+        {% if clientes %}
+            <br/>
+            <div class="tile">
+                <table id="data-table" class="table table-hover table-bordered">
+                    <thead>
+                    <tr align="center">
+                        <th>Id</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Fecha de nacimiento</th>
+                        <th>Sexo</th>
+                        <th>DUI</th>
+                        <th>Acciones</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for cli in clientes %}
+                        <tr>
+                            <td>{{ cli.ID_CLIENTE|default('',true) }}</td>
+                            <td>{{ cli.NOMBRE_CLIENTE|default('',true) }}</td>
+                            <td>{{ cli.APELLIDO_CLIENTE|default('',true) }}</td>
+                            <td>{{ cli.FECHA_NACIMIENTO|default('',true) }}</td>
+                            <td>{{ cli.SEXO|default('',true) }}</td>
+                            <td>{{ cli.DUI|default('',true) }}</td>
+                            <td>
+                                <a href="{{ request.route_url('clienteEditar',id_cliente=cli.ID_CLIENTE) }}" class="btn btn-warning"
+                                   role="button">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                                <a href="{{ request.route_url('clienteEliminar',id_cliente=cli.ID_CLIENTE) }}"
+                                   class="btn btn-danger" role="button">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+
+            </div>
+
+        {% else %}
+            No existen Clientes
+        {% endif %}
+    </div>
+    </div>
+
+{% endblock content %}
+{% block scripts %}
+    <script src="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+
+{% endblock scripts %}

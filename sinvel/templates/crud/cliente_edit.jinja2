@@ -1,0 +1,103 @@
+{% extends "../layout.jinja2" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
+          rel="stylesheet">
+
+{% endblock styles %}
+{% block content %}
+
+    <div class="container">
+        {{ panel('flash_message', per_page=20, read=True) }}
+    </div>
+
+    <div class="container">
+        <div class="tile">
+            <div class="t-header">
+                <div class="th-title">CLIENTE
+                    <small>ACTUALIZAR DATOS DEL CLIENTE</small>
+                </div>
+                <a href="{{ request.route_url('clienteLista') }}" style="float: right; margin-top: -35px"
+                   class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+                <br/>
+            </div>
+            <div class="t-body tb-padding">
+                <form class="form-horizontal" action="{{ request.route_url('clienteEditarGuardar') }}" method="post">
+                    <input type="hidden" name="ID_CLIENTE" value="{{ cliente.ID_CLIENTE }}">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Nombres</label>
+                                <div class="form-group col-md-8">
+                                    <input name="NOMBRE_CLIENTE" type="text" maxlength="50" class="form-control"
+                                           value="{{ cliente.NOMBRE_CLIENTE }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Apellidos</label>
+                                <div class="form-group col-md-8">
+                                    <input name="APELLIDO_CLIENTE" type="text" maxlength="50" class="form-control"
+                                           value="{{ cliente.APELLIDO_CLIENTE }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Fecha de nacimiento</label>
+                                <div class="form-group col-md-8">
+                                    <input class="form-control form_datetime" name="FECHA_NACIMIENTO" type="text"
+                                           value="{{ cliente.FECHA_NACIMIENTO }}" placeholder="yyyy-mm-dd" maxlength="10" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Sexo</label>
+                                <div class="form-group col-md-8">
+                                    <select name="SEXO" class="form-control">
+                                        <option value="">Seleccione un genero</option>
+                                        {% if cliente.SEXO=='M' %}<option selected value="M">Masculino</option>
+                                        {% else %}<option value="M">Masculino</option>{% endif %}
+                                        {% if cliente.SEXO=='F' %}<option selected value="F">Femenino</option>
+                                        {% else %}<option value="F">Femenino</option>{% endif %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">DUI</label>
+                                <div class="form-group col-md-8">
+                                    <input name="DUI" type="text" maxlength="9" class="form-control"
+                                           value="{{ cliente.DUI }}" placeholder="#########" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2 col-lg-offset-1 col-md-offset-1">
+                            <div class="form-group">
+                                <input type="submit" class="form-control btn btn-primary" value="Guardar">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-lg-offset-1 col-md-offset-1">
+                            <div class="form-group">
+                                <input type="reset" class="form-control" value="Restablecer">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+{% block scripts %}
+    <script src="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+
+{% endblock scripts %}
