@@ -121,7 +121,68 @@ class RegistroVehiculo(object):
     @view_config(route_name='registro_entrada_control_guardar', request_method='POST',permission='administrador')
     def registroControlSave(self):
 
-        id_user=self.user.id
+        id_user = self.user.id
+        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
+        engine = get_engine(settings)
+        connection = engine.raw_connection()
+        cursor = connection.cursor()
+
+        control = ControlEmpresa()
+        id_remolque = self.request.POST['ID_REMOLQUE']
+        descripcion_control = self.request.POST['DESCRIPCION_CONTROL']
+        control.DESCRIPCION_CONTROL = descripcion_control
+        control.ID_REMOLQUE = id_remolque
+        control.TIPO_CONTROL = 'ENTRA'
+        control.FECHA_CONTROL = time.strftime("%Y-%m-%d")
+        control.HORA_CONTROL = time.strftime("%H:%M:%S")
+        self.request.dbsession.add(control)
+
+        query = self.request.dbsession.query(func.max(ControlEmpresa.ID_CONTROL).label('id_control_empresa')).one()
+        id_ctrl_emp = query.id_control_empresa
+        ids_det_control = self.request.params.getall("selected_vehiculos")
+        try:
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == id_user).one()
+            #self.request.dbsession.expunge_all()
+            #self.request.dbsession.close()
+            for id_det_ctrl_emp in ids_det_control:
+                args = [int(id_det_ctrl_emp), id_ctrl_emp, empleado.ID_EMPLEADO, 0]
+                result_args = cursor.callproc('sp_update_entrada', args)
+
+            transaction.commit()
+        except DBAPIError:
+            print('Error al realizar la transaccion')
+        finally:
+            cursor.close()
+            connection.commit()
+            #transaction.commit()
+        return HTTPFound(location='/entrada/registro_control_entrada')
+
+
+    @view_config(route_name='registro_control_entrada_reparacion', renderer='../templates/registrar_entrada_reparacion.jinja2',
+                 request_method='GET')
+    def registroControlEntradaReparacion(self):
+        remolques = None
+        entradas = None
+        try:
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
+            remolques = self.request.dbsession.query(Remolque).filter(Remolque.ID_BODEGA == empleado.ID_BODEGA) \
+                .filter(Remolque.DISPONIBLE == 0)
+            # SI ESTADO_REP_TALLER=NULL NO SE HA REGISTRADO LA ENTRADA A BODEGA NI CREADO EL COSTO DE LA REPARACION
+            entradas = self.request.dbsession\
+                .query(Vehiculo, DetalleControlEmpresa, Reparacion, UbicacionBodega,Ubicacion, Nivel, EstadoVeh) \
+                .join(DetalleControlEmpresa).join(Reparacion).join(EstadoVeh).join(UbicacionBodega)\
+                .join(Ubicacion).join(Nivel).filter(EstadoVeh.COD_ESTADO == '005')\
+                .filter(or_(Reparacion.ESTADO_REP_TALLER==None, Reparacion.ESTADO_REP_TALLER == '')) \
+                .filter(DetalleControlEmpresa.TIPO_CONTROL_DET == 'SALREP').all()
+
+        except DBAPIError:
+            print('Error al recuperar los remolques')
+        return {'grupo': self.emp, 'entradas': entradas, 'remolques': remolques}
+
+    @view_config(route_name='registro_control_entrada_reparacion_guardar', request_method='POST', permission='administrador')
+    def registro_control_reparacion_save(self):
+
+        id_user = self.user.id
         settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
         engine = get_engine(settings)
         connection = engine.raw_connection()
@@ -163,29 +224,6 @@ class RegistroVehiculo(object):
             print('Error al realizar la transaccion')
 
         return HTTPFound(location='/entrada/registro_control_entrada_reparacion')
-
-
-
-    @view_config(route_name='registro_control_entrada_reparacion', renderer='../templates/registrar_entrada_reparacion.jinja2',
-                 request_method='GET')
-    def registroControlEntradaReparacion(self):
-        remolques = None
-        entradas = None
-        try:
-            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
-            remolques = self.request.dbsession.query(Remolque).filter(Remolque.ID_BODEGA == empleado.ID_BODEGA) \
-                .filter(Remolque.DISPONIBLE == 0)
-            # SI ESTADO_REP_TALLER=NULL NO SE HA REGISTRADO LA ENTRADA A BODEGA NI CREADO EL COSTO DE LA REPARACION
-            entradas = self.request.dbsession\
-                .query(Vehiculo, DetalleControlEmpresa, Reparacion, UbicacionBodega,Ubicacion, Nivel, EstadoVeh) \
-                .join(DetalleControlEmpresa).join(Reparacion).join(EstadoVeh).join(UbicacionBodega)\
-                .join(Ubicacion).join(Nivel).filter(EstadoVeh.COD_ESTADO == '005')\
-                .filter(or_(Reparacion.ESTADO_REP_TALLER==None, Reparacion.ESTADO_REP_TALLER == '')) \
-                .filter(DetalleControlEmpresa.TIPO_CONTROL_DET == 'SALREP').all()
-
-        except DBAPIError:
-            print('Error al recuperar los remolques')
-        return {'grupo': self.emp, 'entradas': entradas, 'remolques': remolques}
 
     @view_config(route_name='alerta_multa', renderer='../templates/alerta_multa.jinja2',
                  request_method='GET',permission='importador')

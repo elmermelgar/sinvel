@@ -68,10 +68,10 @@
                                         <tr>
                                             <td><input type="checkbox" name="selected_vehiculos"
                                                        value="{{ entrada[0].ID_DET_CONTROL }}"></td>
-                                            <td>{{ entrada[1].PLACA }}</td>
-                                            <td>{{ entrada[1].modelo.marca.MARCA }}</td>
-                                            <td>{{ entrada[1].modelo.MODELO }}</td>
-                                            <td>{{ entrada[1].ANO }}</td>
+                                            <td>{{ entrada[1].PLACA|default('',true) }}</td>
+                                            <td>{{ entrada[1].modelo.marca.MARCA|default('',true) }}</td>
+                                            <td>{{ entrada[1].modelo.MODELO|default('',true) }}</td>
+                                            <td>{{ entrada[1].ANO|default('',true) }}</td>
 
                                         </tr>
                                     {% endfor %}
