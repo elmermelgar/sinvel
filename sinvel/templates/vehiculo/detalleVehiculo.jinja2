@@ -10,34 +10,38 @@
                     <div class="pm-overview c-overflow-dark mCustomScrollbar _mCS_2"><div id="mCSB_2" class="mCustomScrollBox mCS-dark mCSB_vertical mCSB_inside" tabindex="0"><div id="mCSB_2_container" class="mCSB_container" style="position:relative; top:0; left:0;" dir="ltr">
                         <div class="pmo-pic">
                             <div class="p-relative">
+                                {% if fotoDep %}
                                 <div>
-                                    <img src="{{ request.static_url('sinvel:static/fotos_vehiculos/Vehiculo'+'5652131312'+'.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
+                                    <img src="{{ request.static_url('sinvel:static/FotosVehiculos/'+id+'-Bumper.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
                                 </div>
 
                                 <br>
                                 <div>
-                                    <img src="{{ request.static_url('sinvel:static/fotos_vehiculos/Vehiculo'+'5652131312'+'.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
+                                    <img src="{{ request.static_url('sinvel:static/FotosVehiculos/'+id+'-Parachoches.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
                                 </div>
 
                                 <br>
                                 <div>
-                                    <img src="{{ request.static_url('sinvel:static/fotos_vehiculos/Vehiculo'+'5652131312'+'.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
+                                    <img src="{{ request.static_url('sinvel:static/FotosVehiculos/'+id+'-Costado_Izquierdo.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
                                 </div>
 
                                 <br>
                                 <div>
-                                    <img src="{{ request.static_url('sinvel:static/fotos_vehiculos/Vehiculo'+'5652131312'+'.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
+                                    <img src="{{ request.static_url('sinvel:static/FotosVehiculos/'+id+'-Costado_Derecho.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
                                 </div>
 
                                 <br>
                                 <div>
-                                    <img src="{{ request.static_url('sinvel:static/fotos_vehiculos/Vehiculo'+'5652131312'+'.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
+                                    <img src="{{ request.static_url('sinvel:static/FotosVehiculos/'+id+'-tapiceria_interna.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
                                 </div>
 
                                 <br>
                                 <div>
-                                    <img src="{{ request.static_url('sinvel:static/fotos_vehiculos/Vehiculo'+'5652131312'+'.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
+                                    <img src="{{ request.static_url('sinvel:static/FotosVehiculos/'+id+'-motor.jpg') }}" class="img-responsive mCS_img_loaded" alt="Vehiculo" />
                                 </div>
+                                {% else %}
+                                    No se han Subido Fotos
+                                {% endif %}
                             </div>
                         </div>
 

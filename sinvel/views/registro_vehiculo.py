@@ -85,7 +85,7 @@ class RegistroVehiculo(object):
             self.request.dbsession.add(detalleControlEmpresa)
             transaction.commit()
         except DBAPIError:
-            return print('Ocurrio un error al insertar el registro')
+            print('Ocurrio un error al insertar el registro')
         return HTTPFound(location='/RegistrarVehiculo')
 
 
@@ -122,7 +122,7 @@ class RegistroVehiculo(object):
     def registroControlSave(self):
 
         id_user=self.user.id
-        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel_2'}
+        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
         engine = get_engine(settings)
         connection = engine.raw_connection()
         cursor = connection.cursor()

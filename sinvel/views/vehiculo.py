@@ -4,7 +4,7 @@ from pyramid.view import view_config
 from sqlalchemy import text
 
 from sinvel.models import get_engine
-from ..models.models import Marca, EstadoVeh, Vehiculo, Modelo
+from ..models.models import Marca, EstadoVeh, Vehiculo, Modelo, DetalleImportacion, FotosDesperfecto
 
 
 class Importaciones(object):
@@ -34,7 +34,7 @@ class Importaciones(object):
     @view_config(route_name='resultado', renderer='../templates/vehiculo/resultadoVehiculo.jinja2', request_method='GET')
     def resultado(self):
         # SQL puro /////////////////////
-        settings={'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel_2'}
+        settings={'sqlalchemy.url': 'mysql://root:bad@localhost:3306/sinvel'}
         engine=get_engine(settings)
         connection=engine.connect()
 
@@ -70,5 +70,7 @@ class Importaciones(object):
     def detalle(self):
         id=int(self.request.matchdict['id_veh'])
         veh=self.request.dbsession.query(Vehiculo).get(id)
+        detImp=self.request.dbsession.query(DetalleImportacion).filter_by(ID_VEHICULO=id).first()
+        fotoDep=self.request.dbsession.query(FotosDesperfecto).filter_by(ID_DETALLE_IMPORT=detImp.ID_DETALLE_IMPORT).first()
 
-        return {'grupo':self.emp, 'vehiculo': veh}
+        return {'grupo':self.emp, 'vehiculo': veh, 'id':self.request.matchdict['id_veh'], 'fotoDep':fotoDep}

@@ -66,8 +66,8 @@ class AgregarImportador(object):
             mailer.send_immediately(message, fail_silently=False)
 
         except DBAPIError:
-            return print('Ocurrio un error al insertar el registro')
-        return HTTPFound(location='/inicio')
+             print('Ocurrio un error al insertar el registro')
+        return HTTPFound(location='/registro_importacion')
 
 
 

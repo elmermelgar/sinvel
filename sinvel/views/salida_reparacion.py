@@ -29,7 +29,7 @@ class SalidaReparacion(object):
         self.user=request.user
 
     @view_config(route_name='verificar_remolque', renderer='../templates/salida_reparacion/verificar_remolque.jinja2',
-                 request_method='GET',permission='bodeguero')
+                 request_method='GET',permission='administrador')
     def verificarRemolque(self):
         items_tipo_remolque=None
         remolques=None
@@ -51,7 +51,7 @@ class SalidaReparacion(object):
         return {'grupo':self.emp, 'json_models': json_models}
 
     @view_config(route_name='registro_control', renderer='../templates/salida_reparacion/registro_control.jinja2',
-                 request_method='GET',permission='bodeguero')
+                 request_method='GET',permission='administrador')
     def registroControl(self):
         remolques = None
         salidas = None
@@ -76,7 +76,7 @@ class SalidaReparacion(object):
 
     @view_config(route_name='registro_control_guardar',request_method='POST',permission='bodeguero')
     def registroControlSave(self):
-        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel_2'}
+        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
         engine = get_engine(settings)
         connection = engine.raw_connection()
         cursor = connection.cursor()
@@ -133,7 +133,7 @@ class SalidaReparacion(object):
 
     @view_config(route_name='aprobar_salidas_guardar', request_method='POST',permission='administrador')
     def aprobarSalidasSave(self):
-        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel_2'}
+        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
         engine = get_engine(settings)
         connection = engine.raw_connection()
         cursor = connection.cursor()

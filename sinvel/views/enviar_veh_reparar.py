@@ -14,7 +14,6 @@ from sinvel.views.user import db_err_msg
 
 class RegistroVehiculo(object):
     def __init__(self, request):
-        self.user = self.request.user.user_name
         self.emp = request.session['grupo']
         self.request = request
         self.user = request.user
