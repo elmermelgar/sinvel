@@ -85,7 +85,7 @@ class RegistroVehiculo(object):
             self.request.dbsession.add(detalleControlEmpresa)
             transaction.commit()
         except DBAPIError:
-            return print('Ocurrio un error al insertar el registro')
+            print('Ocurrio un error al insertar el registro')
         return HTTPFound(location='/RegistrarVehiculo')
 
 
@@ -106,7 +106,7 @@ class RegistroVehiculo(object):
 
             empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
             remolques = self.request.dbsession.query(Remolque).filter(Remolque.ID_BODEGA == empleado.ID_BODEGA) \
-                .filter(Remolque.DISPONIBLE == 1)
+                .filter(Remolque.DISPONIBLE == 0)
             entradas = self.request.dbsession.query(DetalleControlEmpresa, Vehiculo). \
                 join(Vehiculo) \
                 .filter(DetalleControlEmpresa.ID_CONTROL == None) \
