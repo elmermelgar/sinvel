@@ -177,7 +177,7 @@ class RegistroVehiculo(object):
 
         except DBAPIError:
             print('Error al recuperar los remolques')
-        return {'grupo': self.emp, 'entradas': entradas, 'remolques': remolques}
+        return {'grupo': self.emp, 'user':self.user.user_name, 'entradas': entradas, 'remolques': remolques}
 
     @view_config(route_name='registro_control_entrada_reparacion_guardar', request_method='POST', permission='administrador')
     def registro_control_reparacion_save(self):
@@ -220,9 +220,10 @@ class RegistroVehiculo(object):
                     .update({"ESTADO_REP_TALLER": 'Procesada'})
 
             transaction.commit()
+            self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
         except DBAPIError:
             print('Error al realizar la transaccion')
-
+            self.request.flash_message.add('Error no se pudo guardar el registro!!', message_type='danger')
         return HTTPFound(location='/entrada/registro_control_entrada_reparacion')
 
     @view_config(route_name='alerta_multa', renderer='../templates/alerta_multa.jinja2',
