@@ -15,10 +15,11 @@ view_defaults(route_name='registroImportacion')
 
 class RegistroImportacion(object):
     def __init__(self, request):
+        self.request = request
         self.user = self.request.user.user_name
         self.emp = request.session['grupo']
-        self.request = request
-        self.user = request.user
+
+        #self.user = request.user
 
     @view_config(route_name='registroImportacion', renderer='../templates/importacion/registrar_importacion.jinja2', request_method='GET')
     def createRegistroImportacion(self):
