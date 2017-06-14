@@ -288,7 +288,7 @@ class RegistroVehiculo(object):
         vehiculos = None
         try:
 
-            importador = self.request.dbsession.query(Importador).filter(Importador.ID_USER == self.user.id).one()
+            #importador = self.request.dbsession.query(Importador).filter(Importador.ID_USER == self.user.id).one()
 
             vehiculos = self.request.dbsession.query(Vehiculo, EstadoVeh, Importacion, Importador, UbicacionBodega,
                                                      Ubicacion, Nivel) \
@@ -308,7 +308,7 @@ class RegistroVehiculo(object):
                 i[4].MULTA_EN_STR = str(15 - (d1 - d2).days) + ' días'
         except DBAPIError:
             print('Error al recuperar los remolques')
-        return {'grupo': self.emp, 'vehiculos': vehiculos}
+        return {'grupo': self.emp, 'vehiculos': vehiculos,'user':self.user.user_name}
 
 
 
@@ -330,7 +330,7 @@ class RegistroVehiculo(object):
 
         except DBAPIError:
             print('Error al recuperar los remolques')
-        return {'grupo': self.emp, 'vehiculos': vehiculos}
+        return {'grupo': self.emp, 'vehiculos': vehiculos,'user':self.user.user_name}
 
     @view_config(route_name='generar_reporte', request_method='GET', renderer='../templates/registrar_vehiculo.jinja2')
     def generarReporte(self):
