@@ -101,7 +101,7 @@
                                 <div class="form-group">
                                     {{ label('Año','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('ANO', 'form-control', type='number',required='true') }}
+                                   <input name="ANO" class="form-control" required type="text" minlength="4" maxlength="4">
                                 </div>
                              </div>
                           </div>
@@ -187,9 +187,9 @@
                          </div>
                         <div class="col-md-6">
                    <div class="form-group">
-                        {{ label('Precio','col-sm-2 control-label') }}
+                        {{ label('Placa','col-sm-2 control-label') }}
                     <div class="form-group col-md-10">
-                        {{ input('PRECIO_VEHICULO', 'form-control', type='number',required='true') }}
+                        <input name="PLACA" class="form-control" required type="text" minlength="4" maxlength="10">
                     </div>
                  </div>
                      </div>
@@ -256,13 +256,13 @@
                  </div>
                       </br>
                         </br>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a href="{{request.route_url('inicio')}}" class="form-control btn bg-lightblue"  style="float: right; margin-right: 50px; width: auto;">
-                                    Terminar <i class="zmdi zmdi-arrow-forward"></i>
-                                </a>
-                            </div>
-                        </div>
+{#                        <div class="row">#}
+{#                            <div class="col-sm-12">#}
+{#                                <a href="{{request.route_url('inicio')}}" class="form-control btn bg-lightblue"  style="float: right; margin-right: 50px; width: auto;">#}
+{#                                    Terminar <i class="zmdi zmdi-arrow-forward"></i>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
                 </form>
             </div>
            </div>

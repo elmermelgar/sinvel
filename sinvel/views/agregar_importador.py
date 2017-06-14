@@ -13,7 +13,7 @@ class AgregarImportador(object):
         self.request = request
         self.user = self.request.user.user_name
         self.emp = request.session['grupo']
-        self.user = User()
+        #self.user = User()
 
     @view_config(route_name='agregar_importador', request_method='GET',renderer='../templates/agregar_importador.jinja2',permission="administrador")
     def createimportador(self):
