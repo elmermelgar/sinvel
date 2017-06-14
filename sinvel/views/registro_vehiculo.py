@@ -120,7 +120,7 @@ class RegistroVehiculo(object):
 
     @view_config(route_name='registro_entrada_control_guardar', request_method='POST',permission='administrador')
     def registroControlSave(self):
-
+                #metodo que guarda el registro de entrada por 1 vez a la bodega
         id_user = self.user.id
         settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
         engine = get_engine(settings)
