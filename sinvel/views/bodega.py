@@ -247,7 +247,7 @@ class Bodega_IU(object):
     @view_config(route_name='guardarNiveles', request_method='POST', permission='administrador')
     def guardarNiveles(self):
 
-        settings = {'sqlalchemy.url': 'mysql://root:root@localhost:3306/sinvel'}
+        settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
         engine = get_engine(settings)
         connection = engine.raw_connection()
         cursor = connection.cursor()
