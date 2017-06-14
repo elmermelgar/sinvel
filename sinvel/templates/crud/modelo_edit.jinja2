@@ -1,0 +1,78 @@
+{% extends "../layout.jinja2" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
+          rel="stylesheet">
+
+{% endblock styles %}
+{% block content %}
+
+    <div class="container">
+        {{ panel('flash_message', per_page=20, read=True) }}
+    </div>
+
+    <div class="container">
+        <div class="tile">
+            <div class="t-header">
+                <div class="th-title">MODELO DE VEHICULO
+                    <small>ACTUALIZAR DATOS DEL MODELO DE VEHICULO</small>
+                </div>
+                <a href="{{ request.route_url('modeloLista') }}" style="float: right; margin-top: -35px"
+                   class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+                <br/>
+            </div>
+            <div class="t-body tb-padding">
+                <form class="form-horizontal" action="{{ request.route_url('modeloEditarGuardar') }}" method="post">
+                    <input type="hidden" name="ID_MODELO" value="{{ model.ID_MODELO }}">
+                    <div class="row">
+
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Marca</label>
+                                <div class="form-group col-md-8">
+                                    <select name="ID_MARCA" class="form-control" required>
+                                        {% for marka in markas %}
+                                            {% if marka.ID_MARCA==model.ID_MARCA %}
+                                                <option selected value="{{ marka.ID_MARCA }}">{{ marka.MARCA }}</option>
+                                            {% else %}
+                                                <option value="{{ marka.ID_MARCA }}">{{ marka.MARCA }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Modelo</label>
+                                <div class="form-group col-md-8">
+                                    <input name="MODELO" type="text" maxlength="100" class="form-control"
+                                           value="{{ model.MODELO }}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2 col-lg-offset-1 col-md-offset-1">
+                            <div class="form-group">
+                                <input type="submit" class="form-control btn btn-primary" value="Guardar">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-lg-offset-1 col-md-offset-1">
+                            <div class="form-group">
+                                <input type="reset" class="form-control" value="Restablecer">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+{% block scripts %}
+    <script src="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+
+{% endblock scripts %}
