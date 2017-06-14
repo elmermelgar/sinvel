@@ -72,10 +72,10 @@ class RegistroVehiculo(object):
                 print(key, value)
                 setattr(vehiculo, key, value)
             self.request.dbsession.add(vehiculo)
-            self.request.dbsession.expunge_all()
+            #self.request.dbsession.expunge_all()
             #self.request.dbsession.close()
 
-            transaction.commit()
+            #transaction.commit()
             query = self.request.dbsession.query(func.max(Vehiculo.ID_VEHICULO).label('id_vehiculo')).one()
             id_vehiculo = query.id_vehiculo
             # Guardando DetalleImportacion
@@ -226,7 +226,8 @@ class RegistroVehiculo(object):
             entradas = self.request.dbsession\
                 .query(Vehiculo, DetalleControlEmpresa, Reparacion, UbicacionBodega,Ubicacion, Nivel, EstadoVeh) \
                 .join(DetalleControlEmpresa).join(Reparacion).join(EstadoVeh).join(UbicacionBodega)\
-                .join(Ubicacion).join(Nivel).filter(EstadoVeh.COD_ESTADO == '005')\
+                .join(Ubicacion).join(Nivel)\
+                .filter(or_(EstadoVeh.COD_ESTADO == '001',EstadoVeh.COD_ESTADO == '002',EstadoVeh.COD_ESTADO == '005'))\
                 .filter(or_(Reparacion.ESTADO_REP_TALLER==None, Reparacion.ESTADO_REP_TALLER == '')) \
                 .filter(DetalleControlEmpresa.TIPO_CONTROL_DET == 'SALREP').all()
 
