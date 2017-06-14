@@ -1,0 +1,100 @@
+{% extends "../layout.jinja2" %}
+{% block styles %}
+     <link rel="stylesheet" type="text/css" href="{{ request.static_url('sinvel:static/css/select2.min.css') }}">
+<link href="{{request.static_url('sinvel:static/css/wizard.css')}}" rel="stylesheet">
+    <link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+{% endblock styles %}
+{% block content %}
+
+    <div class="container" >
+      <div class="col-12 col-lg-12 col-sm-9 " xmlns="http://www.w3.org/1999/html">
+        <form class="form-horizontal" action="{{ request.route_url('registro_control_guardar') }}" method="post">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Registrar salida por venta</h2>
+                </div>
+                </br>
+
+
+                            {% if salidas %}
+                                <div class="tile">
+                                <div class="t-header">
+                                    <div class="th-title">
+                                        Vehiculos a reparar
+                                    </div>
+                                </div>
+                                <table id="data-table" class="table table-hover table-bordered">
+                                    <thead>
+                                    <tr align="center">
+                                        <th></th>
+                                        <th>Placa</th>
+                                        <th>Marca</th>
+                                        <th>Modelo</th>
+                                        <th>Año</th>
+{#                                        <th>Tipo reparación</th>#}
+{#                                        <th>Taller</th>#}
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for salida in salidas %}
+                                        <tr>
+                                            <td><input type="checkbox" name="selected_vehiculos"
+                                                       value="{{ salida[0].ID_DET_CONTROL }}"></td>
+                                            <td>{{ salida[1].PLACA }}</td>
+                                            <td>{{ salida[1].modelo.marca.MARCA }}</td>
+                                            <td>{{ salida[1].modelo.MODELO }}</td>
+                                            <td>{{ salida[1].ANO }}</td>
+{#                                            <td>{{ salida[1].importacion.importador.NOMBRE+" "+salida[1].importacion.importador.APELLIDO }}</td>#}
+{#                                            <td>{{ salida[2].taller.tipo_reparacion.TIPO_REPARACION }}</td>#}
+{#                                            <td>{{ salida[2].taller.NOMBRE_TALLER }}</td>#}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                No existen salidas de reparacion disponibles para mostrar
+                            {% endif %}
+                            </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+
+{#                                 <a href="{{ request.route_url('aprobar_salidas') }}" class="btn bg-lightblue" style="float: right; margin-right: 50px"> Continuar <i class="zmdi zmdi-arrow-forward"></i></a>#}
+                                 <button class="form-control btn bg-lightblue" type="submit"
+                                        style="float: right; margin-right: 50px; width: auto;">
+                                    Guardar <i class="zmdi zmdi-save"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                </div>
+
+        </form>
+    </div>
+    </div>
+
+{% endblock content %}
+{% block scripts %}
+
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/moment.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ request.static_url('sinvel:static/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            // turn the element to select2 select style
+            $(".js-example-basic-single").select2({
+                placeholder: "Seleccione un remolque",
+                allowClear: true
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $(".form_datetime").datetimepicker({format: 'DD-MM-YYYY'});
+        });
+    </script>
+    <script src="{{ request.static_url('sinvel:static/js/wizard.js') }}"></script>
+
+{% endblock scripts %}

@@ -115,8 +115,8 @@
                             <div class="panel">
                                 <h3 class="panel-title">Datos del importador</h3>
                             </div>
-                            <div class="col-md-8">
-                                <label class="col-sm-2 control-label">Importador:</label>
+                            <div class="col-md-6">
+                                <label class="col-sm-4 control-label">Importador:</label>
                                 <div class="form-group col-md-8 ">
                                     <select name="ID_IMPORTADOR" class="form-control js-example-basic-single js-states"
                                             required>
@@ -124,6 +124,18 @@
                                         {% for aimportador in importadores %}
                                             <option value="{{ aimportador.ID_IMPORTADOR }}">{{ aimportador.NIT }}
                                                 - {{ aimportador.NOMBRE }} {{ aimportador.APELLIDO }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        <div class="col-md-6">
+                                <label class="col-sm-2 control-label">Bodega:</label>
+                                <div class="form-group col-md-8 ">
+                                    <select name="ID_BODEGA" class="form-control js-example-basic-single js-states"
+                                            required>
+                                        <option value="">Seleccione una bodega</option>
+                                        {% for bodega in bodegas %}
+                                            <option value="{{ bodega.ID_BODEGA }}"> {{ bodega.NOMBRE_BODEGA }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

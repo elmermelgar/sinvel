@@ -1,10 +1,9 @@
 # coding: utf-8
-from sqlalchemy import Column, Date, DateTime, ForeignKey, Integer, Numeric, SmallInteger, String, Text, Time
+from sqlalchemy import BigInteger, Column, Date, DateTime, ForeignKey, Integer, Numeric, SmallInteger, String, Table, Text, Time
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.mysql.types import LONGBLOB
 from sqlalchemy.ext.declarative import declarative_base
-
 
 
 Base = declarative_base()
@@ -21,29 +20,26 @@ class Bodega(Base):
     __tablename__ = 'bodega'
 
     ID_BODEGA = Column(Integer, primary_key=True)
-    ID_MUNICIPIO = Column(ForeignKey('municipio.ID_MUNICIPIO'), ForeignKey('municipio.ID_MUNICIPIO'), index=True)
+    ID_MUNICIPIO = Column(ForeignKey('municipio.ID_MUNICIPIO'), index=True)
     NOMBRE_BODEGA = Column(String(50))
     DESCRIPCION_BODEGA = Column(String(200))
     DIRECCION_BODEGA = Column(String(200))
 
-
-    municipio = relationship('Municipio', primaryjoin='Bodega.ID_MUNICIPIO == Municipio.ID_MUNICIPIO', backref='municipio_bodegas')
-    municipio1 = relationship('Municipio', primaryjoin='Bodega.ID_MUNICIPIO == Municipio.ID_MUNICIPIO', backref='municipio_bodegas_0')
+    municipio = relationship('Municipio', primaryjoin='Bodega.ID_MUNICIPIO == Municipio.ID_MUNICIPIO', backref='bodegas')
 
 
 class Cliente(Base):
     __tablename__ = 'cliente'
 
     ID_CLIENTE = Column(Integer, primary_key=True)
-    ID = Column(ForeignKey('users.id'), ForeignKey('users.id'), index=True)
+    ID = Column(ForeignKey('users.id'), index=True)
     NOMBRE_CLIENTE = Column(String(50))
     APELLIDO_CLIENTE = Column(String(50))
     FECHA_NACIMIENTO = Column(Date)
     SEXO = Column(String(1))
     DUI = Column(String(9))
 
-    user = relationship('User', primaryjoin='Cliente.ID == User.id', backref='user_clientes')
-    user1 = relationship('User', primaryjoin='Cliente.ID == User.id', backref='user_clientes_0')
+    user = relationship('User', primaryjoin='Cliente.ID == User.id', backref='clientes')
 
 
 class ControlEmpresa(Base):
@@ -67,7 +63,7 @@ class Costo(Base):
     ID_VEHICULO = Column(ForeignKey('vehiculo.ID_VEHICULO'), index=True)
     DESCRIP_COSTO = Column(String(100))
     MONTO = Column(Numeric(10, 2))
-    FECHA_COSTO=Column(Date)
+    FECHA_COSTO = Column(Date)
 
     tipo_costo = relationship('TipoCosto', primaryjoin='Costo.ID_TIPO_COSTO == TipoCosto.ID_TIPO_COSTO', backref='costoes')
     vehiculo = relationship('Vehiculo', primaryjoin='Costo.ID_VEHICULO == Vehiculo.ID_VEHICULO', backref='costoes')
@@ -99,12 +95,13 @@ class DetalleControlEmpresa(Base):
     ID_CONTROL = Column(ForeignKey('control_empresa.ID_CONTROL'), index=True)
     ID_EMPLEADO = Column(ForeignKey('empleado.ID_EMPLEADO'), index=True)
     ID_VEHICULO = Column(ForeignKey('vehiculo.ID_VEHICULO'), index=True)
+    TIPO_CONTROL_DET = Column(String(20))
     ID_BODEGA = Column(ForeignKey('bodega.ID_BODEGA'), index=True)
-    TIPO_CONTROL_DET=Column(String(20))
+
+    bodega = relationship('Bodega', primaryjoin='DetalleControlEmpresa.ID_BODEGA == Bodega.ID_BODEGA', backref='detalle_control_empresas')
     control_empresa = relationship('ControlEmpresa', primaryjoin='DetalleControlEmpresa.ID_CONTROL == ControlEmpresa.ID_CONTROL', backref='detalle_control_empresas')
     empleado = relationship('Empleado', primaryjoin='DetalleControlEmpresa.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='detalle_control_empresas')
     vehiculo = relationship('Vehiculo', primaryjoin='DetalleControlEmpresa.ID_VEHICULO == Vehiculo.ID_VEHICULO', backref='detalle_control_empresas')
-    bodega = relationship('Bodega', primaryjoin='DetalleControlEmpresa.ID_BODEGA == Bodega.ID_BODEGA', backref='detalle_control_empresas')
 
 
 class DetalleImportacion(Base):
@@ -112,12 +109,11 @@ class DetalleImportacion(Base):
 
     ID_DETALLE_IMPORT = Column(Integer, primary_key=True)
     ID_VEHICULO = Column(ForeignKey('vehiculo.ID_VEHICULO'), index=True)
-    ID_IMPORTACION = Column(ForeignKey('importacion.ID_IMPORTACION'), ForeignKey('importacion.ID_IMPORTACION'), index=True)
+    ID_IMPORTACION = Column(ForeignKey('importacion.ID_IMPORTACION'), index=True)
     DETALLE_DESPERFECTO = Column(String(400))
     ADUANA = Column(String(100))
 
-    importacion = relationship('Importacion', primaryjoin='DetalleImportacion.ID_IMPORTACION == Importacion.ID_IMPORTACION', backref='importacion_detalle_importacions')
-    importacion1 = relationship('Importacion', primaryjoin='DetalleImportacion.ID_IMPORTACION == Importacion.ID_IMPORTACION', backref='importacion_detalle_importacions_0')
+    importacion = relationship('Importacion', primaryjoin='DetalleImportacion.ID_IMPORTACION == Importacion.ID_IMPORTACION', backref='detalle_importacions')
     vehiculo = relationship('Vehiculo', primaryjoin='DetalleImportacion.ID_VEHICULO == Vehiculo.ID_VEHICULO', backref='detalle_importacions')
 
 
@@ -136,7 +132,7 @@ class Empleado(Base):
     AFP = Column(String(18))
     ISSS = Column(String(18))
     TEL_EMP = Column(String(9))
-    TIPO_EMPLEADO=Column(String(30))
+    TIPO_EMPLEADO = Column(String(30))
 
     bodega = relationship('Bodega', primaryjoin='Empleado.ID_BODEGA == Bodega.ID_BODEGA', backref='empleadoes')
     user = relationship('User', primaryjoin='Empleado.ID_USER == User.id', backref='empleadoes')
@@ -149,20 +145,6 @@ class EstadoVeh(Base):
     ESTADO = Column(String(50))
     DESCRIP_ESTADO = Column(String(200))
     COD_ESTADO = Column(String(10))
-
-
-class ExternalIdentity(Base):
-    __tablename__ = 'external_identities'
-
-    external_id = Column(String(255), primary_key=True, nullable=False)
-    external_user_name = Column(String(255))
-    provider_name = Column(String(50), primary_key=True, nullable=False)
-    access_token = Column(String(512))
-    alt_token = Column(String(512))
-    token_secret = Column(String(512))
-    local_user_id = Column(ForeignKey('users.id', ondelete='CASCADE', onupdate='CASCADE'), primary_key=True, nullable=False, index=True)
-
-    local_user = relationship('User', primaryjoin='ExternalIdentity.local_user_id == User.id', backref='external_identities')
 
 
 class FotosDesperfecto(Base):
@@ -216,7 +198,9 @@ class Importacion(Base):
     VALOR_ADUANERO = Column(Numeric(10, 2))
     VALOR_FACTURADO = Column(Numeric(10, 2))
     PAIS_ORIGEN = Column(String(50))
+    ID_BODEGA = Column(ForeignKey('bodega.ID_BODEGA'), index=True)
 
+    bodega = relationship('Bodega', primaryjoin='Importacion.ID_BODEGA == Bodega.ID_BODEGA', backref='importacions')
     importador = relationship('Importador', primaryjoin='Importacion.ID_IMPORTADOR == Importador.ID_IMPORTADOR', backref='importacions')
 
 
@@ -262,32 +246,21 @@ class Modelo(Base):
     __tablename__ = 'modelo'
 
     ID_MODELO = Column(Integer, primary_key=True)
+    ID_MARCA = Column(ForeignKey('marca.ID_MARCA'), nullable=False, index=True)
     MODELO = Column(String(100))
-    ID_MARCA = Column(ForeignKey('marca.ID_MARCA'), ForeignKey('marca.ID_MARCA'), nullable=False, index=True)
 
-
-    marca = relationship('Marca', primaryjoin='Modelo.ID_MARCA == Marca.ID_MARCA', backref='marca_modeloes')
-    marca1 = relationship('Marca', primaryjoin='Modelo.ID_MARCA == Marca.ID_MARCA', backref='marca_modeloes_0')
-
-
-class Model(Base):
-    __tablename__ = 'models'
-
-    id = Column(Integer, primary_key=True)
-    name = Column(Text, unique=True)
-    value = Column(Integer)
+    marca = relationship('Marca', primaryjoin='Modelo.ID_MARCA == Marca.ID_MARCA', backref='modeloes')
 
 
 class Municipio(Base):
     __tablename__ = 'municipio'
 
     ID_MUNICIPIO = Column(Integer, primary_key=True)
-    ID_DEPARTAMENTO = Column(ForeignKey('departamento.ID_DEPARTAMENTO'), ForeignKey('departamento.ID_DEPARTAMENTO'), index=True)
+    ID_DEPARTAMENTO = Column(ForeignKey('departamento.ID_DEPARTAMENTO'), index=True)
     COD_MUNICIPIO = Column(String(10))
     MUNICIPIO = Column(String(100))
 
-    departamento = relationship('Departamento', primaryjoin='Municipio.ID_DEPARTAMENTO == Departamento.ID_DEPARTAMENTO', backref='departamento_municipios')
-    departamento1 = relationship('Departamento', primaryjoin='Municipio.ID_DEPARTAMENTO == Departamento.ID_DEPARTAMENTO', backref='departamento_municipios_0')
+    departamento = relationship('Departamento', primaryjoin='Municipio.ID_DEPARTAMENTO == Departamento.ID_DEPARTAMENTO', backref='municipios')
 
 
 class Nivel(Base):
@@ -315,7 +288,7 @@ class Remolque(Base):
 
     bodega = relationship('Bodega', primaryjoin='Remolque.ID_BODEGA == Bodega.ID_BODEGA', backref='remolques')
     empleado = relationship('Empleado', primaryjoin='Remolque.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='remolques')
-    tipo_remolque = relationship('TipoRemolque', primaryjoin='Remolque.ID_TIPO_REMOLQUE == TipoRemolque.ID_TIPO_REMOLQUE', backref='remolques',lazy="joined", innerjoin=True)
+    tipo_remolque = relationship('TipoRemolque', primaryjoin='Remolque.ID_TIPO_REMOLQUE == TipoRemolque.ID_TIPO_REMOLQUE', backref='remolques')
 
 
 class Reparacion(Base):
@@ -366,7 +339,7 @@ class TipoCosto(Base):
 
     ID_TIPO_COSTO = Column(Integer, primary_key=True)
     TIPO_COSTO = Column(String(50))
-    COD_COSTO=Column(String(50))
+    COD_COSTO = Column(String(50))
 
 
 class TipoRemolque(Base):
@@ -391,6 +364,7 @@ class Ubicacion(Base):
     ID_NIVEL = Column(ForeignKey('nivel.ID_NIVEL'), index=True)
     CORRELATIVO = Column(String(5))
     DISPOONIBLE = Column(Integer)
+    COSTO = Column(Numeric(10, 2))
 
     nivel = relationship('Nivel', primaryjoin='Ubicacion.ID_NIVEL == Nivel.ID_NIVEL', backref='ubicacions')
 
@@ -404,8 +378,6 @@ class UbicacionBodega(Base):
     OBSERVACION = Column(String(100))
     FECHAINGRESO = Column(Date)
     FECHAEGRESO = Column(Date)
-    MULTA_EN=''
-    MULTA_EN_STR=''
     EGRESO = Column(Integer)
 
     ubicacion = relationship('Ubicacion', primaryjoin='UbicacionBodega.ID_UBICACION == Ubicacion.ID_UBICACION', backref='ubicacion_bodegas')
@@ -462,8 +434,7 @@ class Vehiculo(Base):
 
     ID_VEHICULO = Column(Integer, primary_key=True)
     ID_ESTADO = Column(ForeignKey('estado_veh.ID_ESTADO'), index=True)
-    ID_MODELO = Column(ForeignKey('modelo.ID_MODELO'), ForeignKey('modelo.ID_MODELO'), index=True)
-    ID_IMPORTACION = Column(ForeignKey('importacion.ID_IMPORTACION'), index=True)
+    ID_MODELO = Column(ForeignKey('modelo.ID_MODELO'), index=True)
     LINEA_ESTILO = Column(String(40))
     CHASIS = Column(String(50))
     ANO = Column(Integer)
@@ -478,11 +449,25 @@ class Vehiculo(Base):
     PRECIO_VEHICULO = Column(Numeric(10, 2))
     FOTO_VEH = Column(LONGBLOB)
     PLACA = Column(String(10))
+    ID_IMPORTACION = Column(ForeignKey('importacion.ID_IMPORTACION'), index=True)
 
-    importacion=relationship('Importacion', primaryjoin='Vehiculo.ID_IMPORTACION == Importacion.ID_IMPORTACION', backref='importaciones')
     estado_veh = relationship('EstadoVeh', primaryjoin='Vehiculo.ID_ESTADO == EstadoVeh.ID_ESTADO', backref='vehiculoes')
-    modelo = relationship('Modelo', primaryjoin='Vehiculo.ID_MODELO == Modelo.ID_MODELO', backref='modelo_vehiculoes')
-    modelo1 = relationship('Modelo', primaryjoin='Vehiculo.ID_MODELO == Modelo.ID_MODELO', backref='modelo_vehiculoes_0')
+    importacion = relationship('Importacion', primaryjoin='Vehiculo.ID_IMPORTACION == Importacion.ID_IMPORTACION', backref='vehiculoes')
+    modelo = relationship('Modelo', primaryjoin='Vehiculo.ID_MODELO == Modelo.ID_MODELO', backref='vehiculoes')
+
+
+t_vehiculos = Table(
+    'vehiculos', metadata,
+    Column('ID_VEHICULO', Integer, server_default=FetchedValue()),
+    Column('ID_MARCA', BigInteger),
+    Column('MARCA', String(100)),
+    Column('ID_MODELO', BigInteger),
+    Column('MODELO', String(100)),
+    Column('ANO', Integer),
+    Column('ID_ESTADO', BigInteger),
+    Column('ESTADO', String(50)),
+    Column('PRECIO', Numeric(10, 2))
+)
 
 
 class Venta(Base):

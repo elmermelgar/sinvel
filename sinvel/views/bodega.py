@@ -256,7 +256,6 @@ class Bodega_IU(object):
             data = self.request.POST
             id_bodega = {data.get('ID_BODEGA'),}
             cursor.callproc('sp_crear_niveles', id_bodega)
-            self.request.flash_message.add('Registros Guardados Correctamente!!', message_type='success')
         except _mysql_exceptions.OperationalError:
             print('Ocurrio un error al insertar el registro')
             self.request.flash_message.add('ERROR!!, NO PUEDE INGRESAR MAS NIVELES!!', message_type='danger')
@@ -265,6 +264,7 @@ class Bodega_IU(object):
         finally:
             cursor.close()
             connection.commit()
+        self.request.flash_message.add('Registros Guardados Correctamente!!', message_type='success')
         return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))
 
     @view_config(route_name='guardarUbicaciones', request_method='POST', permission='administrador')

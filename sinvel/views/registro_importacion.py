@@ -5,6 +5,7 @@ from pyramid.view import view_config, view_defaults
 from sinvel.models.models import Importador
 from sinvel.views.user import db_err_msg
 from ..models import Importacion
+from ..models import Bodega
 import transaction
 from sqlalchemy.exc import DBAPIError
 from pyramid.httpexceptions import HTTPFound
@@ -24,11 +25,12 @@ class RegistroImportacion(object):
     def createRegistroImportacion(self):
         try:
             importadores = self.request.dbsession.query(Importador).all()
+            bodegas = self.request.dbsession.query(Bodega).all()
 
         except DBAPIError:
             self.request.flash_message.add('Ocurrio un error al guardar!!', message_type='danger')
             return HTTPFound(location=self.request.route_url('registroImportacion'))
-        return {'grupo':self.emp, 'user':self.user.user_name, 'importadores':importadores}
+        return {'grupo':self.emp, 'user':self.user.user_name, 'importadores':importadores, 'bodegas':bodegas}
 
     @view_config(route_name='registroImportacionGuardar', request_method='POST', permission='administrador')
     def guardarRegistroImportacion(self):
