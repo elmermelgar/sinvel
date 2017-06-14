@@ -1,0 +1,67 @@
+{% extends "../layout.jinja2" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
+          rel="stylesheet">
+
+{% endblock styles %}
+{% block content %}
+
+    <div class="container">
+        {{ panel('flash_message', per_page=20, read=True) }}
+        <h3>Administración de marcas de vehículos</h3>
+    </div>
+
+    <a href="{{ request.route_url('marcaCrear') }}" class="btn btn-primary" role="button">Agregar
+        <i class="glyphicon glyphicon-plus"></i>
+    </a>
+
+    <div class="m-b-25">
+
+        {% if marcas %}
+            <br/>
+            <div class="tile">
+                <table id="data-table" class="table table-hover table-bordered">
+                    <thead>
+                    <tr align="center">
+                        <th>Id</th>
+                        <th>Marca</th>
+                        <th>Acciones</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for mar in marcas %}
+                        <tr>
+                            <td>{{ mar.ID_MARCA|default('',true) }}</td>
+                            <td>{{ mar.MARCA|default('',true) }}</td>
+                            <td>
+                                <a href="{{ request.route_url('marcaEditar',id_marca=mar.ID_MARCA) }}" class="btn btn-warning"
+                                   role="button">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                                <a href="{{ request.route_url('marcaEliminar',id_marca=mar.ID_MARCA) }}"
+                                   class="btn btn-danger" role="button">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+
+            </div>
+
+        {% else %}
+            No existen marcas de vehículos
+        {% endif %}
+    </div>
+    </div>
+
+{% endblock content %}
+{% block scripts %}
+    <script src="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+
+{% endblock scripts %}
