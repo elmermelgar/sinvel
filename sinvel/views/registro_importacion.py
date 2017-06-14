@@ -15,20 +15,22 @@ view_defaults(route_name='registroImportacion')
 
 class RegistroImportacion(object):
     def __init__(self, request):
-        self.emp = request.session['grupo']
         self.request = request
         self.user = request.user
+        self.emp = request.session['grupo']
 
-    @view_config(route_name='registroImportacion', renderer='../templates/importacion/registrar_importacion.jinja2', request_method='GET')
+    @view_config(route_name='registroImportacion', renderer='../templates/importacion/registrar_importacion.jinja2',
+                 request_method='GET', permission='administrador')
     def createRegistroImportacion(self):
         try:
             importadores = self.request.dbsession.query(Importador).all()
 
         except DBAPIError:
-            return Response(db_err_msg, content_type='text/plain', status=500)
-        return {'grupo':self.emp, 'importadores':importadores}
+            self.request.flash_message.add('Ocurrio un error al guardar!!', message_type='danger')
+            return HTTPFound(location=self.request.route_url('registroImportacion'))
+        return {'grupo':self.emp, 'user':self.user.user_name, 'importadores':importadores}
 
-    @view_config(route_name='registroImportacionGuardar', request_method='POST')
+    @view_config(route_name='registroImportacionGuardar', request_method='POST', permission='administrador')
     def guardarRegistroImportacion(self):
         try:
             data = self.request.POST
@@ -41,10 +43,11 @@ class RegistroImportacion(object):
                 setattr(importacion, key, value)
             self.request.dbsession.add(importacion)
             transaction.commit()
+            self.request.flash_message.add('Importación Guardada Correctamente!!', message_type='success')
 
         except DBAPIError:
             print('Ocurrio un error al insertar el registro')
             print(db_err_msg)
-            #return Response(db_err_msg, content_type='text/plain', status=500)
-            return HTTPFound(location='/registro_importacion')
+            self.request.flash_message.add('Ocurrió un error al guardar!!', message_type='danger')
+            return HTTPFound(location=self.request.route_url('registroImportacion'))
         return HTTPFound(location='/RegistrarVehiculo')

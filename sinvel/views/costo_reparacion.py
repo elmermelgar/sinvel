@@ -12,17 +12,19 @@ class costoReparacion(object):
     def __init__(self,request):
         self.request = request
         self.user = request.user
+        self.emp = request.session['grupo']
 
-    @view_config(route_name='costoReparacion',renderer='../templates/costos/costo_reparacion.jinja2',request_method='GET')
+    @view_config(route_name='costoReparacion',renderer='../templates/costos/costo_reparacion.jinja2',
+                 request_method='GET', permission='administrador')
     def costoReparacionCreate(self):
         idDce = self.request.matchdict['id_dce']
         dce = self.request.dbsession.query(DetalleControlEmpresa).filter_by(ID_DET_CONTROL=idDce).first()
         reparacion = self.request.dbsession.query(Reparacion).filter_by(ID_DET_CONTROL=idDce).first()
         estados_veh = self.request.dbsession.query(EstadoVeh).all()
 
-        return {'veh':dce.vehiculo, 'estados_veh':estados_veh, 'reparacion':reparacion}
+        return {'grupo':self.emp, 'user':self.user.user_name, 'veh':dce.vehiculo, 'estados_veh':estados_veh, 'reparacion':reparacion}
 
-    @view_config(route_name='costoReparacionGuardar', request_method='POST')
+    @view_config(route_name='costoReparacionGuardar', request_method='POST', permission='administrador')
     def costoReparacionSave(self):
         try:
             data = self.request.POST
@@ -47,10 +49,10 @@ class costoReparacion(object):
             self.request.dbsession.add(costo)
 
             transaction.commit()
-
+            self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
         except DBAPIError:
             print('Ocurrio un error al insertar el registro')
-            print(db_err_msg)
+            self.request.flash_message.add('Error no se pudo guardar el registro!!', message_type='danger')
             return HTTPFound(location='/entrada/costo_reparacion/'+idDce)
 
         return HTTPFound(location='/entrada/registro_control_entrada_reparacion')

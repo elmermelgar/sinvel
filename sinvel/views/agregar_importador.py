@@ -13,7 +13,7 @@ class AgregarImportador(object):
         self.request = request
         self.user = self.request.user.user_name
         self.emp = request.session['grupo']
-        self.user = User()
+        #self.user = User()
 
     @view_config(route_name='agregar_importador', request_method='GET',renderer='../templates/agregar_importador.jinja2',permission="administrador")
     def createimportador(self):
@@ -66,8 +66,8 @@ class AgregarImportador(object):
             mailer.send_immediately(message, fail_silently=False)
 
         except DBAPIError:
-            return print('Ocurrio un error al insertar el registro')
-        return HTTPFound(location='/inicio')
+             print('Ocurrio un error al insertar el registro')
+        return HTTPFound(location='/registro_importacion')
 
 
 

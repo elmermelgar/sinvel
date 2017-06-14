@@ -18,7 +18,7 @@ class Bodega_IU(object):
         self.user = request.user
 
     @view_config(route_name='ubiVehSeleccionar', renderer='../templates/ubicar_vehiculo.jinja2',
-                 request_method='GET')
+                 request_method='GET', permission='bodeguero')
     def sel_bodega_ubicacion(self):
         idVeh = self.request.matchdict['idv']
         item_emp = self.request.dbsession.query(Empleado).filter_by(ID_USER=self.user.id).first()
@@ -28,9 +28,9 @@ class Bodega_IU(object):
         items_nivel = self.request.dbsession.query(Nivel).filter(Nivel.ID_BODEGA==Bodega.ID_BODEGA).filter(Bodega.ID_BODEGA==items_bodega.ID_BODEGA).all()
         items_ubicacion = self.request.dbsession.query(Ubicacion).filter(Ubicacion.ID_NIVEL==Nivel.ID_NIVEL).filter(Nivel.ID_BODEGA==items_bodega.ID_BODEGA).all()
 
-        return {'grupo':self.emp, 'bodega': items_bodega, 'user': self.user, 'niveles': items_nivel, 'ubicaciones': items_ubicacion, 'idVeh':idVeh, 'item_ub':item_ub}
+        return {'grupo':self.emp, 'bodega': items_bodega, 'user': self.user.user_name, 'niveles': items_nivel, 'ubicaciones': items_ubicacion, 'idVeh':idVeh, 'item_ub':item_ub}
 
-    @view_config(route_name='ubiVehGuardar', request_method='GET')
+    @view_config(route_name='ubiVehGuardar', request_method='GET', permission='bodeguero')
     def guardarUbicacionVehiculo(self):
         try:
             idUbic = self.request.matchdict['idu']
@@ -44,7 +44,7 @@ class Bodega_IU(object):
 
             self.request.dbsession.add(uBodega)
             transaction.commit()
-
+            self.request.flash_message.add('Vehiculo ubicado Correctamente!!', message_type='success')
         except DBAPIError:
             print('Ocurrio un error al insertar el registro')
             print(db_err_msg)

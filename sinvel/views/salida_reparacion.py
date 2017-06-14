@@ -29,7 +29,7 @@ class SalidaReparacion(object):
         self.user=request.user
 
     @view_config(route_name='verificar_remolque', renderer='../templates/salida_reparacion/verificar_remolque.jinja2',
-                 request_method='GET',permission='administrador')
+                 request_method='GET',permission='bodeguero')
     def verificarRemolque(self):
         items_tipo_remolque=None
         remolques=None
@@ -40,7 +40,7 @@ class SalidaReparacion(object):
         except DBAPIError:
             print('Error al recuperar los remolques')
 
-        return {'grupo':self.emp, 'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
+        return {'grupo':self.emp, 'user':self.user.user_name,'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
 
     @view_config(route_name='remolques', request_method='GET', renderer='json',permission='bodeguero')
     def all_json_models(self):
@@ -51,7 +51,7 @@ class SalidaReparacion(object):
         return {'grupo':self.emp, 'json_models': json_models}
 
     @view_config(route_name='registro_control', renderer='../templates/salida_reparacion/registro_control.jinja2',
-                 request_method='GET',permission='administrador')
+                 request_method='GET',permission='bodeguero')
     def registroControl(self):
         remolques = None
         salidas = None
@@ -72,7 +72,7 @@ class SalidaReparacion(object):
 
         except DBAPIError:
             print('Error al recuperar los remolques')
-        return {'grupo':self.emp, 'salidas': salidas, 'remolques': remolques}
+        return {'grupo':self.emp, 'user':self.user.user_name,'salidas': salidas, 'remolques': remolques}
 
     @view_config(route_name='registro_control_guardar',request_method='POST',permission='bodeguero')
     def registroControlSave(self):
@@ -83,28 +83,68 @@ class SalidaReparacion(object):
 
         control=ControlEmpresa()
         id_remolque=self.request.POST['ID_REMOLQUE']
-        descripcion_control=self.request.POST['DESCRIPCION_CONTROL']
-        control.DESCRIPCION_CONTROL=descripcion_control
-        control.ID_REMOLQUE=id_remolque
-        control.TIPO_CONTROL='SALREP'
-        control.FECHA_CONTROL=time.strftime("%Y-%m-%d")
-        control.HORA_CONTROL=time.strftime("%H:%M:%S")
-        self.request.dbsession.add(control)
-        transaction.commit()
-        query = self.request.dbsession.query(func.max(ControlEmpresa.ID_CONTROL).label('id_control_empresa')).one()
-        id_ctrl_emp = query.id_control_empresa
-        ids_det_control=self.request.params.getall("selected_vehiculos")
-        try:
-            for id_det_ctrl_emp in ids_det_control:
-                args=[int(id_det_ctrl_emp),id_ctrl_emp,0]
-                result_args =cursor.callproc('sp_update_sal_rep',args)
-                print(result_args[0])
-        except DBAPIError:
-            print('Error al realizar la transaccion')
-        finally:
-            cursor.close()
-            connection.commit()
-        return HTTPFound(location='/salida_reparacion/registro_control')
+        remolque = self.request.dbsession.query(Remolque).filter(Remolque.ID_REMOLQUE == id_remolque).one()
+        ids_det_control = self.request.params.getall("selected_vehiculos")
+        if (len(ids_det_control) > 0):
+            if (remolque.tipo_remolque.NOMBRE_TIPO == 'Tacuacina'):
+                if (len(ids_det_control) <= int(remolque.tipo_remolque.CAPACIDAD) and len(ids_det_control) >= 2):
+                    descripcion_control = self.request.POST['DESCRIPCION_CONTROL']
+                    control.DESCRIPCION_CONTROL = descripcion_control
+                    control.ID_REMOLQUE = id_remolque
+                    control.TIPO_CONTROL = 'SALREP'
+                    control.FECHA_CONTROL = time.strftime("%Y-%m-%d")
+                    control.HORA_CONTROL = time.strftime("%H:%M:%S")
+                    self.request.dbsession.add(control)
+                    transaction.commit()
+                    query = self.request.dbsession.query(
+                        func.max(ControlEmpresa.ID_CONTROL).label('id_control_empresa')).one()
+                    id_ctrl_emp = query.id_control_empresa
+                    try:
+                        for id_det_ctrl_emp in ids_det_control:
+                            args = [int(id_det_ctrl_emp), id_ctrl_emp, 0]
+                            result_args = cursor.callproc('sp_update_sal_rep', args)
+                            print(result_args[0])
+                    except DBAPIError:
+                        print('Error al realizar la transaccion')
+                    finally:
+                        cursor.close()
+                        connection.commit()
+                else:
+                    self.request.flash_message.add('Una tacuacina permite al menos 2 vehiculos y como maximo 12!',
+                                                   message_type='danger')
+                    return HTTPFound(location='/salida_reparacion/registro_control')
+            if (remolque.tipo_remolque.NOMBRE_TIPO == 'Grúa'):
+                if (len(ids_det_control) <= int(remolque.tipo_remolque.CAPACIDAD)):
+                    descripcion_control = self.request.POST['DESCRIPCION_CONTROL']
+                    control.DESCRIPCION_CONTROL = descripcion_control
+                    control.ID_REMOLQUE = id_remolque
+                    control.TIPO_CONTROL = 'SALREP'
+                    control.FECHA_CONTROL = time.strftime("%Y-%m-%d")
+                    control.HORA_CONTROL = time.strftime("%H:%M:%S")
+                    self.request.dbsession.add(control)
+                    transaction.commit()
+                    query = self.request.dbsession.query(
+                        func.max(ControlEmpresa.ID_CONTROL).label('id_control_empresa')).one()
+                    id_ctrl_emp = query.id_control_empresa
+
+                    try:
+                        for id_det_ctrl_emp in ids_det_control:
+                            args = [int(id_det_ctrl_emp), id_ctrl_emp, 0]
+                            result_args = cursor.callproc('sp_update_sal_rep', args)
+                            print(result_args[0])
+                    except DBAPIError:
+                        print('Error al realizar la transaccion')
+                    finally:
+                        cursor.close()
+                        connection.commit()
+                else:
+                    self.request.flash_message.add('Una grúa permite 1 vehiculo!', message_type='danger')
+                    return HTTPFound(location='/salida_reparacion/registro_control')
+        else:
+            self.request.flash_message.add('Debe seleccionar un vehiculo!!', message_type='danger')
+            return HTTPFound(location='/salida_reparacion/registro_control')
+
+        return HTTPFound(location='/inicio')
 
     @view_config(route_name='aprobar_salidas', renderer='../templates/salida_reparacion/aprobar_salidas.jinja2',
                  request_method='GET',permission='administrador')
@@ -129,7 +169,7 @@ class SalidaReparacion(object):
 
         except DBAPIError:
             print('Error al recuperar los remolques')
-        return {'grupo':self.emp, 'salidas': salidas}
+        return {'grupo':self.emp, 'salidas': salidas,'user':self.user.user_name}
 
     @view_config(route_name='aprobar_salidas_guardar', request_method='POST',permission='administrador')
     def aprobarSalidasSave(self):
@@ -145,6 +185,7 @@ class SalidaReparacion(object):
                 args = [int(id_det_ctrl_emp),empleado.ID_EMPLEADO, 0]
                 result_args = cursor.callproc('sp_aprobar_salidas', args)
                 print(result_args[0])
+            self.request.flash_message.add('Registros actualizados correctamente', message_type='success')
         except DBAPIError:
             print('Error al realizar la transaccion')
         finally:
@@ -167,7 +208,7 @@ class SalidaReparacion(object):
         except DBAPIError:
             print('Error al recuperar los remolques')
 
-        return {'grupo':self.emp, 'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque}
+        return {'grupo':self.emp, 'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque,'user':self.user.user_name}
 
     @view_config(route_name='updateRemolque', request_method='POST',permission='bodeguero')
     def updateRemolque(self):
@@ -178,7 +219,7 @@ class SalidaReparacion(object):
             self.request.dbsession.query(Remolque).filter(Remolque.ID_REMOLQUE == id_remolque).update(
                 {"DISPONIBLE": 0})
             transaction.commit()
-
+            self.request.flash_message.add('Remolque actualizado corectamente', message_type='success')
         except DBAPIError:
             print('Ocurrio un error al actualizar el registro')
 
