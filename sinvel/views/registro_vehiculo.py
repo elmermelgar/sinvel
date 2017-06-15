@@ -31,7 +31,7 @@ class RegistroVehiculo(object):
         self.user = request.user
         self.importacion = Importacion()
 
-    @view_config(route_name='registrar_vehiculo',request_method='GET', renderer='../templates/registrar_vehiculo.jinja2',permission='administrador')
+    @view_config(route_name='registrar_vehiculo',request_method='GET', renderer='../templates/registrar_vehiculo.jinja2',permission='bodeguero')
     def createRegistro(self):
         items_estado_vehiculo = self.request.dbsession.query(EstadoVeh).all()
         items_marcas = self.request.dbsession.query(Marca).all()

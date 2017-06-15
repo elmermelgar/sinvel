@@ -77,19 +77,20 @@ class SalidaReparacion(object):
     @view_config(route_name='salidaVenta', renderer='../templates/salida_reparacion/registro_control_venta.jinja2',
                  request_method='GET', permission='administrador')
     def registroControlVenta(self):
-
-
         salidas = None
         try:
 
             empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
 
-            salidas = self.request.dbsession.query(DetalleControlEmpresa, Vehiculo). \
-                join(Reparacion).join(Vehiculo) \
-                .filter(Nivel.ID_BODEGA == empleado.ID_BODEGA) \
-                .filter(DetalleControlEmpresa.ID_CONTROL == None) \
-                .filter(DetalleControlEmpresa.TIPO_CONTROL_DET == 'Venta').all()
-
+            salidas = self.request.dbsession.query(DetalleControlEmpresa, Vehiculo, UbicacionBodega, Ubicacion,
+                                               Nivel). \
+            join(Vehiculo) \
+            .filter(DetalleControlEmpresa.ID_VEHICULO == UbicacionBodega.ID_VEHICULO) \
+            .filter(UbicacionBodega.ID_UBICACION == Ubicacion.ID_UBICACION) \
+            .filter(Ubicacion.ID_NIVEL == Nivel.ID_NIVEL) \
+            .filter(Nivel.ID_BODEGA == empleado.ID_BODEGA) \
+            .filter(DetalleControlEmpresa.ID_CONTROL == None) \
+            .filter(DetalleControlEmpresa.TIPO_CONTROL_DET == 'Venta').all()
 
         except DBAPIError:
             print('Error al recuperar los remolques')
