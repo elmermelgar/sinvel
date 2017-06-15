@@ -53,7 +53,15 @@ class Bodega_IU(object):
 
         return {'grupo':self.emp, 'bodegas': items_bodega, 'niveles': items_nivel, 'ubicaciones': items_ubicacion,'user':self.user}
 
+    @view_config(route_name='bodegasBodeguero', renderer='../templates/bodega/bodegas_bodeguero.jinja2', request_method='GET',
+                 permission='bodeguero')
+    def bodegas_bodeguero(self):
+        items_bodega = self.request.dbsession.query(Bodega).all()
+        items_nivel = self.request.dbsession.query(Nivel).all()
+        items_ubicacion = self.request.dbsession.query(Ubicacion).all()
 
+        return {'grupo': self.emp, 'bodegas': items_bodega, 'niveles': items_nivel, 'ubicaciones': items_ubicacion,
+                'user': self.user}
 
     @view_config(route_name='detalle_bodega', renderer='../templates/bodega/detalle_bodega.jinja2', request_method='GET', permission='administrador')
     def bodega_detalle(self):
@@ -221,7 +229,7 @@ class Bodega_IU(object):
         filename = 'sinvel/static/fotos_vehiculos/Vehiculo' + items_vehiculo.VIN + '.jpg'
         with open(filename, 'wb') as f:
             f.write(items_vehiculo.FOTO_VEH)
-        return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
+        return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'estados': items_estados, 'venta': items_venta}
 
     @view_config(route_name='vehiculosVendidos', renderer='../templates/bodega/vehiculos_vendidos.jinja2',
                  request_method='GET', permission='vendedor')
