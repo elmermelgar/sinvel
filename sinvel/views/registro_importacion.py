@@ -21,7 +21,7 @@ class RegistroImportacion(object):
         self.emp = request.session['grupo']
 
     @view_config(route_name='registroImportacion', renderer='../templates/importacion/registrar_importacion.jinja2',
-                 request_method='GET', permission='administrador')
+                 request_method='GET', permission='bodeguero')
     def createRegistroImportacion(self):
         try:
             importadores = self.request.dbsession.query(Importador).all()
@@ -32,7 +32,7 @@ class RegistroImportacion(object):
             return HTTPFound(location=self.request.route_url('registroImportacion'))
         return {'grupo':self.emp, 'user':self.user.user_name, 'importadores':importadores, 'bodegas':bodegas}
 
-    @view_config(route_name='registroImportacionGuardar', request_method='POST', permission='administrador')
+    @view_config(route_name='registroImportacionGuardar', request_method='POST', permission='bodeguero')
     def guardarRegistroImportacion(self):
         try:
             data = self.request.POST

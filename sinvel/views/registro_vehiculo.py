@@ -31,14 +31,14 @@ class RegistroVehiculo(object):
         self.user = request.user
         self.importacion = Importacion()
 
-    @view_config(route_name='registrar_vehiculo',request_method='GET', renderer='../templates/registrar_vehiculo.jinja2',permission='administrador')
+    @view_config(route_name='registrar_vehiculo',request_method='GET', renderer='../templates/registrar_vehiculo.jinja2',permission='bodeguero')
     def createRegistro(self):
         items_estado_vehiculo = self.request.dbsession.query(EstadoVeh).all()
         items_marcas = self.request.dbsession.query(Marca).all()
         return {'grupo': self.emp, 'items_estado_vehiculo': items_estado_vehiculo, 'importacion': self.importacion,
                 'items_marcas': items_marcas,'user':self.user.user_name}
 
-    @view_config(route_name='buscar_importacion', renderer='json', permission='administrador')
+    @view_config(route_name='buscar_importacion', renderer='json', permission='bodeguero')
     def buscarImportacion(self):
         empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
         no_importacion = self.request.matchdict['id_importacion']
@@ -59,7 +59,7 @@ class RegistroVehiculo(object):
         # return {jsonpickle.encode(self.importacion,unpicklable=False)}
         return importacion
 
-    @view_config(route_name='guardar_registro_vehiculo', request_method='POST',permission='administrador')
+    @view_config(route_name='guardar_registro_vehiculo', request_method='POST',permission='bodeguero')
     def guardarRegistroVehiculo(self):
         try:
             empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()

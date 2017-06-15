@@ -34,7 +34,9 @@
                                      <select name="ID_EMPLEADO" class="selectpicker" data-live-search="true"
                                             required>
                                                 {% for empleado in empleados %}
+                                                    {% if empleado.TIPO_EMPLEADO == 'VENDEDOR' %}
                                                         <option value="{{ empleado.ID_EMPLEADO }}" >{{ empleado.NOMBRE }} {{ empleado.APELLIDO }}</option>
+                                                    {% endif %}
                                                 {% endfor %}
                                     </select>
 {#                                    <span class="input-group-addon last"><i class="zmdi zmdi-my-location"></i></span>#}

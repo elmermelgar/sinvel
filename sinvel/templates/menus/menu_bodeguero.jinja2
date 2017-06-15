@@ -1,13 +1,29 @@
 <li>
+    <a href="{{ request.route_path('bodegasBodeguero') }}">
+        <i class="zmdi zmdi-file-add"></i>
+        <span>Proceso Nuevo Vehiculo</span>
+    </a>
+</li>
+<li class="sm-sub">
+    <a href="">
+        <i class="zmdi zmdi zmdi-upload"></i>
+        <span>Registrar salidas</span>
+    </a>
+    <ul>
+        <li><a href="{{ request.route_path('salidaVenta') }}">Venta</a></li>
+        <li><a href="{{ request.route_path('verificar_remolque') }}">Reparacion</a></li>
+    </ul>
+</li>
+<li>
     <a href="{{ request.route_path('list_importadores') }}">
         <i class="zmdi zmdi-image"></i>
         <span>Gestion de vehiculo</span>
     </a>
 </li>
-<li>
-    <a href="{{ request.route_path('verificar_remolque') }}">
-        <i class="zmdi zmdi-image"></i>
-        <span>Salida a reparacion</span>
-    </a>
-</li>
+{#<li>#}
+{#    <a href="{{ request.route_path('verificar_remolque') }}">#}
+{#        <i class="zmdi zmdi-image"></i>#}
+{#        <span>Salida a reparacion</span>#}
+{#    </a>#}
+{#</li>#}
 

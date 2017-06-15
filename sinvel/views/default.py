@@ -19,13 +19,15 @@ class Vista(object):
 
         #print(request.authenticated_userid)
         #request.session.expunge('empleado')
-        self.user = self.request.user.user_name
-        self.emp=request.session['grupo']
+        if(self.request.user is not None):
+            self.user = self.request.user.user_name
+            self.emp = request.session['grupo']
+
         #empl=Empleado()
         #empl=emp
 
 
-    @view_config(route_name='home', renderer='../templates/home.jinja2', permission=NO_PERMISSION_REQUIRED)
+    @view_config(route_name='home', renderer='../templates/home.jinja2')
     def my_view(self):
         items_ventas = self.request.dbsession.query(Venta).all()
         #ResourceFactory(request)
@@ -34,10 +36,10 @@ class Vista(object):
 
     @view_config(route_name='inicio', renderer='../templates/examples/inicio.jinja2',  permission=NO_PERMISSION_REQUIRED )
     def inicio(self):
-        self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
-        self.request.flash_message.add('Registro Guardado Parcialmente!!', message_type='warning')
-        self.request.flash_message.add('Error no se pudo guardar el registro!!', message_type='danger')
-        self.request.flash_message.add('Notificacion normal!!', message_type='inverse')
+        # self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
+        # self.request.flash_message.add('Registro Guardado Parcialmente!!', message_type='warning')
+        # self.request.flash_message.add('Error no se pudo guardar el registro!!', message_type='danger')
+        # self.request.flash_message.add('Notificacion normal!!', message_type='inverse')
 
         return {'one': 'one', 'user': self.user, 'grupo':self.emp}
 
