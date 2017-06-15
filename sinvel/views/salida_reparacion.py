@@ -75,7 +75,7 @@ class SalidaReparacion(object):
         return {'grupo':self.emp, 'user':self.user.user_name,'salidas': salidas, 'remolques': remolques}
 
     @view_config(route_name='salidaVenta', renderer='../templates/salida_reparacion/registro_control_venta.jinja2',
-                 request_method='GET', permission='administrador')
+                 request_method='GET', permission='bodeguero')
     def registroControlVenta(self):
         salidas = None
         try:

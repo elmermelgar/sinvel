@@ -32,7 +32,7 @@ class RegistroImportacion(object):
             return HTTPFound(location=self.request.route_url('registroImportacion'))
         return {'grupo':self.emp, 'user':self.user.user_name, 'importadores':importadores, 'bodegas':bodegas}
 
-    @view_config(route_name='registroImportacionGuardar', request_method='POST', permission='administrador')
+    @view_config(route_name='registroImportacionGuardar', request_method='POST', permission='bodeguero')
     def guardarRegistroImportacion(self):
         try:
             data = self.request.POST
