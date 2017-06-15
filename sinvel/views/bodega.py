@@ -229,7 +229,7 @@ class Bodega_IU(object):
         filename = 'sinvel/static/fotos_vehiculos/Vehiculo' + items_vehiculo.VIN + '.jpg'
         with open(filename, 'wb') as f:
             f.write(items_vehiculo.FOTO_VEH)
-        return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'user': self.user, 'estados': items_estados, 'venta': items_venta}
+        return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'estados': items_estados, 'venta': items_venta}
 
     @view_config(route_name='vehiculosVendidos', renderer='../templates/bodega/vehiculos_vendidos.jinja2',
                  request_method='GET', permission='vendedor')
