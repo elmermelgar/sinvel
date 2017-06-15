@@ -35,6 +35,9 @@ def includeme(config):
     config.add_route('guardar_remolque', '/AgregarRemolque/guardar')
     config.add_route('remolque_list', '/remolque/list')
     config.add_route('delete_remolque', '/remolque/delete/{id_remolque}')
+    config.add_route('importador_delete', '/importador/delete/{id_importador}')
+    config.add_route('importador_list', '/importador/list')
+
 
 
     #################Salida Reparacion#############

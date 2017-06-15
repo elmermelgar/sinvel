@@ -1,6 +1,6 @@
 import bcrypt
 from pyramid.view import view_config
-from ..models import Importador,User,Group,UsersGroup
+from ..models import Importador,User,Group,UsersGroup,Empleado
 import jsonpickle
 from sqlalchemy.exc import DBAPIError
 import transaction
@@ -14,6 +14,12 @@ class AgregarImportador(object):
         self.user = self.request.user.user_name
         self.emp = request.session['grupo']
         #self.user = User()
+
+    @view_config(route_name='importador_list', request_method='GET', renderer='../templates/consultar_importador.jinja2'
+            , permission='administrador')
+    def importadores_list(self):
+            remolque = self.request.dbsession.query(Importador)
+            return {'grupo': self.emp, 'user': self.user, 'importadores': remolque}
 
     @view_config(route_name='agregar_importador', request_method='GET',renderer='../templates/agregar_importador.jinja2',permission="administrador")
     def createimportador(self):
@@ -58,6 +64,7 @@ class AgregarImportador(object):
             importador.ID_USER = id
             self.request.dbsession.add(importador)
             transaction.commit()
+            self.request.flash_message.add('Importador guardado', message_type='success')
             mailer = self.request.registry['mailer']
             message = Message(subject="Creacion de Usuario",
                               sender="bd1152017@gmail.com",
@@ -67,8 +74,21 @@ class AgregarImportador(object):
 
         except DBAPIError:
              print('Ocurrio un error al insertar el registro')
-        return HTTPFound(location='/registro_importacion')
+        return HTTPFound(location='/importador/list')
 
+
+    @view_config(route_name='importador_delete', request_method='GET',permission='administrador')
+    def deleteImportador(self):
+
+
+            id_importador = self.request.matchdict['id_importador']
+            print('dave')
+            print(id_importador)
+
+            self.request.dbsession.query(Importador).filter(Importador.ID_IMPORTADOR == id_importador).delete()
+            transaction.commit()
+            self.request.flash_message.add('Importador elminado', message_type='success')
+            return HTTPFound(location='/importador/list')
 
 
 
