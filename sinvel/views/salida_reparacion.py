@@ -1,7 +1,7 @@
 from datetime import date
 
 from pyramid.view import view_config
-from ..models import Importacion,ControlEmpresa,Reparacion,TipoReparacion,Taller,EstadoVeh,Bodega,Empleado,Vehiculo,DetalleImportacion,Remolque,TipoRemolque,DetalleControlEmpresa,UbicacionBodega,Nivel,Ubicacion
+from ..models import Importacion,ControlEmpresa,Reparacion,TipoReparacion,Taller,EstadoVeh,Bodega,Venta,Empleado,Vehiculo,DetalleImportacion,Remolque,TipoRemolque,DetalleControlEmpresa,UbicacionBodega,Nivel,Ubicacion
 import jsonpickle
 import json
 from sqlalchemy.exc import DBAPIError
@@ -29,7 +29,7 @@ class SalidaReparacion(object):
         self.user=request.user
 
     @view_config(route_name='verificar_remolque', renderer='../templates/salida_reparacion/verificar_remolque.jinja2',
-                 request_method='GET',permission='administrador')
+                 request_method='GET',permission='bodeguero')
     def verificarRemolque(self):
         items_tipo_remolque=None
         remolques=None
@@ -51,7 +51,7 @@ class SalidaReparacion(object):
         return {'grupo':self.emp, 'json_models': json_models}
 
     @view_config(route_name='registro_control', renderer='../templates/salida_reparacion/registro_control.jinja2',
-                 request_method='GET',permission='administrador')
+                 request_method='GET',permission='bodeguero')
     def registroControl(self):
         remolques = None
         salidas = None
@@ -82,10 +82,9 @@ class SalidaReparacion(object):
         salidas = None
         try:
 
-            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
-
-            salidas = self.request.dbsession.query(DetalleControlEmpresa, Vehiculo). \
-                join(Reparacion).join(Vehiculo) \
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
+            salidas = self.request.dbsession.query(DetalleControlEmpresa,Vehiculo,Venta,UbicacionBodega,Ubicacion,Nivel). \
+                join(Vehiculo).join(Venta).join(UbicacionBodega).join(Ubicacion).join(Nivel) \
                 .filter(Nivel.ID_BODEGA == empleado.ID_BODEGA) \
                 .filter(DetalleControlEmpresa.ID_CONTROL == None) \
                 .filter(DetalleControlEmpresa.TIPO_CONTROL_DET == 'Venta').all()
@@ -95,7 +94,7 @@ class SalidaReparacion(object):
             print('Error al recuperar los remolques')
         return {'grupo': self.emp, 'user': self.user.user_name, 'salidas': salidas}
 
-    @view_config(route_name='registro_control_guardar',request_method='POST',permission='administrador')
+    @view_config(route_name='registro_control_guardar',request_method='POST',permission='bodeguero')
     def registroControlSave(self):
         settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
         engine = get_engine(settings)
@@ -134,6 +133,7 @@ class SalidaReparacion(object):
                     self.request.flash_message.add('Una tacuacina permite al menos 2 vehiculos y como maximo 12!',
                                                    message_type='danger')
                     return HTTPFound(location='/salida_reparacion/registro_control')
+            remolque = self.request.dbsession.query(Remolque).filter(Remolque.ID_REMOLQUE == id_remolque).one()
             if (remolque.tipo_remolque.NOMBRE_TIPO == 'Grúa'):
                 if (len(ids_det_control) <= int(remolque.tipo_remolque.CAPACIDAD)):
                     descripcion_control = self.request.POST['DESCRIPCION_CONTROL']
@@ -174,7 +174,7 @@ class SalidaReparacion(object):
         salidas = None
         try:
 
-            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO == self.user.id).one()
+            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
 
             salidas = self.request.dbsession.query(DetalleControlEmpresa, Vehiculo, ControlEmpresa, UbicacionBodega,
                                                    Ubicacion, Nivel). \

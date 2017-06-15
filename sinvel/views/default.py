@@ -19,13 +19,15 @@ class Vista(object):
 
         #print(request.authenticated_userid)
         #request.session.expunge('empleado')
-        self.user = self.request.user.user_name
-        self.emp=request.session['grupo']
+        if(self.request.user is not None):
+            self.user = self.request.user.user_name
+            self.emp = request.session['grupo']
+
         #empl=Empleado()
         #empl=emp
 
 
-    @view_config(route_name='home', renderer='../templates/home.jinja2', permission=NO_PERMISSION_REQUIRED)
+    @view_config(route_name='home', renderer='../templates/home.jinja2')
     def my_view(self):
         items_ventas = self.request.dbsession.query(Venta).all()
         #ResourceFactory(request)
