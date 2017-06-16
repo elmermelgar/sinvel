@@ -1,89 +1,79 @@
 {% extends "../layout.jinja2" %}
 {% block styles %}
-<link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
+          rel="stylesheet">
 {% endblock styles %}
 {% block content %}
     <div class="container">
 
-            <div class="tile">
-                    <div class="t-header">
-                        <div class="th-title">Gestión de vehiculos <small>Importaciones que se tienen registradas para la bodega: {{ bod.NOMBRE_BODEGA }}</small></div>
-                    </div>
-
-                    <table class="table table-bordered table-vmiddle">
-                        <thead>
-                            <tr>
-                                <th style="text-align: center">Registro</th>
-                                <th style="text-align: center">Fecha</th>
-                                <th style="text-align: center">Importador</th>
-                                <th style="text-align: center">Origen</th>
-                                <th style="text-align: center">Marca</th>
-                                <th style="text-align: center">Modelo</th>
-                                <th style="text-align: center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for bods in bods %}
-                        {% if bods.ID_BODEGA == bod.ID_BODEGA %}
-                            {% for impor in impor %}
-                                {% for veh in veh %}
-                                    {% if impor.ID_IMPORTACION == veh.ID_IMPORTACION %}
-                                        {% for detImp in detImp %}
-                                        {% if impor.ID_IMPORTACION == detImp.ID_IMPORTACION %}
-
-                                                <tr>
-                                                    <td style="text-align: center">{{ impor.NUM_REGISTRO }}</td>
-                                                    <td style="text-align: center">{{ impor.FECHA_IMP.strftime("%d/%m/%Y") }}</td>
-                                                    <td style="text-align: center">{{ impor.importador.NOMBRE }}</td>
-                                                    <td style="text-align: center">{{ impor.PAIS_ORIGEN }}</td>
-                                                    <td style="text-align: center">{{ veh.modelo.marca.MARCA }}</td>
-                                                    <td style="text-align: center">{{ veh.modelo.MODELO }}</td>
-                                                    <td style="text-align: center"><a
-                                                            href="{{ request.route_url('vehiculo', id_detImp=detImp.ID_DETALLE_IMPORT) }}"
-                                                            class="btn btn-icon btn-success command-edit"><span
-                                                            style="margin-top: 10px" class="zmdi zmdi-upload"
-                                                            data-toggle="tooltip" data-placement="top"
-                                                            data-original-title="Subir Fotos"></span></a>
-
-                                                    <a
-                                                            href="{{ request.route_url('ubiVehSeleccionar', idv=veh.ID_VEHICULO) }}"
-                                                            class="btn btn-icon btn-primary command-edit"><span
-                                                            style="margin-top: 10px" class="zmdi zmdi-pin-drop"
-                                                            data-toggle="tooltip" data-placement="top"
-                                                            data-original-title="Ubicar"></span></a>
-
-                                                    </td>
-                                                </tr>
-                                        {% endif %}
-
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endfor %}
-                        {% endfor %}
-                            {% endif %}
-                        {% endfor %}
-                        </tbody>
-                    </table>
+        <div class="tile">
+            <div class="t-header">
+                <div class="th-title">Gestión de vehiculos
+                    <small>Importaciones que se tienen registradas para la
+                        bodega: {{ emp.bodega.NOMBRE_BODEGA }}</small>
                 </div>
             </div>
+
+            <table class="table table-bordered table-vmiddle">
+                <thead>
+                <tr>
+                    <th style="text-align: center">Registro</th>
+                    <th style="text-align: center">Fecha</th>
+                    <th style="text-align: center">Importador</th>
+                    <th style="text-align: center">Origen</th>
+                    <th style="text-align: center">Marca</th>
+                    <th style="text-align: center">Modelo</th>
+                    <th style="text-align: center">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for detImp in det_imp %}
+
+
+                    <tr>
+                        <td style="text-align: center">{{ detImp.importacion.NUM_REGISTRO }}</td>
+                        <td style="text-align: center">{{ detImp.importacion.FECHA_IMP.strftime("%d/%m/%Y") }}</td>
+                        <td style="text-align: center">{{ detImp.importacion.importador.NOMBRE }}</td>
+                        <td style="text-align: center">{{ detImp.importacion.PAIS_ORIGEN }}</td>
+                        <td style="text-align: center">{{ detImp.vehiculo.modelo.marca.MARCA }}</td>
+                        <td style="text-align: center">{{ detImp.vehiculo.modelo.MODELO }}</td>
+                        <td style="text-align: center">
+                            <a
+                                    href="{{ request.route_url('ubiVehSeleccionar', idv=detImp.vehiculo.ID_VEHICULO) }}"
+                                    class="btn btn-icon btn-primary command-edit"><span
+                                    style="margin-top: 10px" class="zmdi zmdi-pin-drop"
+                                    data-toggle="tooltip" data-placement="top"
+                                    data-original-title="Ubicar"></span></a>
+
+                        </td>
+                    </tr>
+
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock content %}
 {% block scripts %}
-         <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+    <script src="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
 
     <!-- Data Table -->
-        <script type="text/javascript">
-            $(document).ready(function(){
-                //Basic Example
-                $("#data-table").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less',
-                        iconSearch: 'zmdi-search'
-                    },
-                });
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Basic Example
+            $("#data-table").bootgrid({
+                css: {
+                    icon: 'zmdi icon',
+                    iconColumns: 'zmdi-view-module',
+                    iconDown: 'zmdi-expand-more',
+                    iconRefresh: 'zmdi-refresh',
+                    iconUp: 'zmdi-expand-less',
+                    iconSearch: 'zmdi-search'
+                },
             });
-        </script>
+        });
+    </script>
 {% endblock scripts %}

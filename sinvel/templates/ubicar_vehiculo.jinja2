@@ -60,8 +60,7 @@
                 <div class="th-title">{{ bodega.NOMBRE_BODEGA }}
                     <small>{{ bodega.DESCRIPCION_BODEGA }}.</small>
                 </div>
-                <a href="{{ request.route_url('list_importadores') }}" style="float: right; margin-top: -35px"
-                   class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+
                 <br/>
                 <div class="col-md-3">
                     <p class="c-black f-500 m-b-5">Dirección</p>
@@ -102,6 +101,18 @@
                                         <br/>
                                         <div class="th-title">Ubicacion
                                             <small>{{ item_ub.ubicacion.CORRELATIVO }}</small>
+                                        </div>
+                                    </div>
+                                    <div class="t-header">
+                                        <div class="row">
+                                            <div class="th-title col-lg-2 col-md-2">Subir fotos: </div>
+                                            <div class="th-title col-lg-10 col-md-10">
+                                            <a href="{{ request.route_url('vehiculo', id_detImp=detImp.ID_DETALLE_IMPORT) }}"
+                                               class="btn btn-icon btn-success command-edit">
+                                                <span style="margin-top: 10px" class="zmdi zmdi-upload"
+                                                      data-toggle="tooltip" data-placement="top"
+                                                      data-original-title="Subir Fotos"></span></a>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>

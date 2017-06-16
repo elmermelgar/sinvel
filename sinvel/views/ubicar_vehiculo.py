@@ -7,7 +7,7 @@ from sqlalchemy import func
 from sqlalchemy.exc import DBAPIError
 
 from sinvel.models import Bodega, Nivel, Ubicacion
-from sinvel.models.models import Empleado, UbicacionBodega
+from sinvel.models.models import Empleado, UbicacionBodega, DetalleImportacion
 from sinvel.views.user import db_err_msg
 
 
@@ -23,12 +23,16 @@ class Bodega_IU(object):
         idVeh = self.request.matchdict['idv']
         item_emp = self.request.dbsession.query(Empleado).filter_by(ID_USER=self.user.id).first()
         item_ub = self.request.dbsession.query(UbicacionBodega).filter_by(ID_VEHICULO=idVeh).first()
-
+        det_imp = self.request.dbsession.query(DetalleImportacion)\
+            .filter(DetalleImportacion.ID_VEHICULO==idVeh).first()
         items_bodega = item_emp.bodega
-        items_nivel = self.request.dbsession.query(Nivel).filter(Nivel.ID_BODEGA==Bodega.ID_BODEGA).filter(Bodega.ID_BODEGA==items_bodega.ID_BODEGA).all()
-        items_ubicacion = self.request.dbsession.query(Ubicacion).filter(Ubicacion.ID_NIVEL==Nivel.ID_NIVEL).filter(Nivel.ID_BODEGA==items_bodega.ID_BODEGA).all()
+        items_nivel = self.request.dbsession.query(Nivel).filter(Nivel.ID_BODEGA==Bodega.ID_BODEGA)\
+            .filter(Bodega.ID_BODEGA==items_bodega.ID_BODEGA).all()
+        items_ubicacion = self.request.dbsession.query(Ubicacion).filter(Ubicacion.ID_NIVEL==Nivel.ID_NIVEL)\
+            .filter(Nivel.ID_BODEGA==items_bodega.ID_BODEGA).all()
 
-        return {'grupo':self.emp, 'bodega': items_bodega, 'user': self.user.user_name, 'niveles': items_nivel, 'ubicaciones': items_ubicacion, 'idVeh':idVeh, 'item_ub':item_ub}
+        return {'grupo':self.emp, 'bodega': items_bodega, 'user': self.user.user_name, 'niveles': items_nivel,
+                'ubicaciones': items_ubicacion, 'idVeh':idVeh, 'item_ub':item_ub, 'detImp':det_imp}
 
     @view_config(route_name='ubiVehGuardar', request_method='GET', permission='bodeguero')
     def guardarUbicacionVehiculo(self):

@@ -1,12 +1,20 @@
 {% extends "../layout.jinja2" %}
 {% block content %}
-    <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"  enctype="multipart/form-data" name="formulario" >
-    <input type="hidden" value="{{ detImp.ID_DETALLE_IMPORT }}" name="id_detImp">
+    <form id="formulario" class="form-horizontal" action="{{ request.route_url('subir') }}" method="post"
+          enctype="multipart/form-data" name="formulario">
+        <input type="hidden" value="{{ detImp.ID_DETALLE_IMPORT }}" name="id_detImp">
         <input type="hidden" value="{{ detImp.ID_VEHICULO }}" name="id_veh">
         <div class="box-content">
+            <div class="row">
+                <div class="col-lg-12 col-md-12"><br/>
+                    <a href="{{ request.route_url('list_importadores') }}" style="float: right; margin-top: -35px"
+                       class="btn btn-alt btn-danger btn-icon">
+                        <i style="margin-top: 10px" class="zmdi zmdi-arrow-back"></i></a>
+                </div>
+            </div>
 
-        <div class="col-md-12" style="text-align: center">
-            <div class="col-md-4">
+            <div class="col-md-12" style="text-align: center">
+                <div class="col-md-4">
                     <h3 class="c-black">Bumper</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -20,9 +28,9 @@
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
-            </div>
+                </div>
 
-            <div class="col-md-4">
+                <div class="col-md-4">
                     <h3 class="c-black">Parachoques</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -36,10 +44,10 @@
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
-{#                </form>#}
-            </div>
+                    {#                </form>#}
+                </div>
 
-            <div class="col-md-4">
+                <div class="col-md-4">
                     <h3 class="c-black">Costado Izquierdo</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -53,12 +61,12 @@
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
+                </div>
+
             </div>
 
-        </div>
-
-        <div class="col-md-12" style="text-align: center">
-            <div class="col-md-4">
+            <div class="col-md-12" style="text-align: center">
+                <div class="col-md-4">
                     <h3 class="c-black">Costado Derecho</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -72,10 +80,10 @@
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
-{#                </form>#}
-            </div>
+                    {#                </form>#}
+                </div>
 
-            <div class="col-md-4">
+                <div class="col-md-4">
                     <h3 class="c-black">Tapicería Interna</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -89,9 +97,9 @@
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
-            </div>
+                </div>
 
-            <div class="col-md-4">
+                <div class="col-md-4">
                     <h3 class="c-black">Motor</h3>
                     <div class="fileinput fileinput-new" data-provides="fileinput" style="text-align: center">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
@@ -105,18 +113,18 @@
                                data-dismiss="fileinput">Eliminar</a>
                         </div>
                     </div>
+                </div>
+
+            </div>
+            <div class="col-md-12" style="margin-top: 3%; text-align: center">
+                <button type="submit" class="btn btn-primary" style="width: 10%">Guardar</button>
+                <a href="{{ request.route_url('list_importadores') }}"
+                   class="btn btn-success fileinput-exists"
+                   style="width: 10%;">Regresar</a>
             </div>
 
         </div>
-        <div class="col-md-12" style="margin-top: 3%; text-align: center">
-             <button type="submit" class="btn btn-primary" style="width: 10%">Guardar</button>
-            <a href="{{ request.route_url('list_importadores') }}"
-               class="btn btn-success fileinput-exists"
-               style="width: 10%;">Regresar</a>
-        </div>
-
-    </div>
-     </form>
+    </form>
 {% endblock content %}
 {% block scripts %}
     <script src="{{ request.static_url('sinvel:static/vendors/fileinput/fileinput.min.js') }}"></script>
