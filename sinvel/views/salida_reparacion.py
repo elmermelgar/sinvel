@@ -169,6 +169,34 @@ class SalidaReparacion(object):
 
         return HTTPFound(location='/inicio')
 
+    @view_config(route_name='registro_control_venta', request_method='POST', permission='bodeguero')
+    def registroControlSaveVenta(self):
+
+        control = ControlEmpresa()
+
+        ids_det_control = self.request.params.getall("selected_vehiculos")
+        if (len(ids_det_control) > 0):
+
+                    descripcion_control = self.request.POST['DESCRIPCION_CONTROL']
+                    control.DESCRIPCION_CONTROL = descripcion_control
+                    control.TIPO_CONTROL = 'SALVEN'
+                    control.FECHA_CONTROL = time.strftime("%Y-%m-%d")
+                    control.HORA_CONTROL = time.strftime("%H:%M:%S")
+                    self.request.dbsession.add(control)
+                    transaction.commit()
+                    query = self.request.dbsession.query(
+                        func.max(ControlEmpresa.ID_CONTROL).label('id_control_empresa')).one()
+                    id_ctrl_emp = query.id_control_empresa
+                    try:
+                        for id_det_ctrl_emp in ids_det_control:
+                            self.request.dbsession.query(DetalleControlEmpresa).filter(DetalleControlEmpresa.ID_DET_CONTROL == int(id_det_ctrl_emp)).update(
+                                {"ID_CONTROL": id_ctrl_emp})
+                        transaction.commit()
+                    except DBAPIError:
+                        print('Error al realizar la transaccion')
+
+        return HTTPFound(location='/inicio')
+
     @view_config(route_name='aprobar_salidas', renderer='../templates/salida_reparacion/aprobar_salidas.jinja2',
                  request_method='GET',permission='administrador')
     def aprobarSalidas(self):
