@@ -207,13 +207,10 @@ class SalidaReparacion(object):
             empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == self.user.id).one()
 
             salidas = self.request.dbsession.query(DetalleControlEmpresa, Vehiculo, ControlEmpresa, UbicacionBodega,
-                                                   Ubicacion, Nivel). \
-                join(ControlEmpresa).join(Vehiculo) \
-                .filter(DetalleControlEmpresa.ID_VEHICULO == UbicacionBodega.ID_VEHICULO) \
-                .filter(UbicacionBodega.ID_UBICACION == Ubicacion.ID_UBICACION) \
-                .filter(Ubicacion.ID_NIVEL == Nivel.ID_NIVEL) \
-                .filter(Nivel.ID_BODEGA == empleado.ID_BODEGA) \
+                                                   Ubicacion, Nivel,Bodega). \
+                join(ControlEmpresa).join(Vehiculo).join(UbicacionBodega).join(Ubicacion).join(Nivel).join(Bodega) \
                 .filter(DetalleControlEmpresa.ID_EMPLEADO == None) \
+                .filter(Bodega.ID_BODEGA == empleado.ID_BODEGA) \
                 .filter((DetalleControlEmpresa.TIPO_CONTROL_DET == 'SALREP') |(DetalleControlEmpresa.TIPO_CONTROL_DET == 'Venta')) \
                 .all()
 
