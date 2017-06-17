@@ -80,7 +80,9 @@ class Importaciones(object):
                                           FOTO=self.request.storage.base_path + '/' + foto.filename)
                     self.request.dbsession.add(fv)
 
+            self.request.flash_message.add('Fotos Subidas con Exito!!', message_type='success')
+
         except FileNotAllowed:
-            self.request.session.flash('Lo sentimos, este archivo no esta Permitido!!!')
+            self.request.flash_message.add('Lo sentimos, este archivo no esta Permitido!!!', message_type='danger')
 
         return HTTPSeeOther(self.request.route_url('list_importadores'))

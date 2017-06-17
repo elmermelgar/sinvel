@@ -18,19 +18,19 @@ class TipoReparacionClase(object):
         self.user = self.request.user.user_name
         self.emp = request.session['grupo']
 
-    @view_config(route_name='tipoReparacion_list', renderer='../templates/crud/tipoReparacion.jinja2',request_method='GET')
+    @view_config(route_name='tipoReparacion_list', renderer='../templates/crud/tipoReparacion.jinja2',request_method='GET', permission='administrador')
     def listtipoReparacion(self):
 
         tipoReparacion = self.request.dbsession.query(TipoReparacion).all()
 
         return {'grupo':self.emp, 'tipoRep': tipoReparacion}
 
-    @view_config(route_name='tipoReparacion_create', request_method='GET', renderer='../templates/crud/tipoReparacion_create.jinja2')
+    @view_config(route_name='tipoReparacion_create', request_method='GET', renderer='../templates/crud/tipoReparacion_create.jinja2', permission='administrador')
     def createtipoReparacion(self):
 
         return {'grupo':self.emp, }
 
-    @view_config(route_name='tipoReparacion_update', request_method='GET', renderer='../templates/crud/tipoReparacion_update.jinja2')
+    @view_config(route_name='tipoReparacion_update', request_method='GET', renderer='../templates/crud/tipoReparacion_update.jinja2', permission='administrador')
     def updatetipoReparacion(self):
 
         tipoReparacion=self.request.dbsession.query(TipoReparacion).get(self.request.matchdict['id_tipoRep'])
@@ -38,7 +38,7 @@ class TipoReparacionClase(object):
         return {'grupo':self.emp, 'tipoRep': tipoReparacion}
 
 
-    @view_config(route_name='tipoReparacion_save', request_method='POST')
+    @view_config(route_name='tipoReparacion_save', request_method='POST', permission='administrador')
     def guardartipoReparacion(self):
         try:
             data = self.request.POST
@@ -48,25 +48,28 @@ class TipoReparacionClase(object):
                     setattr(tipoRep, key, value)
                 self.request.dbsession.add(tipoRep)
 
+                self.request.flash_message.add('Se Creo el tipo de Reparación con exito!!', message_type='success')
+
             else:
                 data=self.request.POST
                 id=data.get('ID_TIPO_REPARACION')
                 tipoRep= self.request.dbsession.query(TipoReparacion).get(id)
                 for key, value in data.items():
                     setattr(tipoRep, key, value)
+
+                self.request.flash_message.add('Se Actualizo el tipo de Reparación con exito!!', message_type='success')
             transaction.commit()
 
         except DBAPIError:
-            return print('Ocurrio un error al insertar el registro')
+            self.request.flash_message.add('Ocurrio un error al insertar el registro!!', message_type='danger')
         return HTTPFound(location='/tipoReparacion/list')
 
-    @view_config(route_name='tipoReparacion_del', request_method='GET')
+    @view_config(route_name='tipoReparacion_del', request_method='GET', permission='administrador')
     def deletetipoReparacion(self):
         try:
             self.request.dbsession.query(TipoReparacion).filter(TipoReparacion.ID_TIPO_REPARACION == self.request.matchdict['id_tipoRep']).delete()
             transaction.commit()
         except sqlalchemy.exc.IntegrityError:
-            ctypes.windll.user32.MessageBoxW(0, "NO PUEDE ELIMINAR TIPO DE REPARACION!!", "ERROR!!", 1)
-
+            self.request.flash_message.add('NO PUEDE ELIMINAR TIPO DE REPARACION!!', message_type='danger')
 
         return HTTPFound(location='/tipoReparacion/list')
