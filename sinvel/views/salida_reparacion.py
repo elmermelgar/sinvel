@@ -233,7 +233,7 @@ class SalidaReparacion(object):
 
         return {'grupo':self.emp, 'remolques': remolques, 'items_tipo_remolque': items_tipo_remolque,'user':self.user.user_name}
 
-    @view_config(route_name='updateRemolque', request_method='POST',permission='administrador')
+    @view_config(route_name='updateRemolque', request_method='POST',permission='bodeguero')
     def updateRemolque(self):
         try:
             data = self.request.POST
