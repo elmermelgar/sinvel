@@ -10,124 +10,134 @@
 
 
 {% block content %}
-{% from '_helpers.jinja2' import input,label %}
- <div class="col-12 col-lg-12 col-sm-9 ">
-         <div class="panel panel-primary">
-              <div class="t-header">
-                <div class="th-title">Detalle Costos <small>Costos del ciclo de vida del auto registrados</small>
+    {% from '_helpers.jinja2' import input,label %}
+    <div class="col-12 col-lg-12 col-sm-9 ">
+    <div class="panel panel-primary">
+    <div class="t-header">
+        <div class="th-title">Detalle Costos
+            <small>Costos del ciclo de vida del auto registrados</small>
+        </div>
+    </div>
+    {% if det_cos[0].tipo_costo.COD_COSTO=='004' %}
+
+        <div class="panel-body">
+        <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3>{{ label('Descripcion:','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[0].DESCRIP_COSTO|default('',true) }}</td>
                 </div>
-              </div>
-         {% if det_cos[0].tipo_costo.COD_COSTO=='002'%}
-
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-6">
-                            <div class="form-group">
-                                <h3>{{ label('Descripcion:','col-sm-10 control-label') }}</h3>
-                                <div class="form-group col-md-10">
-                                 <td>{{ det_cos[0].DESCRIP_COSTO }}</td>
-                                </div>
-                            </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3>{{ label('Tipo Costo','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[0].tipo_costo.TIPO_COSTO }}</td>
                 </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <h3>{{ label('Tipo Costo','col-sm-10 control-label') }}</h3>
-                                <div class="form-group col-md-10">
-                                    <td>{{ det_cos[0].tipo_costo.TIPO_COSTO }}</td>
-                                 </div>
-                            </div>
-                        </div>
+            </div>
+        </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <h3>{{ label('Taller','col-sm-10 control-label') }}</h3>
-                                <div class="form-group col-md-10">
-                                   <td>{{ det_cos[2].taller.NOMBRE_TALLER }}</td>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-6">
-                           <div class="form-group">
-                               <h3> {{ label('Tipo Reparacion:','col-sm-10 control-label') }}</h3>
-                              <div class="form-group col-md-10">
-                                <td>{{ det_cos[2].taller.tipo_reparacion.TIPO_REPARACION }}</td>
-                               </div>
-                            </div>
-                        </div>
-
-                       <div class="col-md-6">
-                           <div class="form-group">
-                               <h3> {{ label('Monto','col-sm-10 control-label') }}</h3>
-                              <div class="form-group col-md-10">
-                                <td>{{ det_cos[0].MONTO }}</td>
-                               </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                           <div class="form-group">
-                               <h3> {{ label('Fecha costo','col-sm-10 control-label') }}</h3>
-                              <div class="form-group col-md-10">
-                                <td>{{ det_cos[0].FECHA_COSTO.strftime("%d/%m/%Y") }}</td>
-                              </div>
-                           </div>
-                        </div>
-         {% else %}
-
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-6">
-                            <div class="form-group">
-                                <h3>{{ label('Descripcion:','col-sm-10 control-label') }}</h3>
-                                <div class="form-group col-md-10">
-                                 <td>{{ det_cos[0].DESCRIP_COSTO }}</td>
-                                </div>
-                            </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3>{{ label('Taller','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[2].taller.NOMBRE_TALLER }}</td>
                 </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <h3>{{ label('Tipo Costo','col-sm-10 control-label') }}</h3>
-                                <div class="form-group col-md-10">
-                                    <td>{{ det_cos[0].tipo_costo.TIPO_COSTO }}</td>
-                                 </div>
-                            </div>
-                        </div>
+            </div>
+        </div>
 
-
-                       <div class="col-md-6">
-                           <div class="form-group">
-                               <h3> {{ label('Monto','col-sm-10 control-label') }}</h3>
-                              <div class="form-group col-md-10">
-                                <td>{{ det_cos[0].MONTO }}</td>
-                               </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                           <div class="form-group">
-                               <h3> {{ label('Fecha costo','col-sm-10 control-label') }}</h3>
-                              <div class="form-group col-md-10">
-                                <td>{{ det_cos[0].FECHA_COSTO.strftime("%d/%m/%Y") }}</td>
-                              </div>
-                           </div>
-                        </div>
-{% endif %}
-                  <div class="row">
-                            <div class="col-sm-12">
-                                <a href="{{request.route_url('costo_veh',id_vehiculo=id_vehicu)}}" class="form-control btn bg-lightblue"  style="float: right; margin-right: 50px; width: auto;">
-                                    Atras <i class="zmdi zmdi-arrow-back"></i>
-                                </a>
-                            </div>
-                  </div>
-
-
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3> {{ label('Tipo Reparacion:','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[2].taller.tipo_reparacion.TIPO_REPARACION }}</td>
                 </div>
-          </div>
- </div>
+            </div>
+        </div>
 
- {% endblock content %}
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3> {{ label('Estado reparación:','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[2].ESTADO_REP }}</td>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3> {{ label('Monto','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[0].MONTO }}</td>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3> {{ label('Fecha costo','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[0].FECHA_COSTO.strftime("%d/%m/%Y") }}</td>
+                </div>
+            </div>
+        </div>
+    {% else %}
+
+        <div class="panel-body">
+        <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3>{{ label('Descripcion:','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[0].DESCRIP_COSTO|default('',true) }}</td>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3>{{ label('Tipo Costo','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[0].tipo_costo.TIPO_COSTO }}</td>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3> {{ label('Monto','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[0].MONTO }}</td>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <h3> {{ label('Fecha costo','col-sm-10 control-label') }}</h3>
+                <div class="form-group col-md-10">
+                    <td>{{ det_cos[0].FECHA_COSTO.strftime("%d/%m/%Y") }}</td>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+<div class="row">
+    <div class="col-sm-12">
+        <a href="{{ request.route_url('costo_veh',id_vehiculo=id_vehicu) }}" class="form-control btn bg-lightblue"
+           style="float: right; margin-right: 50px; width: auto;">
+            Atras <i class="zmdi zmdi-arrow-back"></i>
+        </a>
+    </div>
+</div>
+
+
+</div>
+</div>
+</div>
+
+{% endblock content %}
 
 {% block scripts %}
 

@@ -25,7 +25,7 @@ def main(global_config, **settings):
     """
 
     session_factory =  SignedCookieSessionFactory(
-        settings['session.secret'],max_age=30,
+        settings['session.secret'],max_age=3600,
     )
 
 

@@ -19,7 +19,7 @@ class costoVehiculo(object):
         total=self.request.dbsession.query(func.sum(Costo.MONTO).label('monto')).filter(Costo.ID_VEHICULO==id_vehiculo).scalar()
         costos = self.query_costos.filter(Costo.ID_VEHICULO==id_vehiculo).all()
         vehiculo= self.request.dbsession.query(Vehiculo).get(id_vehiculo)
-        return {'grupo':self.emp, 'costos': costos, 'veh':vehiculo,'total_costo':total}
+        return {'grupo':self.emp,'user':self.user, 'costos': costos, 'veh':vehiculo,'total_costo':total}
 
     @view_config(route_name='detalle_costo', renderer='../templates/costos/detalle_costo.jinja2', request_method='GET')
     def detalle_costo(self):
@@ -29,14 +29,14 @@ class costoVehiculo(object):
        # det_cos = self.query_costos.filter(Costo.ID_COSTO == id_costo).one()
         cod_tipo_costo=self.request.dbsession.query(Costo).join(TipoCosto).filter(Costo.ID_COSTO==id_costo)
 
-        if cod_tipo_costo[0].tipo_costo.COD_COSTO=='002':
+        if cod_tipo_costo[0].tipo_costo.COD_COSTO=='004':
             det_cos = self.request.dbsession.query(Costo,DetalleControlEmpresa,Reparacion).\
             filter(Costo.ID_VEHICULO==DetalleControlEmpresa.ID_VEHICULO)\
             .filter(DetalleControlEmpresa.ID_DET_CONTROL==Reparacion.ID_DET_CONTROL)\
              .filter(Costo.ID_COSTO==id_costo).one()
-            return {'grupo':self.emp, 'det_cos': det_cos, 'id_vehicu': costo.ID_VEHICULO}
+            return {'grupo':self.emp,'user':self.user, 'det_cos': det_cos, 'id_vehicu': costo.ID_VEHICULO}
         else:
-            return {'grupo':self.emp, 'det_cos': cod_tipo_costo, 'id_vehicu': costo.ID_VEHICULO}
+            return {'grupo':self.emp,'user':self.user, 'det_cos': cod_tipo_costo, 'id_vehicu': costo.ID_VEHICULO}
 
 
 

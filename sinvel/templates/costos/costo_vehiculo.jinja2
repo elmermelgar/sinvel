@@ -1,82 +1,88 @@
 {% extends "../layout.jinja2" %}
 {% block styles %}
-<link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
+          rel="stylesheet">
 {% endblock styles %}
 {% block content %}
     <div class="container">
 
-            <div class="tile">
-                    <div class="t-header">
-                        <div class="th-title">Costos <small>Costos del ciclo de vida del auto registrados</small></div>
-                        <a href="{{ request.route_url('resultado', marca=veh.modelo.marca.ID_MARCA, modelo=veh.modelo.ID_MODELO, estado=veh.estado_veh.ID_ESTADO, anio=veh.ANO) }}" style="float: right; margin-top: -35px"
-                       class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px"
-                                                                  class="zmdi zmdi-arrow-back"></i></a>
+        <div class="tile">
+            <div class="t-header">
+                <div class="th-title">Costos
+                    <small>Costos del ciclo de vida del auto registrados</small>
+                </div>
+                <a href="{{ request.route_url('resultado', marca=veh.modelo.marca.ID_MARCA, modelo=veh.modelo.ID_MODELO, estado=veh.estado_veh.ID_ESTADO, anio=veh.ANO) }}"
+                   style="float: right; margin-top: -35px"
+                   class="btn btn-alt btn-danger btn-icon"><i style="margin-top: 10px"
+                                                              class="zmdi zmdi-arrow-back"></i></a>
+            </div>
+
+
+            <div class="t-body tb-padding">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label>Total costos</label>
                     </div>
+                    <div class="col-sm-3">
 
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="zmdi zmdi-money"></i></span>
+                            <label class="form-control">{{ total_costo }}</label>
 
-
-
-                     <div class="t-body tb-padding">
-                        <div class="row">
-                            <div class="col-lg-2">
-                                <label>Total costos</label>
-                            </div>
-                            <div class="col-sm-3">
-
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="zmdi zmdi-money"></i></span>
-                                    <label  class="form-control">{{ total_costo }}</label>
-
-                                </div>
-                            </div>
                         </div>
-                     </div>
-
-
-                    <table class="table table-bordered table-vmiddle">
-                        <thead>
-                            <tr>
-                                <th data-column-id="id" data-type="numeric">Tipo Costo</th>
-                                <th data-column-id="sender">Fecha</th>
-                                <th data-column-id="received">Monto</th>
-                                <th data-column-id="commands">Ver Detalle</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {# for objeto in lista_enviada#}
-                            {% for Costo1 in costos %}
-
-                                           <tr>
-                                        <td>{{ Costo1.tipo_costo.TIPO_COSTO}}</td>
-                                        <td>{{ Costo1.FECHA_COSTO.strftime("%d/%m/%Y") }}</td>
-                                        <td>{{ Costo1.MONTO }}</td>
-                                        <td> <a href="{{request.route_url('detalle_costo',id_costo=Costo1.ID_COSTO) }}" class="btn btn-primary" ">DETALLE<span style="margin-top: 10px" title="Lista de Detalles"></span></a> </td>
-
-
-                                       </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                    </div>
                 </div>
             </div>
+
+
+            <table class="table table-bordered table-vmiddle">
+                <thead>
+                <tr>
+                    <th data-column-id="id" data-type="numeric">Tipo Costo</th>
+                    <th data-column-id="sender">Fecha</th>
+                    <th data-column-id="received">Monto</th>
+                    <th data-column-id="commands">Ver Detalle</th>
+                </tr>
+                </thead>
+                <tbody>
+                {# for objeto in lista_enviada#}
+                {% for Costo1 in costos %}
+
+                    <tr>
+                        <td>{{ Costo1.tipo_costo.TIPO_COSTO }}</td>
+                        <td>{{ Costo1.FECHA_COSTO.strftime("%d/%m/%Y") }}</td>
+                        <td>{{ Costo1.MONTO }}</td>
+                        <td>
+                            <a href="{{ request.route_url('detalle_costo',id_costo=Costo1.ID_COSTO) }}"
+                               class="btn btn-primary">DETALLE<span style="margin-top: 10px"
+                                                                    title="Lista de Detalles"></span>
+                            </a></td>
+
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock content %}
 {% block scripts %}
-         <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+    <script src="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
 
     <!-- Data Table -->
-        <script type="text/javascript">
-            $(document).ready(function(){
-                //Basic Example
-                $("#data-table").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less',
-                        iconSearch: 'zmdi-search'
-                    },
-                });
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Basic Example
+            $("#data-table").bootgrid({
+                css: {
+                    icon: 'zmdi icon',
+                    iconColumns: 'zmdi-view-module',
+                    iconDown: 'zmdi-expand-more',
+                    iconRefresh: 'zmdi-refresh',
+                    iconUp: 'zmdi-expand-less',
+                    iconSearch: 'zmdi-search'
+                },
             });
-        </script>
+        });
+    </script>
 {% endblock scripts %}

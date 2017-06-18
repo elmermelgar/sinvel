@@ -12,7 +12,7 @@ from ..models import EstadoVeh
 from ..models import DetalleControlEmpresa
 from ..models import Venta
 from ..models import Cliente
-from ..models import Empleado
+from ..models import Empleado,Importacion,Importador
 from ..models import User
 from sinvel.views.user import db_err_msg
 from ..models import Municipio
@@ -43,7 +43,7 @@ class Bodega_IU(object):
 
         except DBAPIError:
             return Response(db_err_msg, content_type='text/plain', status=500)
-        return {'grupo':self.emp, 'departamentos': departamentos, 'municipios': municipios}
+        return {'grupo':self.emp,'user':self.user, 'departamentos': departamentos, 'municipios': municipios}
 
     @view_config(route_name='bodegas', renderer='../templates/bodega/bodegas.jinja2', request_method='GET', permission='administrador')
     def bodegas(self):
@@ -229,7 +229,7 @@ class Bodega_IU(object):
         filename = 'sinvel/static/fotos_vehiculos/Vehiculo' + items_vehiculo.VIN + '.jpg'
         with open(filename, 'wb') as f:
             f.write(items_vehiculo.FOTO_VEH)
-        return {'grupo':self.emp, 'vehiculo': items_vehiculo, 'estados': items_estados, 'venta': items_venta}
+        return {'grupo':self.emp,'user':self.user, 'vehiculo': items_vehiculo, 'estados': items_estados, 'venta': items_venta}
 
     @view_config(route_name='vehiculosVendidos', renderer='../templates/bodega/vehiculos_vendidos.jinja2',
                  request_method='GET', permission='vendedor')
@@ -315,8 +315,6 @@ class Bodega_IU(object):
         usuario = self.request.dbsession.query(User).filter(User.user_name == self.user).first()
         items_empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == usuario.id).first()
         bodega = self.request.dbsession.query(Bodega).filter(Bodega.ID_BODEGA == items_empleado.ID_BODEGA).first()
-
-        vehiculos=self.request.dbsession.query(Vehiculo,UbicacionBodega,Ubicacion,Nivel,EstadoVeh,Bodega).join(UbicacionBodega)\
-        .join(Ubicacion).join(Nivel).join(Bodega).filter(Vehiculo.ID_ESTADO!=6).filter(Bodega.ID_BODEGA==bodega.ID_BODEGA).all()
-
+        vehiculos=self.request.dbsession.query(UbicacionBodega,Vehiculo,Ubicacion,Nivel,Bodega,Importacion,Importador).join(Vehiculo)\
+        .join(Importacion).join(Importador).join(Ubicacion).join(Nivel).join(Bodega).filter(Vehiculo.ID_ESTADO!=6).filter(Bodega.ID_BODEGA==bodega.ID_BODEGA).all()
         return {'grupo': self.emp, 'user': self.user, 'vehiculos': vehiculos}

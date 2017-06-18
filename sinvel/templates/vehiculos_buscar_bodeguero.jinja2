@@ -1,83 +1,86 @@
 {% extends "layout.jinja2" %}
 {% block styles %}
-<link href="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css')}}" rel="stylesheet">
+    <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
+          rel="stylesheet">
 {% endblock styles %}
 {% block content %}
     <div class="container">
 
-            <div class="tile">
-                    <div class="t-header">
-                        <div class="th-title">Vehículos <small>Almacenados </small></div>
-                    </div>
-
-                    <table id="data-table" class="table table-hover table-bordered">
-                        <thead>
-                            <tr>
-                                <th data-column-id="id" >PLACA</th>
-                                <th data-column-id="name">MARCA</th>
-                                <th data-column-id="sender">MODELO</th>
-                                <th data-column-id="received">AÑO</th>
-                                <th data-column-id="estado">ESTADO</th>
-                                <th data-column-id="import">IMPORTADOR</th>
-                                <th data-column-id="import">NIVEL</th>
-                                <th data-column-id="import">UBICACION</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            {% for vehiculo in vehiculos %}
-                                        <tr>
-                                            <td>{{ vehiculo[0].PLACA }}</td>
-                                            <td>{{ vehiculo[0].modelo.marca.MARCA }}</td>
-                                            <td>{{ vehiculo[0].modelo.MODELO }}</td>
-                                            <td>{{ vehiculo[0].ANO }}</td>
-                                            <td>{{ vehiculo[0].estado_veh.ESTADO }}</td>
-                                            <td>{{ vehiculo[0].importacion.importador.NOMBRE }} {{ vehiculo.importacion.importador.APELLIDO }}</td>
-                                            <td>{{ vehiculo[3].DESCRIPCION_NIVEL }}</td>
-                                            <td>{{ vehiculo[2].CORRELATIVO }}</td>
-                                        </tr>
-                            {% endfor %}
-
-                        </tbody>
-                    </table>
+        <div class="tile">
+            <div class="t-header">
+                <div class="th-title">Vehículos
+                    <small>Almacenados</small>
                 </div>
+            </div>
+
+            <table id="data-table" class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th data-column-id="id">PLACA</th>
+                    <th data-column-id="name">MARCA</th>
+                    <th data-column-id="sender">MODELO</th>
+                    <th data-column-id="received">AÑO</th>
+                    <th data-column-id="estado">ESTADO</th>
+                    <th data-column-id="import">IMPORTADOR</th>
+                    <th data-column-id="import1">NIVEL</th>
+                    <th data-column-id="import2">UBICACION</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for vehiculo in vehiculos %}
+                    <tr>
+                        <td>{{ vehiculo[1].PLACA|default('',true) }}</td>
+                        <td>{{ vehiculo[1].modelo.marca.MARCA|default('',true) }}</td>
+                        <td>{{ vehiculo[1].modelo.MODELO|default('',true) }}</td>
+                        <td>{{ vehiculo[1].ANO|default('',true) }}</td>
+                        <td>{{ vehiculo[1].estado_veh.ESTADO|default('',true) }}</td>
+                        <td>{{ vehiculo[6].NOMBRE|default('',true) }} {{ vehiculo[6].APELLIDO|default('',true) }}</td>
+                        <td>{{ vehiculo[3].DESCRIPCION_NIVEL|default('',true) }}</td>
+                        <td>{{ vehiculo[2].CORRELATIVO|default('',true) }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock content %}
 {% block scripts %}
-         <script src="{{request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
+    <script src="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
 
     <!-- Data Table -->
-        <script type="text/javascript">
-            $(document).ready(function(){
-                //Basic Example
-                $("#data-table").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less',
-                        iconSearch: 'zmdi-search'
-                    },
-                });
-
-                //Selection
-                $("#data-table-selection").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less',
-                        iconSearch: 'zmdi-search'
-
-                    },
-                    selection: true,
-                    multiSelect: true,
-                    rowSelect: true,
-                    keepSelection: true
-                });
-
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Basic Example
+            $("#data-table").bootgrid({
+                css: {
+                    icon: 'zmdi icon',
+                    iconColumns: 'zmdi-view-module',
+                    iconDown: 'zmdi-expand-more',
+                    iconRefresh: 'zmdi-refresh',
+                    iconUp: 'zmdi-expand-less',
+                    iconSearch: 'zmdi-search'
+                },
             });
-        </script>
+
+            //Selection
+            $("#data-table-selection").bootgrid({
+                css: {
+                    icon: 'zmdi icon',
+                    iconColumns: 'zmdi-view-module',
+                    iconDown: 'zmdi-expand-more',
+                    iconRefresh: 'zmdi-refresh',
+                    iconUp: 'zmdi-expand-less',
+                    iconSearch: 'zmdi-search'
+
+                },
+                selection: true,
+                multiSelect: true,
+                rowSelect: true,
+                keepSelection: true
+            });
+
+        });
+    </script>
 {% endblock scripts %}

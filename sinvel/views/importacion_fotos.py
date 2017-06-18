@@ -23,14 +23,6 @@ class Importaciones(object):
                  request_method='GET', permission='bodeguero')
     def importaciones(self):
         emp = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER==self.user).first()
-        # bodega=self.query_bodega.all()
-        # bod=self.query_bodega.get(emp.ID_BODEGA)
-        # clt=self.query_detalleCtl.get(emp.ID_BODEGA)
-        # veh=self.query_veh.all()
-        # detImp=self.query_detalleImp.all()
-        # foto=self.query_foto.all()
-        # importacion = self.query_importacion.all()
-
         subquery = self.request.dbsession.query(UbicacionBodega.ID_VEHICULO)
         det_imp = self.request.dbsession.query(DetalleImportacion) \
             .filter(DetalleImportacion.ID_IMPORTACION == Importacion.ID_IMPORTACION) \
@@ -40,7 +32,6 @@ class Importaciones(object):
             .filter(DetalleControlEmpresa.TIPO_CONTROL_DET=='ENTRA')\
             .filter(DetalleImportacion.ID_VEHICULO.notin_(subquery)).all()
 
-        # return {'grupo':self.emp, 'user':self.user, 'emp':emp, 'bods':bodega, 'bod':bod, 'clt':clt, 'veh':veh, 'detImp':detImp, 'impor': importacion, 'foto':foto}
         return {'grupo': self.emp, 'user': self.user_name, 'emp': emp, 'det_imp': det_imp}
 
 
