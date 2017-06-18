@@ -20,7 +20,7 @@ class costoReparacion(object):
         idDce = self.request.matchdict['id_dce']
         dce = self.request.dbsession.query(DetalleControlEmpresa).filter_by(ID_DET_CONTROL=idDce).first()
         reparacion = self.request.dbsession.query(Reparacion).filter_by(ID_DET_CONTROL=idDce).first()
-        estados_veh = self.request.dbsession.query(EstadoVeh).all()
+        estados_veh = self.request.dbsession.query(EstadoVeh).filter(EstadoVeh.COD_ESTADO.in_(['001','002'])).all()
 
         return {'grupo':self.emp, 'user':self.user.user_name, 'veh':dce.vehiculo, 'estados_veh':estados_veh, 'reparacion':reparacion}
 
