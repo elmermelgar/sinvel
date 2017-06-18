@@ -63,7 +63,7 @@ class RegistroVehiculo(object):
             self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
         except DBAPIError:
             print('Ocurrio un error al insertar el registro')
-            self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='danger')
+            self.request.flash_message.add('Error no se pudo guardar el registro!!', message_type='danger')
             return HTTPFound(location=self.request.route_url('enviarVehReparar', idv=idVeh))
 
         return HTTPFound(location=self.request.route_url('inicio'))

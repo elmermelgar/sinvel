@@ -216,7 +216,7 @@ class RegistroVehiculo(object):
         return HTTPFound(location='/entrada/registro_control_entrada')
 
     @view_config(route_name='registro_control_entrada_reparacion', renderer='../templates/registrar_entrada_reparacion.jinja2',
-                 request_method='GET')
+                 request_method='GET', permission='bodeguero')
     def registroControlEntradaReparacion(self):
         remolques = None
         entradas = None
@@ -237,7 +237,7 @@ class RegistroVehiculo(object):
             print('Error al recuperar los remolques')
         return {'grupo': self.emp, 'user':self.user.user_name, 'entradas': entradas, 'remolques': remolques}
 
-    @view_config(route_name='registro_control_entrada_reparacion_guardar', request_method='POST', permission='administrador')
+    @view_config(route_name='registro_control_entrada_reparacion_guardar', request_method='POST', permission='bodeguero')
     def registro_control_reparacion_save(self):
 
         id_user = self.user.id
@@ -246,8 +246,10 @@ class RegistroVehiculo(object):
         connection = engine.raw_connection()
         cursor = connection.cursor()
 
-        control = ControlEmpresa()
         id_remolque = self.request.POST['ID_REMOLQUE']
+        remolque = self.request.dbsession.query(Remolque).filter(Remolque.ID_REMOLQUE == id_remolque).one()
+
+        control = ControlEmpresa()
         descripcion_control = self.request.POST['DESCRIPCION_CONTROL']
         control.DESCRIPCION_CONTROL = descripcion_control
         control.ID_REMOLQUE = id_remolque
@@ -276,7 +278,7 @@ class RegistroVehiculo(object):
                 # ACTUALIZAR EL ESTADO DE LA REPARACION DE LA SALIDA EN ESTADO SALEREP; ESTADO_REP_TALLER
                 self.request.dbsession.query(Reparacion).filter(Reparacion.ID_DET_CONTROL == id_dce) \
                     .update({"ESTADO_REP_TALLER": 'Procesada'})
-
+        
             transaction.commit()
             self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
         except DBAPIError:
@@ -316,7 +318,7 @@ class RegistroVehiculo(object):
 
 
     @view_config(route_name='alerta_multa_cantidad_vehiculos', renderer='../templates/alerta_multa_cantidad_vehiculos.jinja2',
-                     request_method='GET')
+                     request_method='GET', permission='importador')
     def alertaMultaCantidadVehiculos(self):
         vehiculos = None
         try:
