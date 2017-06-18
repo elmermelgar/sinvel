@@ -155,6 +155,7 @@ class SalidaReparacion(object):
                             args = [int(id_det_ctrl_emp), id_ctrl_emp, 0]
                             result_args = cursor.callproc('sp_update_sal_rep', args)
                             print(result_args[0])
+                        self.request.flash_message.add('Vehiculos enviados a reparación!', message_type='success')
                     except DBAPIError:
                         print('Error al realizar la transaccion')
                     finally:

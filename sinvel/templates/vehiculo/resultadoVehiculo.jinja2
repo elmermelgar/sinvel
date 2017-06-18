@@ -29,7 +29,7 @@
                                         <td style="text-align: center">{{ veh.MODELO }}</td>
                                         <td style="text-align: center">{{ veh.ANO }}</td>
                                         <td style="text-align: center">{{ veh.ESTADO }}</td>
-                                        <td style="text-align: center">{{ veh.PRECIO }}</td>
+                                        <td style="text-align: center">{{ veh.PRECIO|default('',true) }}</td>
                                     <td style="text-align: center"><a href="{{ request.route_url('detalle', id_veh=veh.ID_VEHICULO)}}" class="btn btn-icon bg-gray command-edit"><span style="margin-top: 10px" class="zmdi zmdi-eye" data-toggle="tooltip" data-placement="top" data-original-title="Ver Detalles"></span></a>
                                         <a href="{{ request.route_url('costo_veh', id_vehiculo=veh.ID_VEHICULO)}}" class="btn btn-icon btn-primary command-edit"><span style="margin-top: 10px" class="zmdi zmdi-money" data-toggle="tooltip" data-placement="top" data-original-title="Ver Costos"></span></a>
 

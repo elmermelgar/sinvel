@@ -15,7 +15,7 @@ class costoReparacion(object):
         self.emp = request.session['grupo']
 
     @view_config(route_name='costoReparacion',renderer='../templates/costos/costo_reparacion.jinja2',
-                 request_method='GET', permission='administrador')
+                 request_method='GET', permission='bodeguero')
     def costoReparacionCreate(self):
         idDce = self.request.matchdict['id_dce']
         dce = self.request.dbsession.query(DetalleControlEmpresa).filter_by(ID_DET_CONTROL=idDce).first()
@@ -24,7 +24,7 @@ class costoReparacion(object):
 
         return {'grupo':self.emp, 'user':self.user.user_name, 'veh':dce.vehiculo, 'estados_veh':estados_veh, 'reparacion':reparacion}
 
-    @view_config(route_name='costoReparacionGuardar', request_method='POST', permission='administrador')
+    @view_config(route_name='costoReparacionGuardar', request_method='POST', permission='bodeguero')
     def costoReparacionSave(self):
         try:
             data = self.request.POST
