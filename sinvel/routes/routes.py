@@ -75,3 +75,4 @@ def includeme(config):
 
     config.add_route('remolques', '/get_remolques')
     config.add_route('gestion_remolque', '/remolques/gestion_remolques')
+    config.add_route('vehiculos_buscar_bodeguero', '/bodega/vehiculos')

@@ -277,12 +277,10 @@ class Bodega_IU(object):
 
     @view_config(route_name='guardarUbicaciones', request_method='POST', permission='administrador')
     def guardarUbicaciones(self):
-
         settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
         engine = get_engine(settings)
         connection = engine.raw_connection()
         cursor = connection.cursor()
-
         try:
             data = self.request.POST
             id_bodega = {data.get('ID_BODEGA'), }
@@ -310,3 +308,15 @@ class Bodega_IU(object):
 
         items_veh = self.request.dbsession.query(Vehiculo).all()
         return {'grupo': self.emp, 'user': self.user, 'vehiculos': items_veh, 'ubicados': ubicados, 'bodega': bodega}
+
+    @view_config(route_name='vehiculos_buscar_bodeguero', renderer='../templates/vehiculos_buscar_bodeguero.jinja2',
+                 request_method='GET',permission='bodeguero')
+    def vehiculosBodega(self):
+        usuario = self.request.dbsession.query(User).filter(User.user_name == self.user).first()
+        items_empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == usuario.id).first()
+        bodega = self.request.dbsession.query(Bodega).filter(Bodega.ID_BODEGA == items_empleado.ID_BODEGA).first()
+
+        vehiculos=self.request.dbsession.query(Vehiculo,UbicacionBodega,Ubicacion,Nivel,EstadoVeh,Bodega).join(UbicacionBodega)\
+        .join(Ubicacion).join(Nivel).join(Bodega).filter(Vehiculo.ID_ESTADO!=6).filter(Bodega.ID_BODEGA==bodega.ID_BODEGA).all()
+
+        return {'grupo': self.emp, 'user': self.user, 'vehiculos': vehiculos}

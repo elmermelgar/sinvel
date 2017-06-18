@@ -112,7 +112,8 @@ class EmpleadoClase(object):
                 mailer.send_immediately(message, fail_silently=False)
 
         except DBAPIError:
-            return print('Ocurrio un error al insertar el registro')
+            self.request.flash_message.add('El usuario ya existe', message_type='danger')
+            return HTTPFound(location='/empleado/create')
         #values = self.listEmpleado(self.request)
         #renderer = values['']
         #return render_to_response(renderer, values)
