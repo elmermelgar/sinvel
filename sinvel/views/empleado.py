@@ -1,4 +1,5 @@
 import bcrypt
+from sqlalchemy import exc
 from pyramid.view import view_config
 from pyramid.renderers import render_to_response
 from sinvel.models import Importador,User,Empleado,Group,UsersGroup,Bodega
@@ -121,9 +122,8 @@ class EmpleadoClase(object):
     @view_config(route_name='empleado_delete', request_method='GET',permission='administrador')
     def deleteEmpleado(self):
 
-
+      try:
             id_empleado = self.request.matchdict['id_empleado']
-            print('dave')
             print(id_empleado)
             usuario = self.request.dbsession.query(User).filter(User.user_name == self.user.user_name).first()
             empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_EMPLEADO==id_empleado).first()
@@ -134,4 +134,7 @@ class EmpleadoClase(object):
             self.request.flash_message.add('Empleado elminado', message_type='success')
             return HTTPFound(location='/empleado/list')
 
-
+      except exc.IntegrityError as e:
+            #self.request.session().rollback()
+            self.request.flash_message.add('Error al eliminar por integridad referencial', message_type='danger')
+            return HTTPFound(location='/empleado/list')

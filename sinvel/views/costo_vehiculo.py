@@ -1,6 +1,6 @@
 from pyramid.view import view_config
 from ..models import Costo,User,Vehiculo,TipoCosto,DetalleControlEmpresa,Reparacion
-
+from sqlalchemy.sql import func
 
 class costoVehiculo(object):
     def __init__(self,request):
@@ -16,15 +16,14 @@ class costoVehiculo(object):
     @view_config(route_name='costo_veh', renderer='../templates/costos/costo_vehiculo.jinja2',request_method='GET')
     def costo_ve (self):
         id_vehiculo=int(self.request.matchdict['id_vehiculo'])
+        total=self.request.dbsession.query(func.sum(Costo.MONTO).label('monto')).filter(Costo.ID_VEHICULO==id_vehiculo).scalar()
         costos = self.query_costos.filter(Costo.ID_VEHICULO==id_vehiculo).all()
         vehiculo= self.request.dbsession.query(Vehiculo).get(id_vehiculo)
-
-        return {'grupo':self.emp, 'costos': costos, 'veh':vehiculo}
+        return {'grupo':self.emp, 'costos': costos, 'veh':vehiculo,'total_costo':total}
 
     @view_config(route_name='detalle_costo', renderer='../templates/costos/detalle_costo.jinja2', request_method='GET')
     def detalle_costo(self):
         id_costo = self.request.matchdict['id_costo']
-
         costo = self.request.dbsession.query(Costo).\
             filter(Costo.ID_COSTO==id_costo).one()
        # det_cos = self.query_costos.filter(Costo.ID_COSTO == id_costo).one()
