@@ -21,7 +21,6 @@
                         $('#himportancion').val(data.ID_IMPORTACION);
                     }
                  });
-
         });
     }
     $('#buscar').click(function () {

@@ -56,13 +56,12 @@
                             <div class="form-group">
                                 {{ label('Linea de estilo:','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('LINEA_ESTILO', 'form-control', type='text',required='true') }}
+                                    <input type="text" value="Sedan" disabled name="LINEA_ESTILO" class="form-control">
+
                                 </div>
                             </div>
                        </div>
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 {{ label('Marca','col-sm-2 control-label') }}
@@ -93,7 +92,7 @@
                             <div class="form-group">
                                 {{ label('Chasis','col-sm-2 control-label') }}
                             <div class="form-group col-md-10">
-                                {{ input('CHASIS', 'form-control', type='text',required='true') }}
+                                  <input name="CHASIS" class="form-control" maxlength="8" minlength="8" REQUIRED>
                             </div>
                          </div>
                         </div>
@@ -117,7 +116,8 @@
                            <div class="form-group">
                                 {{ label('VIN','col-sm-2 control-label') }}
                             <div class="form-group col-md-10">
-                                {{ input('VIN', 'form-control', type='text',required='true') }}
+                                <input name="VIN" class="form-control" maxlength="17" minlength="17" REQUIRED>
+
                             </div>
                          </div>
                         </div>
@@ -133,7 +133,13 @@
                             <div class="form-group">
                                     {{ label('Clase','col-sm-2 control-label') }}
                                 <div class="form-group col-md-10">
-                                    {{ input('CLASE', 'form-control', type='text',required='true') }}
+                                    <select name="CLASE" class="form-control"
+                                            required>
+                                        <option value="">Seleccione un tipo de clase</option>
+                                            <option value="A">A</option>
+                                            <option value="B">B</option>
+                                            <option value="C">C</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
