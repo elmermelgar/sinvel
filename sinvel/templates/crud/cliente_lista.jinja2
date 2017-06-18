@@ -40,7 +40,7 @@
                             <td>{{ cli.ID_CLIENTE|default('',true) }}</td>
                             <td>{{ cli.NOMBRE_CLIENTE|default('',true) }}</td>
                             <td>{{ cli.APELLIDO_CLIENTE|default('',true) }}</td>
-                            <td>{{ cli.FECHA_NACIMIENTO|default('',true) }}</td>
+                            <td>{{ cli.FECHA_NACIMIENTO.strftime('%d-%m-%Y')|default('',true) }}</td>
                             <td>{{ cli.SEXO|default('',true) }}</td>
                             <td>{{ cli.DUI|default('',true) }}</td>
                             <td>

@@ -74,3 +74,4 @@ def includeme(config):
     config.add_route('empleado_delete','/empleado/delete/{id_empleado}')
 
     config.add_route('remolques', '/get_remolques')
+    config.add_route('gestion_remolque', '/remolques/gestion_remolques')

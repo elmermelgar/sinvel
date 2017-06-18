@@ -237,54 +237,73 @@ class RegistroVehiculo(object):
             print('Error al recuperar los remolques')
         return {'grupo': self.emp, 'user':self.user.user_name, 'entradas': entradas, 'remolques': remolques}
 
-    @view_config(route_name='registro_control_entrada_reparacion_guardar', request_method='POST', permission='bodeguero')
+    @view_config(route_name='registro_control_entrada_reparacion_guardar', request_method='POST',
+                 permission='bodeguero')
     def registro_control_reparacion_save(self):
-
         id_user = self.user.id
         settings = {'sqlalchemy.url': 'mysql://root:admin@localhost:3306/sinvel'}
         engine = get_engine(settings)
         connection = engine.raw_connection()
         cursor = connection.cursor()
-
+        ids_dce = self.request.params.getall("selected_vehiculos")
         id_remolque = self.request.POST['ID_REMOLQUE']
         remolque = self.request.dbsession.query(Remolque).filter(Remolque.ID_REMOLQUE == id_remolque).one()
-
         control = ControlEmpresa()
-        descripcion_control = self.request.POST['DESCRIPCION_CONTROL']
-        control.DESCRIPCION_CONTROL = descripcion_control
-        control.ID_REMOLQUE = id_remolque
-        control.TIPO_CONTROL = 'ENTRAREP'
-        control.FECHA_CONTROL = time.strftime("%Y-%m-%d")
-        control.HORA_CONTROL = time.strftime("%H:%M:%S")
-        self.request.dbsession.add(control)
+        guardar = 0
+        if (len(ids_dce) > 0):
+            if (remolque.tipo_remolque.NOMBRE_TIPO == 'Tacuacina'):
+                if (len(ids_dce) <= int(remolque.tipo_remolque.CAPACIDAD) and len(ids_dce) >= 2):
+                    guardar = 1
+                else:
+                    self.request.flash_message.add(
+                        'Una tacuacina permite al menos 2 vehiculos y como maximo 12!', message_type='danger')
+            if (remolque.tipo_remolque.NOMBRE_TIPO == 'Grúa'):
+                if (len(ids_dce) <= int(remolque.tipo_remolque.CAPACIDAD)):
+                    guardar = 1
+                else:
+                    self.request.flash_message.add('Una grúa permite 1 vehiculo!', message_type='danger')
+        else:
+            self.request.flash_message.add('Debe seleccionar un vehiculo!!', message_type='danger')
 
-        query = self.request.dbsession.query(func.max(ControlEmpresa.ID_CONTROL).label('id_control_empresa')).one()
-        id_ctrl_emp = query.id_control_empresa
-        ids_dce = self.request.params.getall("selected_vehiculos")
-        try:
-            empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == id_user).one()
-            for id_dce in ids_dce:
-                dce = self.request.dbsession.query(DetalleControlEmpresa).filter(
-                    DetalleControlEmpresa.ID_DET_CONTROL == id_dce).first()
+        if guardar == 1:
+            descripcion_control = self.request.POST['DESCRIPCION_CONTROL']
+            control.DESCRIPCION_CONTROL = descripcion_control
+            control.ID_REMOLQUE = id_remolque
+            control.TIPO_CONTROL = 'ENTRAREP'
+            control.FECHA_CONTROL = time.strftime("%Y-%m-%d")
+            control.HORA_CONTROL = time.strftime("%H:%M:%S")
+            self.request.dbsession.add(control)
 
-                det_ctrl_emp = DetalleControlEmpresa()
-                det_ctrl_emp.ID_VEHICULO = dce.vehiculo.ID_VEHICULO
-                det_ctrl_emp.TIPO_CONTROL_DET = 'ENTRAREP'
-                det_ctrl_emp.ID_CONTROL = id_ctrl_emp
-                det_ctrl_emp.ID_EMPLEADO = empleado.ID_EMPLEADO
-                det_ctrl_emp.ID_BODEGA = empleado.ID_BODEGA
-                self.request.dbsession.add(det_ctrl_emp)
+            query = self.request.dbsession.query(
+                func.max(ControlEmpresa.ID_CONTROL).label('id_control_empresa')).one()
+            id_ctrl_emp = query.id_control_empresa
 
-                # ACTUALIZAR EL ESTADO DE LA REPARACION DE LA SALIDA EN ESTADO SALEREP; ESTADO_REP_TALLER
-                self.request.dbsession.query(Reparacion).filter(Reparacion.ID_DET_CONTROL == id_dce) \
-                    .update({"ESTADO_REP_TALLER": 'Procesada'})
-        
-            transaction.commit()
-            self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')
-        except DBAPIError:
-            print('Error al realizar la transaccion')
-            self.request.flash_message.add('Error no se pudo guardar el registro!!', message_type='danger')
-        return HTTPFound(location='/entrada/registro_control_entrada_reparacion')
+            try:
+                empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == id_user).one()
+                for id_dce in ids_dce:
+                    dce = self.request.dbsession.query(DetalleControlEmpresa) \
+                        .filter(DetalleControlEmpresa.ID_DET_CONTROL == id_dce).first()
+
+                    det_ctrl_emp = DetalleControlEmpresa()
+                    det_ctrl_emp.ID_VEHICULO = dce.vehiculo.ID_VEHICULO
+                    det_ctrl_emp.TIPO_CONTROL_DET = 'ENTRAREP'
+                    det_ctrl_emp.ID_CONTROL = id_ctrl_emp
+                    det_ctrl_emp.ID_EMPLEADO = empleado.ID_EMPLEADO
+                    det_ctrl_emp.ID_BODEGA = empleado.ID_BODEGA
+                    self.request.dbsession.add(det_ctrl_emp)
+
+                    # ACTUALIZAR EL ESTADO DE LA REPARACION DE LA SALIDA EN ESTADO SALEREP; ESTADO_REP_TALLER
+                    self.request.dbsession.query(Reparacion).filter(Reparacion.ID_DET_CONTROL == id_dce) \
+                        .update({"ESTADO_REP_TALLER": 'Procesada'})
+                self.request.flash_message.add('Registros Guardados Correctamente!!', message_type='success')
+                transaction.commit()
+            except DBAPIError:
+                print('Error al realizar la transaccion')
+                self.request.flash_message.add('Ocurrió un error al guardar', message_type='danger')
+            finally:
+                cursor.close()
+                connection.commit()
+        return HTTPFound(location=self.request.route_url('registro_control_entrada_reparacion'))
 
     @view_config(route_name='alerta_multa', renderer='../templates/alerta_multa.jinja2',
                  request_method='GET',permission='importador')

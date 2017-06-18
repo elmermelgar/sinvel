@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import transaction
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
@@ -29,7 +31,8 @@ class Clientes(object):
         cliente = Cliente()
         cliente.NOMBRE_CLIENTE = data['NOMBRE_CLIENTE']
         cliente.APELLIDO_CLIENTE = data['APELLIDO_CLIENTE']
-        cliente.FECHA_NACIMIENTO = data['FECHA_NACIMIENTO']
+        # Convertir FECHA_NACIMIENTO a fecha
+        cliente.FECHA_NACIMIENTO = datetime.strptime(data['FECHA_NACIMIENTO'], '%d-%m-%Y')
         cliente.SEXO = data['SEXO']
         cliente.DUI = data['DUI']
         self.request.dbsession.add(cliente)
@@ -50,6 +53,9 @@ class Clientes(object):
         idc = data['ID_CLIENTE']
         cliente = self.request.dbsession.query(Cliente).filter(Cliente.ID_CLIENTE == idc).first()
         for key, value in data.items():
+            # Convertir FECHA_NACIMIENTO a fecha
+            if key == 'FECHA_NACIMIENTO':
+                value = datetime.strptime(value, '%d-%m-%Y')
             setattr(cliente, key, value)
         transaction.commit()
         self.request.flash_message.add('Registro Guardado Correctamente!!', message_type='success')

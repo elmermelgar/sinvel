@@ -39,7 +39,7 @@ class costoReparacion(object):
                 .update({"ID_ESTADO": data['ID_ESTADO']})
 
             #AGREGAR EL NUEVO COSTO A LOS COSTOS DEL VEHICULO
-            tcosto = self.request.dbsession.query(TipoCosto).filter(TipoCosto.COD_COSTO=='002').first()
+            tcosto = self.request.dbsession.query(TipoCosto).filter(TipoCosto.COD_COSTO=='004').first()
             costo = Costo()
             costo.ID_VEHICULO = data['idVeh']
             costo.ID_TIPO_COSTO = tcosto.ID_TIPO_COSTO

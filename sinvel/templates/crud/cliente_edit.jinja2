@@ -3,7 +3,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid.override.min.css') }}"
           rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css"
+          href="{{ request.static_url('sinvel:static/css/bootstrap-datetimepicker.min.css') }}">
 {% endblock styles %}
 {% block content %}
 
@@ -49,7 +50,7 @@
                                 <label class="col-sm-3 control-label">Fecha de nacimiento</label>
                                 <div class="form-group col-md-8">
                                     <input class="form-control form_datetime" name="FECHA_NACIMIENTO" type="text"
-                                           value="{{ cliente.FECHA_NACIMIENTO }}" placeholder="yyyy-mm-dd" maxlength="10" required>
+                                           value="{{ cliente.FECHA_NACIMIENTO }}" placeholder="dd-mm-yyyy" required>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +74,7 @@
                                 <label class="col-sm-3 control-label">DUI</label>
                                 <div class="form-group col-md-8">
                                     <input name="DUI" type="text" maxlength="9" class="form-control"
-                                           value="{{ cliente.DUI }}" placeholder="#########" required>
+                                           value="{{ cliente.DUI }}" placeholder="#########" >
                                 </div>
                             </div>
                         </div>
@@ -99,5 +100,12 @@
 {% endblock content %}
 {% block scripts %}
     <script src="{{ request.static_url('sinvel:static/vendors/bower_components/jquery.bootgrid/dist/jquery.bootgrid-override.min.js') }}"></script>
-
+    <script type="text/javascript" src="{{ request.static_url('sinvel:static/js/moment.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ request.static_url('sinvel:static/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".form_datetime").datetimepicker({format: 'DD-MM-YYYY'});
+        });
+    </script>
 {% endblock scripts %}
