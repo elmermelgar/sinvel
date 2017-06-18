@@ -288,7 +288,7 @@ class Remolque(Base):
 
     bodega = relationship('Bodega', primaryjoin='Remolque.ID_BODEGA == Bodega.ID_BODEGA', backref='remolques')
     empleado = relationship('Empleado', primaryjoin='Remolque.ID_EMPLEADO == Empleado.ID_EMPLEADO', backref='remolques')
-    tipo_remolque = relationship('TipoRemolque', primaryjoin='Remolque.ID_TIPO_REMOLQUE == TipoRemolque.ID_TIPO_REMOLQUE', backref='remolques')
+    tipo_remolque = relationship('TipoRemolque', primaryjoin='Remolque.ID_TIPO_REMOLQUE == TipoRemolque.ID_TIPO_REMOLQUE', backref='remolques',lazy='joined')
 
 
 class Reparacion(Base):
