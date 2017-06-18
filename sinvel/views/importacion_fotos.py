@@ -22,7 +22,7 @@ class Importaciones(object):
     @view_config(route_name='list_importadores', renderer='../templates/importacionFotos/importadores.jinja2',
                  request_method='GET', permission='bodeguero')
     def importaciones(self):
-        emp = self.query_emp.get(int(self.user))
+        emp = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER==self.user).first()
         # bodega=self.query_bodega.all()
         # bod=self.query_bodega.get(emp.ID_BODEGA)
         # clt=self.query_detalleCtl.get(emp.ID_BODEGA)
