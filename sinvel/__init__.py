@@ -14,7 +14,7 @@ from pyramid.renderers import render_to_response
 from pyramid.renderers import render
 @forbidden_view_config()
 def forbidden(request):
-    if request.user is None:
+    if request.user is None or request.session['grupo'] is None:
         return HTTPFound(location='/login')
     else:
         #return Response('You are not allowed', status='403 Forbidden')
@@ -25,7 +25,7 @@ def main(global_config, **settings):
     """
 
     session_factory =  SignedCookieSessionFactory(
-        settings['session.secret'],max_age=30000,
+        settings['session.secret'],max_age=30,
     )
 
 
