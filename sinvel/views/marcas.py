@@ -1,3 +1,4 @@
+import sqlalchemy
 import transaction
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
@@ -53,8 +54,11 @@ class Marcas(object):
 
     @view_config(route_name='marcaEliminar', request_method='GET', permission='administrador')
     def marca_eliminar(self):
-        idm = self.request.matchdict['id_marca']
-        self.request.dbsession.query(Marca).filter(Marca.ID_MARCA == idm).delete()
-        transaction.commit()
-        self.request.flash_message.add('Registro Eliminado Correctamente!!', message_type='success')
+        try:
+            idm = self.request.matchdict['id_marca']
+            self.request.dbsession.query(Marca).filter(Marca.ID_MARCA == idm).delete()
+            transaction.commit()
+            self.request.flash_message.add('Registro Eliminado Correctamente!!', message_type='success')
+        except sqlalchemy.exc.IntegrityError:
+            self.request.flash_message.add('Error al eliminar, existen registros relacionados', message_type='danger')
         return HTTPFound(location=self.request.route_url('marcaLista'))

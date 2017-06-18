@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import sqlalchemy
 import transaction
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
@@ -63,8 +64,11 @@ class Clientes(object):
 
     @view_config(route_name='clienteEliminar', request_method='GET', permission='administrador')
     def cliente_eliminar(self):
-        idc = self.request.matchdict['id_cliente']
-        self.request.dbsession.query(Cliente).filter(Cliente.ID_CLIENTE == idc).delete()
-        transaction.commit()
-        self.request.flash_message.add('Registro Eliminado Correctamente!!', message_type='success')
+        try:
+            idc = self.request.matchdict['id_cliente']
+            self.request.dbsession.query(Cliente).filter(Cliente.ID_CLIENTE == idc).delete()
+            transaction.commit()
+            self.request.flash_message.add('Registro Eliminado Correctamente!!', message_type='success')
+        except sqlalchemy.exc.IntegrityError:
+            self.request.flash_message.add('Error al eliminar, existen registros relacionados', message_type='danger')
         return HTTPFound(location=self.request.route_url('clienteLista'))
