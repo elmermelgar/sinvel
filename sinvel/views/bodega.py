@@ -5,7 +5,7 @@ from pyramid.response import Response
 from pyramid.httpexceptions import HTTPFound
 from ..models import Bodega
 from ..models import Nivel
-from  ..models import Ubicacion
+from  ..models import Ubicacion, UbicacionBodega
 from ..models import Departamento
 from ..models import  Vehiculo
 from ..models import EstadoVeh
@@ -298,3 +298,15 @@ class Bodega_IU(object):
             cursor.close()
             connection.commit()
         return HTTPSeeOther(self.request.route_url('detalle_bodega', id_bod=self.request.POST['ID_BODEGA']))
+
+    @view_config(route_name='vehiculos_buscar', renderer='../templates/vehiculos_admin.jinja2',
+                 request_method='GET')
+    def vehiculosAdmin(self):
+        usuario = self.request.dbsession.query(User).filter(User.user_name == self.user).first()
+        items_empleado = self.request.dbsession.query(Empleado).filter(Empleado.ID_USER == usuario.id).first()
+
+        bodega = self.request.dbsession.query(Bodega).filter(Bodega.ID_BODEGA == items_empleado.ID_BODEGA).first()
+        ubicados = self.request.dbsession.query(UbicacionBodega).all()
+
+        items_veh = self.request.dbsession.query(Vehiculo).all()
+        return {'grupo': self.emp, 'user': self.user, 'vehiculos': items_veh, 'ubicados': ubicados, 'bodega': bodega}

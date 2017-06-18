@@ -4,11 +4,33 @@ from pyramid.view import view_config
 from pyramid.security import NO_PERMISSION_REQUIRED,Authenticated, ALL_PERMISSIONS
 from ziggurat_foundations.ext.pyramid.sign_in import ZigguratSignInSuccess
 from sqlalchemy.exc import DBAPIError
-from ..models.models import Empleado
+from ..models.models import Empleado, Vehiculo
 from ..models import Venta
 from ..models import get_session_callable
 from ..models import ResourceFactory
-
+import _mysql_exceptions
+from pyramid.view import view_config
+import transaction
+from pyramid.response import Response
+from pyramid.httpexceptions import HTTPFound
+from ..models import Bodega
+from ..models import Nivel
+from  ..models import Ubicacion
+from ..models import Departamento
+from ..models import  Vehiculo
+from ..models import EstadoVeh
+from ..models import DetalleControlEmpresa
+from ..models import Venta
+from ..models import Cliente
+from ..models import Empleado
+from ..models import User
+from sinvel.views.user import db_err_msg
+from ..models import Municipio
+from pyramid.httpexceptions import HTTPSeeOther
+from sqlalchemy.exc import DBAPIError
+from datetime import datetime
+import ctypes
+from ..models import get_engine
 
 class Vista(object):
 
@@ -47,9 +69,16 @@ class Vista(object):
     def forms(request):
         return {'one': 'one', 'user': 'sinvel'}
 
-    @view_config(route_name='tables', renderer='../templates/examples/tables.jinja2', permission='view')
+    @view_config(route_name='tables', renderer='../templates/examples/tables.jinja2')
     def tables(request):
         return {'one': 'one', 'user': 'sinvel'}
+
+    @view_config(route_name='vehiculos_buscar', renderer='../templates/examples/inicio_prueba.jinja2')
+    def tables(self):
+        vehiculos = self.request.dbsession.query(Vehiculo).all()
+        print('**********************************************************')
+        print(vehiculos)
+        return {'vehiculos': vehiculos, 'user': self.user}
 
     @view_config(route_name='panels', renderer='../templates/examples/panels.jinja2', permission='view')
     def tables(request):

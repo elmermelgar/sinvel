@@ -1,0 +1,19 @@
+{% extends "../layout.jinja2" %}
+
+{% block content %}
+    <div class="container c-boxed" style="margin-top: -30px">
+        <div class="text-center">
+            <h3 class="f-400 m-b-15">BIENVENIDO</h3>
+            <div class="col-md-1"></div>
+
+            <div class="col-md-10" style="text-align: center">
+                {% for veh in vehiculos %}
+                         Prueba {{ veh.ANO }}
+                {% endfor %}
+
+
+            </div>
+            <div class="col-md-1"></div>
+    </div>
+{% endblock content %}
+
