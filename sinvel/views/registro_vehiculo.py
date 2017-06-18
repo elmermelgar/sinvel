@@ -106,6 +106,8 @@ class RegistroVehiculo(object):
         json_models = jsonpickle.encode(models, max_depth=2)
         return {'grupo': self.emp, 'json_models': json_models}
 
+
+
     @view_config(route_name='registro_control_entrada', renderer='../templates/registrar_entrada.jinja2',
                  request_method='GET',permission='administrador')
     def registroControlEntradaPrimeraVez(self):
