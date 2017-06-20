@@ -1,4 +1,5 @@
 import bcrypt
+import sqlalchemy
 from pyramid.view import view_config
 from ..models import Importador,User,Group,UsersGroup,Empleado
 import jsonpickle
@@ -79,16 +80,13 @@ class AgregarImportador(object):
 
     @view_config(route_name='importador_delete', request_method='GET',permission='administrador')
     def deleteImportador(self):
-
-
-            id_importador = self.request.matchdict['id_importador']
-            print('dave')
-            print(id_importador)
+        try:
+            id_importador = int(self.request.matchdict['id_importador'])
 
             self.request.dbsession.query(Importador).filter(Importador.ID_IMPORTADOR == id_importador).delete()
             transaction.commit()
             self.request.flash_message.add('Importador elminado', message_type='success')
-            return HTTPFound(location='/importador/list')
+        except sqlalchemy.exc.IntegrityError:
+            self.request.flash_message.add('ERROR!!, NO PUEDE ELIMINAR ESTE REGISTRO!!', message_type='danger')
 
-
-
+        return HTTPFound(location='/importador/list')
